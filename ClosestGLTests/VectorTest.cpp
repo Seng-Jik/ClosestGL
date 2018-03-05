@@ -18,139 +18,139 @@ namespace ClosestGLTests::MathTest
 		
 		TEST_METHOD(TestVector2Add)
 		{
-			const Vector2<int> a{ 1,2 }, b{ 3,4 };
-			const auto c = a + b;
-			Assert::AreEqual(c.x, 4);
-			Assert::AreEqual(c.y, 6);
+			constexpr Vector2<int> a{ 1,2 }, b{ 3,4 };
+			constexpr auto c = a + b;
+			static_assert(c.x == 4);
+			static_assert(c.y == 6);
 		}
 
 		TEST_METHOD(TestVector2Sub)
 		{
-			const Vector2<int> a{ 1,2 }, b{ 3,4 };
-			const auto c = a - b;
-			Assert::AreEqual(c.x, -2);
-			Assert::AreEqual(c.y, -2);
+			constexpr Vector2<int> a{ 1,2 }, b{ 3,4 };
+			constexpr auto c = a - b;
+			static_assert(c.x == -2);
+			static_assert(c.y == -2);
 		}
 
 		TEST_METHOD(TestVector2MulNumber)
 		{
-			const Vector2<int> a{ 1,2 };
-			const auto c = a * 5;
-			Assert::AreEqual(c.x, 5);
-			Assert::AreEqual(c.y, 10);
+			constexpr Vector2<int> a{ 1,2 };
+			constexpr auto c = a * 5;
+			static_assert(c.x == 5);
+			static_assert(c.y == 10);
 		}
 
 		TEST_METHOD(TestVector2Dot)
 		{
-			const Vector2<int> a{ 1,2 }, b{ 3,4 };
-			const auto c = Dot(a, b);
-			Assert::AreEqual(c, 11);
+			constexpr Vector2<int> a{ 1,2 }, b{ 3,4 };
+			constexpr auto c = Dot(a, b);
+			static_assert(c == 11);
 		}
 
 		TEST_METHOD(TestVector2LengthPow2)
 		{
-			const Vector2<int> a{ 1,2 };
+			constexpr Vector2<int> a{ 1,2 };
 			Assert::AreEqual(a.Length(),2);
 		}
 
 		TEST_METHOD(TestVector3Add)
 		{
-			const Vector3<int> a{ 1,2,3 }, b{ 3,4,5 };
-			const auto c = a + b;
-			Assert::AreEqual(c.x, 4);
-			Assert::AreEqual(c.y, 6);
-			Assert::AreEqual(c.z, 8);
+			constexpr Vector3<int> a{ 1,2,3 }, b{ 3,4,5 };
+			constexpr auto c = a + b;
+			static_assert(c.x == 4);
+			static_assert(c.y == 6);
+			static_assert(c.z == 8);
 		}
 
 		TEST_METHOD(TestVector3Sub)
 		{
-			const Vector3<int> a{ 1,2,3 }, b{ 3,4,5 };
-			const auto c = a - b;
-			Assert::AreEqual(c.x, -2);
-			Assert::AreEqual(c.y, -2);
-			Assert::AreEqual(c.z, -2);
+			constexpr Vector3<int> a{ 1,2,3 }, b{ 3,4,5 };
+			constexpr auto c = a - b;
+			static_assert(c.x == -2);
+			static_assert(c.y == -2);
+			static_assert(c.z == -2);
 		}
 
 		TEST_METHOD(TestVector3MulNumber)
 		{
-			const Vector3<int> a{ 1,2,3 };
-			const auto c = a * 5;
-			Assert::AreEqual(c.x, 5);
-			Assert::AreEqual(c.y, 10);
-			Assert::AreEqual(c.z, 15);
+			constexpr Vector3<int> a{ 1,2,3 };
+			constexpr auto c = a * 5;
+			static_assert(c.x == 5);
+			static_assert(c.y == 10);
+			static_assert(c.z == 15);
 		}
 
 		TEST_METHOD(TestVector3Dot)
 		{
-			const Vector3<int> a{ 1,2,3 }, b{ 3,4,5 };
-			const auto c = Dot(a, b);
-			Assert::AreEqual(c, 26);
+			constexpr Vector3<int> a{ 1,2,3 }, b{ 3,4,5 };
+			constexpr auto c = Dot(a, b);
+			static_assert(c == 26);
 		}
 
 		TEST_METHOD(TestVector3LengthPow2)
 		{
-			const Vector3<int> a{ 1,2,3 };
+			constexpr Vector3<int> a{ 1,2,3 };
 			Assert::AreEqual(a.Length(), 3);
 		}
 
 		TEST_METHOD(TestVector4Add)
 		{
-			const Vector4<int> a{ 1,2,3,4 }, b{ 3,4,5,6 };
-			const auto c = a + b;
-			Assert::AreEqual(c.x, 4);
-			Assert::AreEqual(c.y, 6);
-			Assert::AreEqual(c.z, 8);
-			Assert::AreEqual(c.w, 10);
+			constexpr Vector4<int> a{ 1,2,3,4 }, b{ 3,4,5,6 };
+			constexpr auto c = a + b;
+			static_assert(c.x == 4);
+			static_assert(c.y == 6);
+			static_assert(c.z == 8);
+			static_assert(c.w == 10);
 		}
 
 		TEST_METHOD(TestVector4Sub)
 		{
-			const Vector4<int> a{ 1,2,3,4 }, b{ 3,4,5,6 };
-			const auto c = a - b;
-			Assert::AreEqual(c.x, -2);
-			Assert::AreEqual(c.y, -2);
-			Assert::AreEqual(c.z, -2);
-			Assert::AreEqual(c.w, -2);
+			constexpr Vector4<int> a{ 1,2,3,4 }, b{ 3,4,5,6 };
+			constexpr auto c = a - b;
+			static_assert(c.x == -2);
+			static_assert(c.y == -2);
+			static_assert(c.z == -2);
+			static_assert(c.w == -2);
 		}
 
 		TEST_METHOD(TestVector4MulNumber)
 		{
-			const Vector4<int> a{ 1,2,3,4 };
-			const auto c = a * 5;
-			Assert::AreEqual(c.x, 5);
-			Assert::AreEqual(c.y, 10);
-			Assert::AreEqual(c.z, 15);
-			Assert::AreEqual(c.w, 20);
+			constexpr Vector4<int> a{ 1,2,3,4 };
+			constexpr auto c = a * 5;
+			static_assert(c.x == 5);
+			static_assert(c.y == 10);
+			static_assert(c.z == 15);
+			static_assert(c.w == 20);
 		}
 
 		TEST_METHOD(TestVector4Dot)
 		{
-			const Vector4<int> a{ 1,2,3,4 }, b{ 3,4,5,6 };
-			const auto c = Dot(a, b);
-			Assert::AreEqual(c, 50);
+			constexpr Vector4<int> a{ 1,2,3,4 }, b{ 3,4,5,6 };
+			constexpr auto c = Dot(a, b);
+			static_assert(c == 50);
 		}
 
 		TEST_METHOD(TestVector4LengthPow2)
 		{
-			const Vector4<int> a{ 1,2,3,4 };
+			constexpr Vector4<int> a{ 1,2,3,4 };
 			Assert::AreEqual(a.Length(), 5);
 		}
 
 		TEST_METHOD(TestVectorsDistance)
 		{
-			const Vector4<int> a{ 1,2,3,4 };
-			const Vector4<int> b{ 5,6,7,8 };
+			constexpr Vector4<int> a{ 1,2,3,4 };
+			constexpr Vector4<int> b{ 5,6,7,8 };
 			const auto dis = Distance(a, b);
 		}
 
 		TEST_METHOD(TestNormalize)
 		{
-			const Vector2<int> a{ 15,0 };
+			constexpr Vector2<int> a{ 15,0 };
 			const auto ax = Normalize(a) == Vector2<int>{1, 0};
 			Assert::IsTrue(ax);
 
-			const Vector2<float> b{ 0,15 };
-			const auto bnorm = Vector2<float>{0, 1};
+			constexpr Vector2<float> b{ 0,15 };
+			const auto bnorm = Normalize(b);
 			bool bx =
 				bnorm.x > -0.01 && b.x <0.01 &&
 				bnorm.y > 0.99 && bnorm.y < 1.01;

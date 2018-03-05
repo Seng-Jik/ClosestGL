@@ -16,6 +16,18 @@
     <Filter Include="头文件\Math">
       <UniqueIdentifier>{b9874a68-1729-4f28-99fd-390ed8ca0d95}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\ParallelStrategy">
+      <UniqueIdentifier>{f907e108-57ee-41e8-8b14-5df36017731f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Renderer">
+      <UniqueIdentifier>{e4eafd98-0c37-4689-adb2-c71db8004b88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Texture">
+      <UniqueIdentifier>{1d75640e-b926-4281-b62f-bb0ea6486f42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Texture\Sampler">
+      <UniqueIdentifier>{2babec67-0047-46ea-b498-14a63fff4654}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vector2.h">
@@ -43,6 +55,15 @@
       <Filter>头文件\Math</Filter>
     </ClInclude>
     <ClInclude Include="MathCommon.h">
+      <Filter>头文件\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="ParallelStrategyCommon.h">
+      <Filter>头文件\ParallelStrategy</Filter>
+    </ClInclude>
+    <ClInclude Include="SingleThreadRunner.h">
+      <Filter>头文件\ParallelStrategy</Filter>
+    </ClInclude>
+    <ClInclude Include="MatrixTransform.h">
       <Filter>头文件\Math</Filter>
     </ClInclude>
   </ItemGroup>

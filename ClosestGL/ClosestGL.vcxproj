@@ -119,7 +119,10 @@
     <ClInclude Include="Matrix2.h" />
     <ClInclude Include="Matrix3.h" />
     <ClInclude Include="Matrix4.h" />
+    <ClInclude Include="MatrixTransform.h" />
     <ClInclude Include="Number.h" />
+    <ClInclude Include="ParallelStrategyCommon.h" />
+    <ClInclude Include="SingleThreadRunner.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector3.h" />
     <ClInclude Include="Vector4.h" />

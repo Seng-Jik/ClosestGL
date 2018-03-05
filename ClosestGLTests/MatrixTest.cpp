@@ -18,42 +18,42 @@ namespace ClosestGLTests::MathTest
 		TEST_METHOD(Matrix2MulVector2)
 		{
 			{
-				const Matrix2<int> mat
+				constexpr Matrix2<int> mat
 				{
 					Vector2<int>{0,1},
 					Vector2<int>{1,0}
 				};
 
-				const auto vec = Vector2<int>{ 10, 20 };
-				const auto vec2 = mat * vec;
-				Assert::IsTrue(vec2 == Vector2<int>{ 20, 10 });
+				constexpr auto vec = Vector2<int>{ 10, 20 };
+				constexpr auto vec2 = mat * vec;
+				static_assert(vec2 == Vector2<int>{ 20, 10 });
 			}
 			{
-				const auto vec = Vector2<int>{ 10, 20 };
-				const auto vec2 = Matrix2Identity<int> * vec;
-				Assert::IsTrue(vec2 == vec);
+				constexpr auto vec = Vector2<int>{ 10, 20 };
+				constexpr auto vec2 = Matrix2Identity<int> * vec;
+				static_assert(vec2 == vec);
 			}
 		}
 
 		TEST_METHOD(Matrix3MulVector3)
 		{
-			const auto vec = Vector3<int>{ 10, 20,30 };
-			const auto vec2 = Matrix3Identity<int> * vec;
-			Assert::IsTrue(vec2 == vec);
+			constexpr auto vec = Vector3<int>{ 10, 20,30 };
+			constexpr auto vec2 = Matrix3Identity<int> * vec;
+			static_assert(vec2 == vec);
 		}
 
 		TEST_METHOD(Matrix4MulVector4)
 		{
-			const Matrix4<int> mat
+			constexpr Matrix4<int> mat
 			{
 				Vector4<int>{0,0,0,1},
 				Vector4<int>{0,0,1,0},
 				Vector4<int>{0,1,0,0},
 				Vector4<int>{1,0,0,0}
 			};
-			const auto vec = Vector4<int>{ 10, 20, 30, 40 };
-			const auto vec2 = mat * vec;
-			Assert::IsTrue(vec2 == Vector4<int>{ 40, 30, 20, 10 });
+			constexpr auto vec = Vector4<int>{ 10, 20, 30, 40 };
+			constexpr auto vec2 = mat * vec;
+			static_assert(vec2 == Vector4<int>{ 40, 30, 20, 10 });
 		}
 
 		TEST_METHOD(Matrix2Mul)

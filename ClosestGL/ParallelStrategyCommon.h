@@ -3,5 +3,5 @@
 
 namespace ClosestGL::ParallelStrategy
 {
-	using ForAction = std::function<void(unsigned i, unsigned threadID)>;
+	using ForAction = std::function<void(size_t i, size_t threadID)>;
 }

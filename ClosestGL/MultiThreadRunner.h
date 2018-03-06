@@ -13,7 +13,7 @@ namespace ClosestGL::ParallelStrategy
 	private:
 		struct ForTask
 		{
-			unsigned first, end;
+			size_t first, end;
 			ForAction action;
 		};
 
@@ -23,7 +23,7 @@ namespace ClosestGL::ParallelStrategy
 			std::atomic_bool free;
 
 			inline static void TaskRunner(
-				unsigned threadID,
+				size_t threadID,
 				std::atomic_bool& isFree,
 				const std::atomic_bool& stopRequested,
 				ClosestGL::Utils::ConcurrentQueue<ForTask>& taskQueue)
@@ -47,7 +47,7 @@ namespace ClosestGL::ParallelStrategy
 			}
 
 			inline Thread(
-				unsigned threadID,
+				size_t threadID,
 				ClosestGL::Utils::ConcurrentQueue<ForTask>& taskQueue,
 				const std::atomic_bool& stopRequested):
 				th{ TaskRunner,threadID,std::ref(free),std::ref(stopRequested),std::ref(taskQueue) },
@@ -96,8 +96,8 @@ namespace ClosestGL::ParallelStrategy
 		}
 
 		inline void Commit(
-			unsigned first,
-			const unsigned end,
+			size_t first,
+			const size_t end,
 			const ForAction& action
 		)
 		{
@@ -107,7 +107,7 @@ namespace ClosestGL::ParallelStrategy
 				auto lock = taskQueue_.Lock();
 				while (true)
 				{
-					unsigned endThere = first + taskEveryThread;
+					size_t endThere = first + taskEveryThread;
 					if (endThere >= end) endThere = end;
 
 					taskQueue_.PushUnsafe(ForTask{ first,endThere,action });
@@ -119,11 +119,11 @@ namespace ClosestGL::ParallelStrategy
 			}
 		}
 
-		inline MultiThreadRunner(unsigned threadCount) :
+		inline MultiThreadRunner(size_t threadCount) :
 			threads_{},
 			stopRequested_{ false }
 		{
-			for (unsigned id = 0; id < threadCount; ++id)
+			for (size_t id = 0; id < threadCount; ++id)
 			{
 				threads_.emplace_back(std::make_unique<Thread>(id, taskQueue_, stopRequested_));
 			}

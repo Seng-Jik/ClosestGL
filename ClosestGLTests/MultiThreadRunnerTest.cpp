@@ -15,14 +15,14 @@ namespace ClosestGLTests::ParallelStrategyTest
 		{
 			MultiThreadRunner runner(30);
 			std::mutex t;
-			std::vector<std::tuple<int, unsigned>> mark;
+			std::vector<std::tuple<int, size_t>> mark;
 
 			int i = 0;
 			for (int j = 0; j < 5; ++j)
 			{
 				
 				runner.Commit(0, 100,
-					[&i, &t, &mark](unsigned index, unsigned threadID) {
+					[&i, &t, &mark](size_t index, size_t threadID) {
 					t.lock();
 					i++;
 					mark.push_back({ i,threadID });

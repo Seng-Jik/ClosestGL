@@ -17,7 +17,7 @@
       <UniqueIdentifier>{ae969c84-1731-46a8-affd-d10abafc2f5d}</UniqueIdentifier>
     </Filter>
     <Filter Include="源文件\ParallelStrategyTest">
-      <UniqueIdentifier>{ebcd3fc4-f58d-47cf-ad2c-8822a86cac6e}</UniqueIdentifier>
+      <UniqueIdentifier>{5f2d8864-186e-4cfb-b8bd-f091e40b169b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -38,13 +38,13 @@
     <ClCompile Include="MatrixTest.cpp">
       <Filter>源文件\MathTest</Filter>
     </ClCompile>
-    <ClCompile Include="SingleThreadRunnerTest.cpp">
-      <Filter>源文件\ParallelStrategyTest</Filter>
-    </ClCompile>
     <ClCompile Include="TransformTest.cpp">
       <Filter>源文件\MathTest</Filter>
     </ClCompile>
     <ClCompile Include="MultiThreadRunnerTest.cpp">
+      <Filter>源文件\ParallelStrategyTest</Filter>
+    </ClCompile>
+    <ClCompile Include="SingleThreadRunnerTest.cpp">
       <Filter>源文件\ParallelStrategyTest</Filter>
     </ClCompile>
   </ItemGroup>

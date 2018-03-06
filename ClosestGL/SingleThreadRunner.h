@@ -10,6 +10,8 @@ namespace ClosestGL::ParallelStrategy
 
 		inline constexpr bool Finished() const { return true; }
 
+		inline constexpr size_t ParallelSize() const { return 1; }
+
 		inline void Commit(
 			unsigned first,
 			unsigned end,

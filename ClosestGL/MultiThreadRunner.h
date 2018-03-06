@@ -118,6 +118,8 @@ namespace ClosestGL::ParallelStrategy
 			}
 		}
 
+		inline constexpr size_t ParallelSize() const { return threads_.size(); }
+
 		inline MultiThreadRunner(size_t threadCount) :
 			threads_{},
 			stopRequested_{ false }

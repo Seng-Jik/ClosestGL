@@ -1,5 +1,6 @@
 #pragma once
 #include "Vector2.h"
+#include "Matrix3.h"
 
 namespace ClosestGL::Math
 {
@@ -7,10 +8,20 @@ namespace ClosestGL::Math
 	struct Matrix2
 	{
 		Vector2<T> col1, col2;
+
+		operator Matrix3<T>()
+		{
+			return
+			{
+				{ col1.x, col1.y, 0 },
+				{ col2.x, col2.y, 0 },
+				{ 0, 0, 1 }
+			};
+		}
 	};
 
 	template<typename T>
-	inline constexpr static Matrix2<T> Matrix2Identity
+	constexpr static Matrix2<T> Matrix2Identity
 	{
 		{ 1,0 },
 		{ 0,1 }

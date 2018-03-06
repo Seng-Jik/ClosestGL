@@ -44,5 +44,8 @@
     <ClCompile Include="TransformTest.cpp">
       <Filter>源文件\MathTest</Filter>
     </ClCompile>
+    <ClCompile Include="MultiThreadRunnerTest.cpp">
+      <Filter>源文件\ParallelStrategyTest</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

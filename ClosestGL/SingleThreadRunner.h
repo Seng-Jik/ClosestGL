@@ -6,9 +6,9 @@ namespace ClosestGL::ParallelStrategy
 	class SingleThreadRunner
 	{
 	public:
-		inline constexpr void Wait() {};
+		inline constexpr void Wait() const {};
 
-		inline constexpr bool Finished() { return true; }
+		inline constexpr bool Finished() const { return true; }
 
 		inline void Commit(
 			unsigned first,

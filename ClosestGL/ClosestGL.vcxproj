@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -115,11 +115,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ConcurrentQueue.h" />
     <ClInclude Include="MathCommon.h" />
     <ClInclude Include="Matrix2.h" />
     <ClInclude Include="Matrix3.h" />
     <ClInclude Include="Matrix4.h" />
     <ClInclude Include="MatrixTransform.h" />
+    <ClInclude Include="MultiThreadRunner.h" />
     <ClInclude Include="Number.h" />
     <ClInclude Include="ParallelStrategyCommon.h" />
     <ClInclude Include="SingleThreadRunner.h" />

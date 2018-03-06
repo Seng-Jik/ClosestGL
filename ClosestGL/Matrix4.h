@@ -1,5 +1,6 @@
 #pragma once
 #include "Vector4.h"
+#include "Matrix3.h"
 
 namespace ClosestGL::Math
 {
@@ -10,7 +11,7 @@ namespace ClosestGL::Math
 	};
 
 	template<typename T>
-	inline constexpr static Matrix4<T> Matrix4Identity
+	constexpr static Matrix4<T> Matrix4Identity
 	{
 		{ 1,0,0,0 },
 		{ 0,1,0,0 },
@@ -31,7 +32,7 @@ namespace ClosestGL::Math
 	template<typename T>
 	constexpr Matrix4<T> operator * (const Matrix4<T>& a, const Matrix4<T>& b)
 	{
-		return Matrix4<T>
+		return
 		{
 			a * b.col1,
 			a * b.col2,

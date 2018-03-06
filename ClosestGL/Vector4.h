@@ -17,7 +17,7 @@ namespace ClosestGL::Math
 	template<typename T>
 	constexpr Vector4<T> operator + (const Vector4<T>& a, const Vector4<T>& b)
 	{
-		return Vector4<T>
+		return
 		{
 			a.x + b.x,
 			a.y + b.y,
@@ -29,7 +29,7 @@ namespace ClosestGL::Math
 	template<typename T>
 	constexpr Vector4<T> operator - (const Vector4<T>& a, const Vector4<T>& b)
 	{
-		return Vector4<T>
+		return
 		{
 			a.x - b.x,
 			a.y - b.y,
@@ -41,7 +41,7 @@ namespace ClosestGL::Math
 	template<typename T>
 	constexpr Vector4<T> operator * (const Vector4<T>& a, const T& b)
 	{
-		return Vector4<T>
+		return
 		{
 			a.x * b,
 			a.y * b,
@@ -59,7 +59,7 @@ namespace ClosestGL::Math
 	template<typename T>
 	constexpr Vector4<T> operator / (const Vector4<T>& a, const T& b)
 	{
-		return Vector4<T>
+		return
 		{
 			a.x / b,
 			a.y / b,

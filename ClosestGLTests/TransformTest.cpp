@@ -66,6 +66,36 @@ namespace ClosestGLTests::MathTest
 				static_assert(result.w == 1);
 			}
 		}
+
+		TEST_METHOD(TestRotateZ)
+		{
+			constexpr Vector2<float> v{1, 0};
+			const Vector2<float> vr = GetZRotateMatrix(3.1415926f / 2.0f) * v;
+
+			constexpr Vector3<double> v2{ 1, 0, 1 };
+			const Vector3<double> vr2 = 
+				Matrix3<double>(GetZRotateMatrix(3.1415926 / 2.0)) * v2;
+		}
+
+		TEST_METHOD(TestRotateY)
+		{
+			constexpr Vector3<float> v{ 1,1,0 };
+			const Vector3<float> vr = GetYRotateMatrix(3.1415926f) * v;
+
+			constexpr Vector4<double> v2{ 1,1,0,0 };
+			const Vector4<double> vr2 = 
+				Matrix4<double>(GetYRotateMatrix(3.1415926)) * v2;
+		}
+
+		TEST_METHOD(TestRotateX)
+		{
+			constexpr Vector3<float> v{ 1,1,0 };
+			const Vector3<float> vr = GetXRotateMatrix(3.1415926f) * v;
+
+			constexpr Vector4<double> v2{ 1,1,0,0 };
+			const Vector4<double> vr2 = 
+				Matrix4<double>(GetXRotateMatrix(3.1415926)) * v2;
+		}
 	};
 }
 

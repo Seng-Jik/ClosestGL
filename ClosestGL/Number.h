@@ -4,6 +4,12 @@
 namespace ClosestGL::Math
 {
 	template<typename T>
+	constexpr auto Abs(const T& v)
+	{
+		return v < 0 ? -v : v;
+	}
+
+	template<typename T>
 	constexpr auto Sqrt(const T& v)
 	{
 		return v.Sqrt();

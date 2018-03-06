@@ -4,7 +4,6 @@
 #include <atomic>
 #include "ConcurrentQueue.h"
 #include "ParallelStrategyCommon.h"
-#include "Number.h"
 
 namespace ClosestGL::ParallelStrategy
 {

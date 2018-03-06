@@ -1,6 +1,5 @@
 #pragma once
 #include "Vector4.h"
-#include "Matrix3.h"
 
 namespace ClosestGL::Math
 {

@@ -20,16 +20,16 @@ namespace ClosestGLTests::MathTest
 			{
 				constexpr Matrix2<int> mat
 				{
-					Vector2<int>{0,1},
-					Vector2<int>{1,0}
+					{0,1},
+					{1,0}
 				};
 
-				constexpr auto vec = Vector2<int>{ 10, 20 };
+				constexpr Vector2<int> vec{ 10, 20 };
 				constexpr auto vec2 = mat * vec;
 				static_assert(vec2 == Vector2<int>{ 20, 10 });
 			}
 			{
-				constexpr auto vec = Vector2<int>{ 10, 20 };
+				constexpr Vector2<int> vec{ 10, 20 };
 				constexpr auto vec2 = Matrix2Identity<int> * vec;
 				static_assert(vec2 == vec);
 			}
@@ -37,7 +37,7 @@ namespace ClosestGLTests::MathTest
 
 		TEST_METHOD(Matrix3MulVector3)
 		{
-			constexpr auto vec = Vector3<int>{ 10, 20,30 };
+			constexpr Vector3<int> vec{ 10, 20,30 };
 			constexpr auto vec2 = Matrix3Identity<int> * vec;
 			static_assert(vec2 == vec);
 		}
@@ -46,12 +46,12 @@ namespace ClosestGLTests::MathTest
 		{
 			constexpr Matrix4<int> mat
 			{
-				Vector4<int>{0,0,0,1},
-				Vector4<int>{0,0,1,0},
-				Vector4<int>{0,1,0,0},
-				Vector4<int>{1,0,0,0}
+				{0,0,0,1},
+				{0,0,1,0},
+				{0,1,0,0},
+				{1,0,0,0}
 			};
-			constexpr auto vec = Vector4<int>{ 10, 20, 30, 40 };
+			constexpr Vector4<int> vec{ 10, 20, 30, 40 };
 			constexpr auto vec2 = mat * vec;
 			static_assert(vec2 == Vector4<int>{ 40, 30, 20, 10 });
 		}

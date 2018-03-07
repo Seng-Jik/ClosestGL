@@ -14,7 +14,7 @@ namespace ClosestGLTests::PrimitiveTest
 		{
 			auto gented = Primitive::Generate(8000);
 
-			for (unsigned i = 0; i < 8000; ++i)
+			for (size_t i = 0; i < 8000; ++i)
 				Assert::AreEqual(i, gented[i]);
 		}
 	};

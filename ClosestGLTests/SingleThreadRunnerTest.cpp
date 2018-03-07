@@ -16,9 +16,9 @@ namespace ClosestGLTests::ParallelStrategyTest
 			SingleThreadRunner runner;
 			int i = 0;
 			runner.Commit(0,100,
-				[&i](unsigned t,unsigned threadID) {
+				[&i](size_t t, size_t threadID) {
 				i++;
-				Assert::AreEqual(threadID, 0u);
+				Assert::AreEqual(threadID, size_t(0));
 			});
 
 			runner.Wait();

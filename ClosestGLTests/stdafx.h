@@ -14,3 +14,4 @@
 #include <../SDLClasses/include/SDLInstance.h>
 #include <../SDLClasses/include/Window.h>
 #include <../SDLClasses/include/Vector4.h>
+#include "SurfaceViewer.h"

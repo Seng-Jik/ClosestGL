@@ -1,0 +1,3 @@
+[submodule "SDLClasses"]
+	path = SDLClasses
+	url = https://github.com/SmallLuma/SDLClasses.git

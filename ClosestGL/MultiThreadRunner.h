@@ -6,6 +6,8 @@
 
 namespace ClosestGL::ParallelStrategy
 {
+	/* 高性能并发执行策略 */
+
 	class MultiThreadRunner
 	{
 	private:
@@ -128,6 +130,7 @@ namespace ClosestGL::ParallelStrategy
 
 		inline size_t ParallelSize() const { return threads_.size(); }
 
+		/* threadCount - 使用的线程数 */
 		inline MultiThreadRunner(size_t threadCount) :
 			threads_{},
 			stopRequested_{ false }

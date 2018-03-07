@@ -5,6 +5,9 @@
 
 namespace ClosestGL::Math
 {
+	/* 矩阵公式库 */
+
+	/* 获取2x2的缩放矩阵 */
 	template<typename T>
 	constexpr Matrix2<T> GetScaleMatrix(T x, T y)
 	{
@@ -15,6 +18,7 @@ namespace ClosestGL::Math
 		};
 	}
 
+	/* 获取3x3的缩放矩阵 */
 	template<typename T>
 	constexpr Matrix3<T> GetScaleMatrix(T x, T y,T z)
 	{
@@ -26,18 +30,7 @@ namespace ClosestGL::Math
 		};
 	}
 
-	template<typename T>
-	constexpr Matrix4<T> GetScaleMatrix(T x, T y, T z,T w)
-	{
-		return
-		{
-			{ x, 0, 0, 0 },
-			{ 0, y, 0, 0 },
-			{ 0, 0, z, 0 },
-			{ 0, 0, 0, w }
-		};
-	}
-
+	/* 获取3x3的平移矩阵（适用于2D） */
 	template<typename T>
 	constexpr Matrix3<T> GetTransformMatrix(Vector2<T> v)
 	{
@@ -49,6 +42,7 @@ namespace ClosestGL::Math
 		};
 	}
 
+	/* 获取4x4的平移矩阵（适用于3D） */
 	template<typename T>
 	constexpr Matrix4<T> GetTransformMatrix(Vector3<T> v)
 	{
@@ -61,8 +55,11 @@ namespace ClosestGL::Math
 		};
 	}
 
+	/* 获取2x2的绕Z轴旋转的矩阵 
+	* radian - 旋转角（使用弧度表示）
+	*/
 	template<typename T>
-	Matrix2<T> GetRotateMatrix(T radian, Vector2<T> point) = delete;
+	Matrix2<T> GetRotateMatrix(T radian) = delete;
 
 	inline Matrix2<float> GetZRotateMatrix(float radian)
 	{
@@ -82,6 +79,9 @@ namespace ClosestGL::Math
 		};
 	}
 
+	/* 获取3x3的绕Y轴旋转的矩阵
+	* radian - 旋转角（使用弧度表示）
+	*/
 	template<typename T>
 	Matrix3<T> GetYRotateMatrix(double radian) = delete;
 
@@ -105,6 +105,9 @@ namespace ClosestGL::Math
 		};
 	}
 
+	/* 获取3x3的绕X轴旋转的矩阵
+	* radian - 旋转角（使用弧度表示）
+	*/
 	template<typename T>
 	Matrix3<T> GetXRotateMatrix(double radian) = delete;
 

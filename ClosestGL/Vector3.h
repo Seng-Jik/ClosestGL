@@ -3,11 +3,13 @@
 
 namespace ClosestGL::Math
 {
+	/* 3维向量 */
 	template<typename T>
 	struct Vector3
 	{
 		T x, y, z;
 
+		/* 求模 */
 		constexpr T Length() const
 		{
 			return static_cast<T>(Sqrt(x * x + y * y + z * z));
@@ -64,6 +66,7 @@ namespace ClosestGL::Math
 		};
 	}
 
+	/* 求3维向量点积 */
 	template<typename T>
 	constexpr T Dot(const Vector3<T>& a, const Vector3<T>& b)
 	{

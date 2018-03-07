@@ -3,11 +3,13 @@
 
 namespace ClosestGL::Math
 {
+	/* 2维向量 */
 	template<typename T>
 	struct Vector2
 	{
 		T x, y;
 
+		/* 求模 */
 		constexpr T Length() const
 		{
 			return static_cast<T>(Sqrt(x * x + y * y));
@@ -60,6 +62,7 @@ namespace ClosestGL::Math
 		return a.x == b.x && a.y == b.y;
 	}
 
+	/* 求2维向量点积 */
 	template<typename T>
 	constexpr T Dot(const Vector2<T>& a, const Vector2<T>& b)
 	{

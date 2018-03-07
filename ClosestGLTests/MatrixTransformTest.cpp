@@ -30,17 +30,6 @@ namespace ClosestGLTests::MathTest
 				static_assert(result.y == 6);
 				static_assert(result.z == 6);
 			}
-
-			{
-				constexpr Vector4<int> vec{ 1, 2, 3, 4 };
-				constexpr auto tsf = GetScaleMatrix(12, 6, 4, 3);
-				constexpr auto result = tsf * vec;
-
-				static_assert(result.x == 12);
-				static_assert(result.y == 12);
-				static_assert(result.z == 12);
-				static_assert(result.w == 12);
-			}
 		}
 
 		TEST_METHOD(TestTransform)

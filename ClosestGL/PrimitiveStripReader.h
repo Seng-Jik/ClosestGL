@@ -4,6 +4,12 @@
 
 namespace ClosestGL::Primitive
 {
+	/* 图元Strip阅读器 */
+
+	/* 图元Strip阅读器以Strip的方式从IndexBuffer阅读图元。*/
+
+	/* 关于图元阅读器的问题参见PrimitiveListReader */
+
 	template<int VertexPerPrimitive>
 	class PrimitiveStripReader
 	{

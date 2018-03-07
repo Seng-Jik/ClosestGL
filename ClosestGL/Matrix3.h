@@ -3,11 +3,15 @@
 #include "Matrix4.h"
 namespace ClosestGL::Math
 {
+	/*	3x3矩阵
+	*	T - 基于的标量类型
+	*/
 	template<typename T>
 	struct Matrix3
 	{
 		Vector3<T> col1, col2, col3;
 
+		/* 转换为同语义的4x4矩阵 */
 		operator Matrix4<T>()
 		{
 			return
@@ -20,7 +24,7 @@ namespace ClosestGL::Math
 		}
 	};
 
-
+	/* 4x4单位矩阵 */
 	template<typename T>
 	constexpr static Matrix3<T> Matrix3Identity
 	{
@@ -29,6 +33,7 @@ namespace ClosestGL::Math
 		{ 0,0,1 }
 	};
 
+	/* 注意：向量只能左乘矩阵 */
 	template<typename T>
 	constexpr Vector3<T> operator * (const Matrix3<T> mat, const Vector3<T>& vec)
 	{
@@ -38,7 +43,7 @@ namespace ClosestGL::Math
 		return a + b + c;
 	}
 
-
+	/* 注意：使用矩阵间的乘法时，请使用括号写明运算顺序，否则不会执行左乘。 */
 	template<typename T>
 	constexpr Matrix3<T> operator * (const Matrix3<T>& a, const Matrix3<T>& b)
 	{

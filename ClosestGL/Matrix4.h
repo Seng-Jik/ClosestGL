@@ -3,12 +3,14 @@
 
 namespace ClosestGL::Math
 {
+	/* 4x4矩阵 */
 	template<typename T>
 	struct Matrix4
 	{
 		Vector4<T> col1, col2, col3, col4;
 	};
 
+	/* 4x4单位矩阵 */
 	template<typename T>
 	constexpr static Matrix4<T> Matrix4Identity
 	{
@@ -18,6 +20,7 @@ namespace ClosestGL::Math
 		{ 0,0,0,1 }
 	};
 
+	/* 注意：向量只能左乘矩阵 */
 	template<typename T>
 	constexpr Vector4<T> operator * (const Matrix4<T> mat, const Vector4<T>& vec)
 	{
@@ -28,6 +31,7 @@ namespace ClosestGL::Math
 		return a + b + c + d;
 	}
 
+	/* 注意：使用矩阵间的乘法时，请使用括号写明运算顺序，否则不会执行左乘。 */
 	template<typename T>
 	constexpr Matrix4<T> operator * (const Matrix4<T>& a, const Matrix4<T>& b)
 	{

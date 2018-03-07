@@ -3,18 +3,14 @@
 #include <thread>
 #include <atomic>
 #include "ConcurrentQueue.h"
-#include "ParallelStrategyCommon.h"
 
 namespace ClosestGL::ParallelStrategy
 {
 	class MultiThreadRunner
 	{
 	private:
-		struct ForTask
-		{
-			size_t first, end;
-			ForAction action;
-		};
+
+		using Task = std::function<void(size_t)>;
 
 		struct Thread
 		{
@@ -25,7 +21,7 @@ namespace ClosestGL::ParallelStrategy
 				size_t threadID,
 				std::atomic_bool& isFree,
 				const std::atomic_bool& stopRequested,
-				ClosestGL::Utils::ConcurrentQueue<ForTask>& taskQueue)
+				ClosestGL::Utils::ConcurrentQueue<Task>& taskQueue)
 			{
 				while (true)
 				{
@@ -40,14 +36,13 @@ namespace ClosestGL::ParallelStrategy
 							std::this_thread::yield();
 					}
 					else
-						for (auto i = task->first; i < task->end; ++i)
-							(*task).action(i, threadID);
+						(*task)(threadID);
 				}
 			}
 
 			inline Thread(
 				size_t threadID,
-				ClosestGL::Utils::ConcurrentQueue<ForTask>& taskQueue,
+				ClosestGL::Utils::ConcurrentQueue<Task>& taskQueue,
 				const std::atomic_bool& stopRequested):
 				th{ TaskRunner,threadID,std::ref(free),std::ref(stopRequested),std::ref(taskQueue) },
 				free{ true } 
@@ -55,7 +50,7 @@ namespace ClosestGL::ParallelStrategy
 		};
 
 
-		ClosestGL::Utils::ConcurrentQueue<ForTask> taskQueue_;
+		ClosestGL::Utils::ConcurrentQueue<Task> taskQueue_;
 		std::atomic_bool stopRequested_;
 		std::vector<std::unique_ptr<Thread>> threads_;
 	public:
@@ -94,13 +89,17 @@ namespace ClosestGL::ParallelStrategy
 			return true;
 		}
 
+		template<typename ForAction>
 		inline void Commit(
 			size_t first,
 			const size_t end,
 			const ForAction& action
 		)
 		{
-			const size_t taskEveryThread = (end - first) / threads_.size();
+			size_t taskEveryThread = (end - first) / threads_.size() / 2;
+
+			if (taskEveryThread == 0)
+				taskEveryThread = end - first;
 
 			{
 				auto lock = taskQueue_.Lock();
@@ -109,7 +108,16 @@ namespace ClosestGL::ParallelStrategy
 					size_t endThere = first + taskEveryThread;
 					if (endThere >= end) endThere = end;
 
-					taskQueue_.PushUnsafe(ForTask{ first,endThere,action });
+					Task task
+					{
+						[first,endThere,action](size_t threadID)
+						{
+							for (size_t index = first; index < endThere; index++)
+								action(index, threadID);
+						}
+					};
+
+					taskQueue_.PushUnsafe(std::move(task));
 
 					first = endThere;
 					if (first == end)

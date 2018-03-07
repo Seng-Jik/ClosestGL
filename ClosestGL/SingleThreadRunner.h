@@ -1,5 +1,4 @@
 #pragma once
-#include "ParallelStrategyCommon.h"
 
 namespace ClosestGL::ParallelStrategy
 {
@@ -12,13 +11,14 @@ namespace ClosestGL::ParallelStrategy
 
 		inline constexpr size_t ParallelSize() const { return 1; }
 
+		template<typename ForAction>
 		inline void Commit(
-			unsigned first,
-			unsigned end,
+			size_t first,
+			size_t end,
 			const ForAction& action
 		)
 		{
-			for (unsigned i = first; i < end; ++i)
+			for (size_t i = first; i < end; ++i)
 				action(i, 0);
 		}
 	};

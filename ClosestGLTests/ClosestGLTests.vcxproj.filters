@@ -19,6 +19,12 @@
     <Filter Include="源文件\ParallelStrategyTest">
       <UniqueIdentifier>{5f2d8864-186e-4cfb-b8bd-f091e40b169b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\PrimitiveTest">
+      <UniqueIdentifier>{674a2241-1a10-4030-8671-dc89fcfb825a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\TextureTest">
+      <UniqueIdentifier>{b8271136-3a14-412e-9077-8e866c1487f3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -38,14 +44,23 @@
     <ClCompile Include="MatrixTest.cpp">
       <Filter>源文件\MathTest</Filter>
     </ClCompile>
-    <ClCompile Include="TransformTest.cpp">
-      <Filter>源文件\MathTest</Filter>
-    </ClCompile>
     <ClCompile Include="MultiThreadRunnerTest.cpp">
       <Filter>源文件\ParallelStrategyTest</Filter>
     </ClCompile>
     <ClCompile Include="SingleThreadRunnerTest.cpp">
       <Filter>源文件\ParallelStrategyTest</Filter>
+    </ClCompile>
+    <ClCompile Include="MatrixTransformTest.cpp">
+      <Filter>源文件\MathTest</Filter>
+    </ClCompile>
+    <ClCompile Include="FixedTransformTest.cpp">
+      <Filter>源文件\PrimitiveTest</Filter>
+    </ClCompile>
+    <ClCompile Include="RebuildTransformTest.cpp">
+      <Filter>源文件\PrimitiveTest</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture2DTest.cpp">
+      <Filter>源文件\TextureTest</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

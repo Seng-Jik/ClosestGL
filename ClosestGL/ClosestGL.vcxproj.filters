@@ -60,9 +60,6 @@
     <ClInclude Include="MathCommon.h">
       <Filter>头文件\Math</Filter>
     </ClInclude>
-    <ClInclude Include="ParallelStrategyCommon.h">
-      <Filter>头文件\ParallelStrategy</Filter>
-    </ClInclude>
     <ClInclude Include="SingleThreadRunner.h">
       <Filter>头文件\ParallelStrategy</Filter>
     </ClInclude>
@@ -74,6 +71,15 @@
     </ClInclude>
     <ClInclude Include="ConcurrentQueue.h">
       <Filter>头文件\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="FixedTransform.h">
+      <Filter>头文件\Primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="RebuildTransform.h">
+      <Filter>头文件\Primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture2D.h">
+      <Filter>头文件\Texture</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

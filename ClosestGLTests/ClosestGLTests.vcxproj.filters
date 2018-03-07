@@ -62,5 +62,14 @@
     <ClCompile Include="Texture2DTest.cpp">
       <Filter>源文件\TextureTest</Filter>
     </ClCompile>
+    <ClCompile Include="IndexBufferGeneratorTest.cpp">
+      <Filter>源文件\PrimitiveTest</Filter>
+    </ClCompile>
+    <ClCompile Include="PrimitiveListReaderTest.cpp">
+      <Filter>源文件\PrimitiveTest</Filter>
+    </ClCompile>
+    <ClCompile Include="PrimitiveStripTest.cpp">
+      <Filter>源文件\PrimitiveTest</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

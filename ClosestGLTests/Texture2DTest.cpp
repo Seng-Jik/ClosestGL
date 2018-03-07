@@ -7,7 +7,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace ClosestGL::Texture;
 using namespace ClosestGL::Math;
 
-namespace ClosestGLTests::Texture2DTest
+namespace ClosestGLTests::TextureTest
 {
 	TEST_CLASS(Texture2DTest)
 	{

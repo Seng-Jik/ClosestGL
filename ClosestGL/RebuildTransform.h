@@ -17,21 +17,12 @@ namespace ClosestGL::Primitive
 		for (auto& i : outputs)
 			i.reserve(count / runner.ParallelSize() + 1);
 
-		struct ForAction
-		{
-			std::vector<std::vector<TOutput>>* outputs;
-			TInput* inputBuffer;
-			TTransform* transformer;
-
-			void operator() (size_t index, size_t threadID) const
+		runner.Commit(0, count, 
+			[&outputs,&transformer, inputBuffer](size_t index, size_t threadID)
 			{
-				auto& output = (*outputs)[threadID];
-				(*transformer)(inputBuffer[index], output);
+				auto& output = outputs[threadID];
+				transformer(inputBuffer[index], output);
 			}
-		};
-
-		ForAction action{ &outputs,inputBuffer,&transformer };
-
-		runner.Commit(0, count, action);
+		);
 	}
 }

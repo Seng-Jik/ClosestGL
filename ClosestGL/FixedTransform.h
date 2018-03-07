@@ -10,21 +10,10 @@ namespace ClosestGL::Primitive
 		size_t count, 
 		TParallelStrategy& runner)
 	{
-
-		struct ForAction
-		{
-			TInput* inputBuffer;
-			TOutput* outputBuffer;
-			TTransform* transformer;
-
-			void operator() (size_t index, size_t) const
-			{
-				outputBuffer[index] = (*transformer)(inputBuffer[index]);
+		runner.Commit(0,count,
+			[inputBuffer, outputBuffer, &transformer](size_t index,auto) {
+				outputBuffer[index] = transformer(inputBuffer[index]);
 			}
-		};
-
-		ForAction action{ inputBuffer, outputBuffer, &transformer };
-
-		runner.Commit(0,count,action);
+		);
 	}
 }

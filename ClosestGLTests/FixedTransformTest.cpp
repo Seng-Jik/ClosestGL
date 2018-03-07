@@ -11,7 +11,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace ClosestGL;
 
 
-namespace ClosestGLTests::ParallelStrategyTest
+namespace ClosestGLTests::PrimitiveTest
 {
 	TEST_CLASS(FixedTransformTest)
 	{

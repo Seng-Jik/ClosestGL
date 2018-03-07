@@ -14,7 +14,7 @@ using namespace ClosestGL;
 
 
 
-namespace ClosestGLTests::ParallelStrategyTest
+namespace ClosestGLTests::PrimitiveTest
 {
 	TEST_CLASS(RebuildTransformTest)
 	{

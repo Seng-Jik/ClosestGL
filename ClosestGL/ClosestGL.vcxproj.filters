@@ -81,5 +81,14 @@
     <ClInclude Include="Texture2D.h">
       <Filter>头文件\Texture</Filter>
     </ClInclude>
+    <ClInclude Include="IndexBufferGenerator.h">
+      <Filter>头文件\Primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="PrimitiveListReader.h">
+      <Filter>头文件\Primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="PrimitiveStripReader.h">
+      <Filter>头文件\Primitive</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,11 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2036
+VisualStudioVersion = 15.0.26228.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ClosestGL", "ClosestGL.vcxproj", "{92C1EE3D-90D9-487E-9A88-1435F527C9D2}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ClosestGLTests", "..\ClosestGLTests\ClosestGLTests.vcxproj", "{EEFE6815-56B1-42CC-B549-67691D6628BA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{92C1EE3D-90D9-487E-9A88-1435F527C9D2} = {92C1EE3D-90D9-487E-9A88-1435F527C9D2}
+		{ED47D28B-3601-4CB8-9136-7F66F2132573} = {ED47D28B-3601-4CB8-9136-7F66F2132573}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDLClasses", "..\SDLClasses\SDLClasses\SDLClasses.vcxproj", "{ED47D28B-3601-4CB8-9136-7F66F2132573}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +37,14 @@ Global
 		{EEFE6815-56B1-42CC-B549-67691D6628BA}.Release|x64.Build.0 = Release|x64
 		{EEFE6815-56B1-42CC-B549-67691D6628BA}.Release|x86.ActiveCfg = Release|Win32
 		{EEFE6815-56B1-42CC-B549-67691D6628BA}.Release|x86.Build.0 = Release|Win32
+		{ED47D28B-3601-4CB8-9136-7F66F2132573}.Debug|x64.ActiveCfg = Debug|x64
+		{ED47D28B-3601-4CB8-9136-7F66F2132573}.Debug|x64.Build.0 = Debug|x64
+		{ED47D28B-3601-4CB8-9136-7F66F2132573}.Debug|x86.ActiveCfg = Debug|Win32
+		{ED47D28B-3601-4CB8-9136-7F66F2132573}.Debug|x86.Build.0 = Debug|Win32
+		{ED47D28B-3601-4CB8-9136-7F66F2132573}.Release|x64.ActiveCfg = Release|x64
+		{ED47D28B-3601-4CB8-9136-7F66F2132573}.Release|x64.Build.0 = Release|x64
+		{ED47D28B-3601-4CB8-9136-7F66F2132573}.Release|x86.ActiveCfg = Release|Win32
+		{ED47D28B-3601-4CB8-9136-7F66F2132573}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

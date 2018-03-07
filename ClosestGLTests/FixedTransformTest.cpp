@@ -4,7 +4,6 @@
 #include <FixedTransform.h>
 #include <SingleThreadRunner.h>
 #include <MultiThreadRunner.h>
-#include "CppUnitTest.h"
 
 using namespace std::chrono_literals;
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;

@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "CppUnitTest.h"
 
 #include <Matrix2.h>
 #include <Matrix3.h>

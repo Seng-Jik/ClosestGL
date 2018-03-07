@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "CppUnitTest.h"
 #include <Vector4.h>
 #include <Texture2D.h>
 #include <MultiThreadRunner.h>

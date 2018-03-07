@@ -2,7 +2,6 @@
 #include <vector>
 #include <PrimitiveListReader.h>
 #include <string>
-#include "CppUnitTest.h"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace ClosestGL::Primitive;

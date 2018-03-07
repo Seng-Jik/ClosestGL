@@ -40,7 +40,7 @@ namespace ClosestGL::Texture
 		void Shade(TextureShader& ts,Runner& runner)
 		{
 			runner.Commit(0, size_.y,
-				[this,&ts](size_t y,size_t) {
+				[this,ts](size_t y,size_t) {
 					for (size_t x = 0; x < size_.x; ++x)
 					{
 						Math::Vector2<size_t> pos{ x, y };
@@ -51,9 +51,15 @@ namespace ClosestGL::Texture
 		}
 
 		template<typename Runner>
-		void Clear(ColorType& color, Runner& runner)
+		void Clear(ColorType color, Runner& runner)
 		{
-			Shade([color](auto) {return color; }, runner);
+			Shade(
+				[color](auto)
+				{
+					return color;
+				}, 
+				runner
+			);
 		}
 	};
 }

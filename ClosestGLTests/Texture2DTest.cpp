@@ -41,11 +41,19 @@ namespace ClosestGLTests::TextureTest
 
 		TEST_METHOD(TestTexture2DClear)
 		{
-			Tools::TestTex tex{ {1024,768} };
-			tex.Clear(
-				Tools::TestCol{ 255,0,0,255 }, 
-				ClosestGL::ParallelStrategy::MultiThreadRunner{ 4 });
-			Tools::ViewSurface(tex, 1000);
+			Texture2D<Vector4<uint8_t>> tex{ { 640, 480 } };
+			auto s = tex.GetSize();
+			tex.Data();
+			Assert::IsTrue(s == Vector2<size_t>{640, 480});
+
+			{
+				ClosestGL::ParallelStrategy::MultiThreadRunner
+					runner(std::thread::hardware_concurrency());
+
+				tex.Clear(Vector4<uint8_t>{ 255, 0, 0, 255 }, runner);
+
+				Tools::ViewSurface(tex, 1000);
+			}
 		}
 	};
 }

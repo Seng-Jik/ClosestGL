@@ -12,7 +12,7 @@ namespace ClosestGLTests::PrimitiveTest
 	public:
 		TEST_METHOD(TestIndexBufferGenerator)
 		{
-			auto gented = Primitive::Generate(8000);
+			auto gented = Primitive::GenerateDefaultIndexBuffer(8000);
 
 			for (size_t i = 0; i < 8000; ++i)
 				Assert::AreEqual(i, gented[i]);

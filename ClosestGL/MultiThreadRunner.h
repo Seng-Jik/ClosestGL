@@ -57,24 +57,30 @@ namespace ClosestGL::ParallelStrategy
 		std::vector<std::unique_ptr<Thread>> threads_;
 	public:
 
+		inline bool Finished() const
+		{
+			bool allFinished = true;
+			if (taskQueue_.Empty())
+			{
+				for (const auto& i : threads_)
+				{
+					if (!i->free)
+					{
+						allFinished = false;
+						break;
+					}
+				}
+			}
+			else
+				allFinished = false;
+			return allFinished;
+		}
+
 		inline void Wait()
 		{
 			while (true)
 			{
-				bool allFinished = true;
-				if (taskQueue_.Empty())
-				{
-					for (const auto& i : threads_)
-					{
-						if (!i->free)
-						{
-							allFinished = false;
-							break;
-						}
-					}
-				}
-				else
-					allFinished = false;
+				const bool allFinished = Finished();
 
 				if (allFinished)
 					break;
@@ -82,14 +88,6 @@ namespace ClosestGL::ParallelStrategy
 					std::this_thread::yield();
 			}
 		};
-
-		inline bool Finished() const 
-		{
-			for (const auto& i : threads_)
-				if (!i->free)
-					return false;
-			return true;
-		}
 
 		template<typename ForAction>
 		inline void Commit(

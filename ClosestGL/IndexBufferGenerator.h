@@ -8,7 +8,7 @@ namespace ClosestGL::Primitive
 	/* 简单的为没有IndexBuffer的VertexBuffer生成一个顺序的IndexBuffer。
 	 * count - 顶点数量
 	 */
-	inline std::vector<size_t> Generate(size_t vertexCount)
+	inline std::vector<size_t> GenerateDefaultIndexBuffer(size_t vertexCount)
 	{
 		std::vector<size_t> ret(vertexCount);
 		for (size_t i = 0; i < vertexCount; ++i)

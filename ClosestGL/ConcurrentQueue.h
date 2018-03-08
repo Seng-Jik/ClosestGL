@@ -20,7 +20,7 @@ namespace ClosestGL::Utils
 		void Push(T&& obj)
 		{
 			auto g = Lock();
-			queue_.push(obj);
+			PushUnsafe(obj);
 		}
 
 		/* 不加锁的情况下压入对象 */

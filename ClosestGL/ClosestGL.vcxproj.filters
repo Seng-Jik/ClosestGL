@@ -31,6 +31,9 @@
     <Filter Include="头文件\Utils">
       <UniqueIdentifier>{5e0cc160-6e51-4ff5-906a-fc957ecce54c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="头文件\OutputMerger">
+      <UniqueIdentifier>{9a0a4885-30fe-4cf6-a201-4e7e28f34573}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Vector2.h">
@@ -89,6 +92,15 @@
     </ClInclude>
     <ClInclude Include="PrimitiveStripReader.h">
       <Filter>头文件\Primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeMaxValues.h">
+      <Filter>头文件\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture2DOutputPass.h">
+      <Filter>头文件\OutputMerger</Filter>
+    </ClInclude>
+    <ClInclude Include="PixelInformation.h">
+      <Filter>头文件\Utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

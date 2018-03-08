@@ -5,12 +5,12 @@ void ClosestGLTests::Tools::ViewSurface(TestTex & sur, uint64_t time)
 {
 	SDL::SDLInstance sdl;
 
-	auto[w, h] = sur.GetSize();
+	auto s = sur.GetSize();
 
 	SDL::Window window
 	{
 		"ClosestGL Demo",
-		SDL::Rect<int>{ SDL::Window::Center,SDL::Window::Center,int(w),int(h) },
+		SDL::Rect<int>{ SDL::Window::Center,SDL::Window::Center,int(s.x),int(s.y) },
 		SDL::Window::WindowFlag::Null
 	};
 
@@ -22,8 +22,8 @@ void ClosestGLTests::Tools::ViewSurface(TestTex & sur, uint64_t time)
 		window.GetWindowSurface().Shade(
 			[&sur](int x, int y, auto&, auto&)
 		{
-			auto[r, g, b, a] = sur.AccessPixelUnsafe({ size_t(x),size_t(y) });
-			return SDL::Color<uint8_t>{ r, g, b, a };
+			auto col = sur.AccessPixelUnsafe({ size_t(x),size_t(y) });
+			return SDL::Color<uint8_t>{ col.x, col.y, col.z, col.w };
 		}
 		);
 

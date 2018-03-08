@@ -13,6 +13,8 @@ namespace ClosestGL::Math
 	{
 		Vector2<T> col1, col2;
 
+		using BaseType = T;
+
 		/* 转换为同语义的 3x3 矩阵 */
 		operator Matrix3<T>()
 		{

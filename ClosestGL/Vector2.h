@@ -9,6 +9,8 @@ namespace ClosestGL::Math
 	{
 		T x, y;
 
+		using BaseType = T;
+
 		/* ÇóÄ£ */
 		constexpr T Length() const
 		{

@@ -22,7 +22,7 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{92C1EE3D-90D9-487E-9A88-1435F527C9D2}</ProjectGuid>
     <RootNamespace>ClosestGL</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -123,6 +123,9 @@
     <ClInclude Include="Matrix3.h" />
     <ClInclude Include="Matrix4.h" />
     <ClInclude Include="MatrixTransform.h" />
+    <ClInclude Include="PixelInformation.h" />
+    <ClInclude Include="Texture2DOutputPass.h" />
+    <ClInclude Include="TypeMaxValues.h" />
     <ClInclude Include="MultiThreadRunner.h" />
     <ClInclude Include="Number.h" />
     <ClInclude Include="PrimitiveListReader.h" />

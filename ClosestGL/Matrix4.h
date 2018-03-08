@@ -8,6 +8,8 @@ namespace ClosestGL::Math
 	struct Matrix4
 	{
 		Vector4<T> col1, col2, col3, col4;
+
+		using BaseType = T;
 	};
 
 	/* 4x4µ•Œªæÿ’Û */

@@ -23,7 +23,7 @@
     <ProjectGuid>{EEFE6815-56B1-42CC-B549-67691D6628BA}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>ClosestGLTests</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
     <ProjectSubType>NativeUnitTestProject</ProjectSubType>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -111,7 +111,7 @@
       <AdditionalDependencies>SDLClasses.lib;SDL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy $(SolutionDir)..\SDL2\lib\x86\SDL2.dll $(OutDir)</Command>
+      <Command>if not exist $(OutDir)SDL2.dll copy $(SolutionDir)..\SDL2\lib\x86\SDL2.dll $(OutDir)</Command>
       <Message>准备SDL2的DLL</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -131,7 +131,7 @@
       <AdditionalDependencies>SDLClasses.lib;SDL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy $(SolutionDir)..\SDL2\lib\x64\SDL2.dll $(OutDir)</Command>
+      <Command>if not exist $(OutDir)SDL2.dll copy $(SolutionDir)..\SDL2\lib\x64\SDL2.dll $(OutDir)</Command>
       <Message>准备SDL2的DLL</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -155,7 +155,7 @@
       <AdditionalDependencies>SDLClasses.lib;SDL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy $(SolutionDir)..\SDL2\lib\x86\SDL2.dll $(OutDir)</Command>
+      <Command>if not exist $(OutDir)SDL2.dll copy $(SolutionDir)..\SDL2\lib\x86\SDL2.dll $(OutDir)</Command>
       <Message>准备SDL2的DLL</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -179,7 +179,7 @@
       <AdditionalDependencies>SDLClasses.lib;SDL2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>copy $(SolutionDir)..\SDL2\lib\x64\SDL2.dll $(OutDir)</Command>
+      <Command>if not exist $(OutDir)SDL2.dll copy $(SolutionDir)..\SDL2\lib\x64\SDL2.dll $(OutDir)</Command>
       <Message>准备SDL2的DLL</Message>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -191,6 +191,7 @@
     <ClCompile Include="PrimitiveListReaderTest.cpp" />
     <ClCompile Include="PrimitiveStripTest.cpp" />
     <ClCompile Include="SurfaceViewer.cpp" />
+    <ClCompile Include="Texture2DOutputMergerTest.cpp" />
     <ClCompile Include="Texture2DTest.cpp" />
   </ItemGroup>
   <ItemGroup>

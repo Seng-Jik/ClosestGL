@@ -1,7 +1,6 @@
 #pragma once
 #include "Texture2D.h"
 #include "Vector2.h"
-#include "PixelInformation.h"
 
 namespace ClosestGL::OutputMerger
 {
@@ -16,15 +15,14 @@ namespace ClosestGL::OutputMerger
 			mainColorBuffer_{ &mainColorBuffer }
 		{}
 
-		auto& GetMainColorBuffer()
+		auto& GetColorBuffer()
 		{
 			return *mainColorBuffer_;
 		}
 
-		template<typename DepthType>
-		void EmitPixel(const Utils::PixelInformation<ColorType,DepthType>& pi)
+		void EmitPixel(Math::Vector2<size_t> pos,const ColorType& col)
 		{
-			mainColorBuffer_->AccessPixel(pi.position) = pi.color;
+			mainColorBuffer_->AccessPixel(pos) = col;
 		}
 	};
 }

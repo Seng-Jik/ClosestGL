@@ -15,7 +15,7 @@ namespace ClosestGLTests::OutputMergerTest
 			Tools::TestTex tex{ { 640,480} };
 			OutputMerger::Texture2DOutputPass<Tools::TestCol> om{ tex };
 
-			const auto s = om.GetMainColorBuffer().GetSize();
+			const auto s = om.GetColorBuffer().GetSize();
 			for (size_t x = 0; x < s.x; ++x)
 			{
 				for (size_t y = 0; y < s.y; ++y)
@@ -25,14 +25,7 @@ namespace ClosestGLTests::OutputMergerTest
 					if (x % 16 >= 8) isBlack = !isBlack;
 					if (y % 16 >= 8) isBlack = !isBlack;
 
-					Utils::PixelInformation<Tools::TestCol, int> pi
-					{
-						{x,y},
-						isBlack ? Tools::TestCol{ 0,0,0,0,} : Tools::TestCol{255,255,255,255},
-						0
-					};
-
-					om.EmitPixel(pi);
+					om.EmitPixel({ x,y }, isBlack ? Tools::TestCol{ 0,0,0,0, } : Tools::TestCol{ 255,255,255,255 });
 				}
 			}
 

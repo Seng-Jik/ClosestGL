@@ -99,8 +99,5 @@
     <ClInclude Include="Texture2DOutputPass.h">
       <Filter>头文件\OutputMerger</Filter>
     </ClInclude>
-    <ClInclude Include="PixelInformation.h">
-      <Filter>头文件\Utils</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

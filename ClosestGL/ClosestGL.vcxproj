@@ -123,7 +123,6 @@
     <ClInclude Include="Matrix3.h" />
     <ClInclude Include="Matrix4.h" />
     <ClInclude Include="MatrixTransform.h" />
-    <ClInclude Include="PixelInformation.h" />
     <ClInclude Include="Texture2DOutputPass.h" />
     <ClInclude Include="TypeMaxValues.h" />
     <ClInclude Include="MultiThreadRunner.h" />

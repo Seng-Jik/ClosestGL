@@ -117,6 +117,7 @@
   <ItemGroup>
     <ClInclude Include="ConcurrentQueue.h" />
     <ClInclude Include="FixedTransform.h" />
+    <ClInclude Include="PixelShader.h" />
     <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="IndexBufferGenerator.h" />
     <ClInclude Include="MathCommon.h" />

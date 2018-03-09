@@ -42,6 +42,9 @@
     <ClInclude Include="SurfaceViewer.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Blenders.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -84,6 +87,9 @@
       <Filter>源文件\TestTools</Filter>
     </ClCompile>
     <ClCompile Include="RenderTargetTest.cpp">
+      <Filter>源文件\RenderPipelineTest</Filter>
+    </ClCompile>
+    <ClCompile Include="PixelShaderTest.cpp">
       <Filter>源文件\RenderPipelineTest</Filter>
     </ClCompile>
   </ItemGroup>

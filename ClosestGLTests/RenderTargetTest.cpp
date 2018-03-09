@@ -6,6 +6,8 @@
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace ClosestGL;
 using namespace ClosestGL::Math;
+using namespace ClosestGL::RenderPipeline;
+using namespace ClosestGLTests::Tools::Blenders;
 
 namespace ClosestGLTests::RenderPipelineTest
 {
@@ -14,12 +16,19 @@ namespace ClosestGLTests::RenderPipelineTest
 	public:
 		TEST_METHOD(TestMRT)
 		{
-			const auto NoBlend = [](Tools::TestCol src, auto) { return src; };
-			ClosestGL::RenderPipeline::RenderTarget<4, Tools::TestCol, decltype(NoBlend)>
+			Tools::TestTex fbtex1[4] = 
+			{ 
+				Vector2<size_t>{ 1024,768 },
+				Vector2<size_t>{ 1024,768 },
+				Vector2<size_t>{ 1024,768 },
+				Vector2<size_t>{ 1024,768 }
+			};
+
+			RenderTarget<4, Tools::TestCol, decltype(NoBlend)>
 				fb
 			{
 				NoBlend,
-				ClosestGL::Math::Vector2<std::size_t> { 1024,768 }
+				{fbtex1,fbtex1+1,fbtex1+2,fbtex1+3}
 			};
 
 			ClosestGL::ParallelStrategy::MultiThreadRunner
@@ -52,12 +61,13 @@ namespace ClosestGLTests::RenderPipelineTest
 				}
 			});
 
-			auto SimpleBlender = [](auto src, auto dst) {
-				return (src + dst) / 2.0f;
-			};
 
+			Tools::TestTex fbtex2{ {1024,768} };
 			RenderPipeline::RenderTarget<1, Tools::TestCol, decltype(SimpleBlender)>
-				fb2{ SimpleBlender,ClosestGL::Math::Vector2<std::size_t> { 1024,768 } };
+				fb2{
+				SimpleBlender,
+				{ &fbtex2 }
+			};
 
 			runner.Wait();
 

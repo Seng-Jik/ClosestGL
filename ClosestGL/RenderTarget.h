@@ -16,6 +16,12 @@ namespace ClosestGL::RenderPipeline
 		Math::Vector2<size_t> size_;
 
 	public:
+
+		constexpr static int GetColorBufferCount()
+		{
+			return ColorBufferCount;
+		}
+
 		RenderTarget(const Blender& blender,const Math::Vector2<size_t>& size):
 			blender_{ blender },
 			size_{ size }
@@ -33,7 +39,7 @@ namespace ClosestGL::RenderPipeline
 		{
 			for (int i = 0; i < ColorBufferCount; ++i)
 			{
-				auto& dst = cbs_[i].AccessPixelUnsafe(pos);
+				auto& dst = (*cbs_[i]).AccessPixelUnsafe(pos);
 				dst = blender_(colors[i], dst);
 			}
 		}

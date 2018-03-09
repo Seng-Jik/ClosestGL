@@ -32,7 +32,7 @@ namespace ClosestGL::RenderPipeline
 
 		Texture& GetTexture(int n)
 		{
-			return *cbs_.at(n);
+			return *cbs_[n];
 		}
 
 		void EmitPixel(const std::array<ColorType, ColorBufferCount>& colors, const Math::Vector2<size_t>& pos)

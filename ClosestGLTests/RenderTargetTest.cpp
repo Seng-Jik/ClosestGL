@@ -14,7 +14,7 @@ namespace ClosestGLTests::RenderPipelineTest
 	public:
 		TEST_METHOD(TestMRT)
 		{
-			const auto NoBlend = [](std::uint8_t src, auto) { return src; };
+			const auto NoBlend = [](Tools::TestCol src, auto) { return src; };
 			ClosestGL::RenderPipeline::RenderTarget<4, ClosestGL::Math::Vector4<uint8_t>, decltype(NoBlend)>
 				fb
 			{

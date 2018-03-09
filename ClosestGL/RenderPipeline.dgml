@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DirectedGraph GraphDirection="TopToBottom" Layout="ForceDirected" ZoomLevel="-1" xmlns="http://schemas.microsoft.com/vs/2009/dgml">
+  <Nodes>
+    <Node Id="Pass" Bounds="20,676.923227951981,50,25.8366666666667" Label="阶段" />
+    <Node Id="像素着色器" Bounds="529.441903861669,449.413254378248,80,25.8366666666667" Label="像素着色器" />
+    <Node Id="像素阶段" Bounds="412.342487679019,297.739977876762,460.130428403734,309.183250075219" Group="Expanded" />
+    <Node Id="光栅器" Bounds="788.381910712925,449.413291705407,56,25.8366666666667" Label="光栅器" />
+    <Node Id="几何着色器" Bounds="100.0001,154.886122032317,80,25.8366666666667" Label="几何着色器" />
+    <Node Id="图例" Bounds="0,636.923227951981,90,141.673333333333" Group="Expanded" />
+    <Node Id="图元" Category="Category7" Bounds="210.0002,153.861472016026,50,25.8366666666666" />
+    <Node Id="图元1" Category="Category7" Bounds="19.9999999999999,155.348798027671,50,25.8366666666667" Label="图元" />
+    <Node Id="图元装配器" Bounds="290.0003,152.687274736463,80,25.8366666666667" Label="图元装配器" />
+    <Node Id="坐标(X,Y)、MRT颜色表" Category="Category2" Bounds="437.001704293729,505.249985767552,144.323333333333,25.8366666666666" Label="坐标(X,Y)、MRT颜色表" />
+    <Node Id="坐标(X,Y,Z)、插值器" Category="Category2" Bounds="724.256249416085,393.576644543429,128.216666666667,25.8366666666667" Label="坐标(X,Y,Z)、插值器" />
+    <Node Id="坐标(X,Y,Z)、插值器1" Category="Category2" Bounds="566.039482749419,393.576644543429,128.216666666667,25.8366666666667" Label="坐标(X,Y,Z)、插值器" />
+    <Node Id="数据" Category="Category2" Bounds="20,732.759894618648,50,25.8366666666667" Label="数据" />
+    <Node Id="深度测试" Bounds="675.670357716012,337.739977876762,68,25.8366666666667" Label="深度测试" />
+    <Node Id="深度缓存" Category="Category2" Bounds="922.473016082752,415.534360706279,68,25.8366666666666" Label="深度缓存" />
+    <Node Id="渲染目标" Bounds="432.342487679019,561.086561285314,68,25.8366666666666" Label="渲染目标" />
+    <Node Id="管线输入" Bounds="198.297771524786,-2.8421709430404E-14,68,25.8366666666667" />
+    <Node Id="输入顶点" Category="Category7" Bounds="202.860032255916,55.8366264415563,128,25.8366666666667" Label="输入顶点、索引缓存" />
+    <Node Id="输出" Category="Category2" Bounds="902.473016082752,375.534360706279,108,141.673333333333" Group="Expanded" Label="管线输出" />
+    <Node Id="顶点" Category="Category7" Bounds="400.0004,151.673293108223,104,25.8366666666667" Label="顶点、索引缓存" />
+    <Node Id="顶点着色器" Bounds="397.278134683622,221.903311210095,80,25.8366666666667" Label="顶点着色器" />
+    <Node Id="顶点阶段" Bounds="0,111.673293108223,524.0004,156.066684768539" Group="Expanded" />
+    <Node Id="颜色缓存" Category="Category2" Bounds="922.473016082752,471.371027372946,68,25.8366666666666" />
+  </Nodes>
+  <Links>
+    <Link Source="像素着色器" Target="坐标(X,Y)、MRT颜色表" Bounds="529.711930270387,475.249921044915,25.783989263623,23.8840199547591" />
+    <Link Source="像素阶段" Target="像素着色器" Category="Contains" />
+    <Link Source="像素阶段" Target="光栅器" Category="Contains" />
+    <Link Source="像素阶段" Target="坐标(X,Y)、MRT颜色表" Category="Contains" />
+    <Link Source="像素阶段" Target="坐标(X,Y,Z)、插值器" Category="Contains" />
+    <Link Source="像素阶段" Target="坐标(X,Y,Z)、插值器1" Category="Contains" />
+    <Link Source="像素阶段" Target="深度测试" Category="Contains" />
+    <Link Source="像素阶段" Target="渲染目标" Category="Contains" />
+    <Link Source="光栅器" Target="坐标(X,Y,Z)、插值器" Bounds="798.882983815142,427.457442597879,11.0168546363175,21.9558491075284" />
+    <Link Source="几何着色器" Target="图元1" Bounds="78.9998932640796,167.999266105998,21.0002067359203,0.102276645542389" />
+    <Link Source="图例" Target="Pass" Category="Contains" />
+    <Link Source="图例" Target="数据" Category="Contains" />
+    <Link Source="图元" Target="几何着色器" Bounds="188.999576547111,167.049449806652,21.0006234528894,0.226508068550714" />
+    <Link Source="图元1" Target="光栅器" Bounds="70,177.797385878829,710.060466897708,270.688165473053" />
+    <Link Source="图元装配器" Target="图元" Bounds="268.999512620189,166.10000640393,21.0007873798106,0.259568857401661" />
+    <Link Source="坐标(X,Y)、MRT颜色表" Target="渲染目标" Bounds="481.726432690801,531.086652434219,17.529911580957,22.8582447815943" />
+    <Link Source="坐标(X,Y,Z)、插值器" Target="深度测试" Bounds="735.217042071313,368.784694666822,34.9408981423185,24.7919498766062" />
+    <Link Source="坐标(X,Y,Z)、插值器1" Target="像素着色器" Bounds="590.110873432201,419.413311210095,25.9920496727007,23.9071926157103" />
+    <Link Source="深度测试" Target="坐标(X,Y,Z)、插值器1" Bounds="655.911740962717,363.576644543429,35.3603354507048,24.8282213223016" />
+    <Link Source="深度测试" Target="深度缓存" Bounds="743.570566391384,361.344045194037,170.418563318244,53.7173319794192" />
+    <Link Source="渲染目标" Target="颜色缓存" Bounds="500.342498779297,492.133438247162,413.27761265882,75.6485076664425" />
+    <Link Source="管线输入" Target="输入顶点" Bounds="240.294078489098,25.8366666666666,13.8327792680358,22.3473728945672" />
+    <Link Source="输入顶点" Target="顶点着色器" Bounds="280.116852100461,81.672891809334,137.45875502209,133.9490849722" />
+    <Link Source="输出" Target="深度缓存" Category="Contains" />
+    <Link Source="输出" Target="颜色缓存" Category="Contains" />
+    <Link Source="顶点" Target="图元装配器" Bounds="378.999989165072,165.023814978029,21.0004108349278,0.174541092770511" />
+    <Link Source="顶点着色器" Target="顶点" Bounds="439.986195081711,186.318497550623,7.45961744120137,35.5848136594719" />
+    <Link Source="顶点阶段" Target="几何着色器" Category="Contains" />
+    <Link Source="顶点阶段" Target="图元" Category="Contains" />
+    <Link Source="顶点阶段" Target="图元1" Category="Contains" />
+    <Link Source="顶点阶段" Target="图元装配器" Category="Contains" />
+    <Link Source="顶点阶段" Target="顶点" Category="Contains" />
+    <Link Source="顶点阶段" Target="顶点着色器" Category="Contains" />
+  </Links>
+  <Categories>
+    <Category Id="Category2" Label="类别 2" Background="#FF339933" IsTag="True" />
+    <Category Id="Category7" Label="类别 7" Background="#FF347A30" IsTag="True" />
+    <Category Id="Contains" Label="包含" Description="链接的源是否包含目标对象" CanBeDataDriven="False" CanLinkedNodesBeDataDriven="True" IncomingActionLabel="包含者" IsContainment="True" OutgoingActionLabel="包含" />
+  </Categories>
+  <Properties>
+    <Property Id="Background" Label="背景" Description="背景色" DataType="System.Windows.Media.Brush" />
+    <Property Id="Bounds" DataType="System.Windows.Rect" />
+    <Property Id="CanBeDataDriven" Label="CanBeDataDriven" Description="CanBeDataDriven" DataType="System.Boolean" />
+    <Property Id="CanLinkedNodesBeDataDriven" Label="CanLinkedNodesBeDataDriven" Description="CanLinkedNodesBeDataDriven" DataType="System.Boolean" />
+    <Property Id="Expression" DataType="System.String" />
+    <Property Id="GraphDirection" DataType="Microsoft.VisualStudio.Diagrams.Layout.LayoutOrientation" />
+    <Property Id="Group" Label="组" Description="将节点显示为组" DataType="Microsoft.VisualStudio.GraphModel.GraphGroupStyle" />
+    <Property Id="GroupLabel" DataType="System.String" />
+    <Property Id="IncomingActionLabel" Label="IncomingActionLabel" Description="IncomingActionLabel" DataType="System.String" />
+    <Property Id="IsContainment" DataType="System.Boolean" />
+    <Property Id="IsEnabled" DataType="System.Boolean" />
+    <Property Id="IsTag" DataType="System.Boolean" />
+    <Property Id="Label" Label="标签" Description="可批注对象的可显示标签" DataType="System.String" />
+    <Property Id="Layout" DataType="System.String" />
+    <Property Id="OutgoingActionLabel" Label="OutgoingActionLabel" Description="OutgoingActionLabel" DataType="System.String" />
+    <Property Id="TargetType" DataType="System.Type" />
+    <Property Id="Value" DataType="System.String" />
+    <Property Id="ValueLabel" DataType="System.String" />
+    <Property Id="ZoomLevel" DataType="System.String" />
+  </Properties>
+  <Styles>
+    <Style TargetType="Node" GroupLabel="类别 2" ValueLabel="具有类别">
+      <Condition Expression="HasCategory('Category2')" />
+      <Setter Property="Background" Value="#FF339933" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="类别 7" ValueLabel="具有类别">
+      <Condition Expression="HasCategory('Category7')" />
+      <Setter Property="Background" Value="#FF347A30" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="注释" ValueLabel="包含注释">
+      <Condition Expression="HasCategory('Comment')" />
+      <Setter Property="Background" Value="#FFFFFACD" />
+      <Setter Property="Stroke" Value="#FFE5C365" />
+      <Setter Property="StrokeThickness" Value="1" />
+      <Setter Property="NodeRadius" Value="2" />
+      <Setter Property="MaxWidth" Value="250" />
+    </Style>
+  </Styles>
+</DirectedGraph>

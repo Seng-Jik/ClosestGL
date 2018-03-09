@@ -31,8 +31,8 @@
     <Filter Include="头文件\Utils">
       <UniqueIdentifier>{5e0cc160-6e51-4ff5-906a-fc957ecce54c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="头文件\OutputMerger">
-      <UniqueIdentifier>{9a0a4885-30fe-4cf6-a201-4e7e28f34573}</UniqueIdentifier>
+    <Filter Include="头文件\RenderPipeline">
+      <UniqueIdentifier>{173e73a0-8d98-42e1-9c7f-3420001bc39a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -96,8 +96,11 @@
     <ClInclude Include="TypeMaxValues.h">
       <Filter>头文件\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Texture2DOutputPass.h">
-      <Filter>头文件\OutputMerger</Filter>
+    <ClInclude Include="RenderTarget.h">
+      <Filter>头文件\RenderPipeline</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="RenderPipeline.dgml" />
   </ItemGroup>
 </Project>

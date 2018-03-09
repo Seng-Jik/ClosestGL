@@ -28,8 +28,8 @@
     <Filter Include="源文件\TestTools">
       <UniqueIdentifier>{ee347a6d-6487-4de5-a8de-dfa1aae1da14}</UniqueIdentifier>
     </Filter>
-    <Filter Include="源文件\OutputMergerTest">
-      <UniqueIdentifier>{f5887dae-0b20-4432-a049-3fd5027c413f}</UniqueIdentifier>
+    <Filter Include="源文件\RenderPipelineTest">
+      <UniqueIdentifier>{c75d795f-c740-4607-85f9-ec9517bb467e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -83,8 +83,8 @@
     <ClCompile Include="SurfaceViewer.cpp">
       <Filter>源文件\TestTools</Filter>
     </ClCompile>
-    <ClCompile Include="Texture2DOutputMergerTest.cpp">
-      <Filter>源文件\OutputMergerTest</Filter>
+    <ClCompile Include="RenderTargetTest.cpp">
+      <Filter>源文件\RenderPipelineTest</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -16,7 +16,7 @@ namespace ClosestGLTests::RenderPipelineTest
 	private:
 		struct Vertex
 		{
-			Math::Vector2<float> SVPosition;
+			Math::Vector4<float> SVPosition;
 			Math::Vector4<float> Color;
 
 			template<typename TLerpType>
@@ -51,9 +51,9 @@ namespace ClosestGLTests::RenderPipelineTest
 
 			const Vertex vertex[] = 
 			{
-				{{1,0},{1,0,0,1}},
-				{{0,1},{0,1,0,1}},
-				{{0,0.5},{0,0,1,0}}
+				{{1,0,0,1},{1,0,0,1}},
+				{{0,1,0,1},{0,1,0,1}},
+				{{0,0.5f,0,1},{0,0,1,0}}
 			};
 			
 			const std::vector<size_t> ibo = { 0,1,0,2 };

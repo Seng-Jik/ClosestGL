@@ -53,16 +53,12 @@ namespace ClosestGLTests::RenderPipelineTest
 				[projectionView,&vbo,&ibo,&raster,&tex,&lineReader,&runner, projection](const auto& world) {
 
 				std::vector<Vertex> transformed{ vbo.size() };
+				auto transform = projectionView * world;
 
 				ClosestGL::Primitive::FixedTransform
-				([world, projectionView](const Vertex& v) {
-					auto transform = projectionView * world;
-
-					Vertex vtx{
-						(transform * v.SVPosition)
-					};
-
-					return Vertex{ vtx.SVPosition / vtx.SVPosition.w };
+				([transform](const Vertex& v) {
+					auto pos = transform * v.SVPosition;
+					return Vertex{ pos / pos.w };
 				}, vbo.data(), transformed.data(), vbo.size(), runner);
 				
 				tex.Clear(Tools::TestCol{ 0,0,0,0 },runner);

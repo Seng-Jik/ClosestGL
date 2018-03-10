@@ -29,7 +29,8 @@ namespace ClosestGLTests::Tools
 		{
 			std::array<TestCol, 1> operator() (const Vertex& v)
 			{
-				return { {1,1,1,1} };
+				float col = v.SVPosition.z;
+				return { {col,col,col,1} };
 			}
 		};
 

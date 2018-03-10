@@ -130,4 +130,48 @@ namespace ClosestGL::Math
 			{ 0,-std::sin(radian),std::cos(radian) }
 		};
 	}
+
+	/* 获取4x4的透视投影矩阵
+	 *     fovy   - 视角（弧度制表示）
+	 *     aspect - 视口宽高比
+	 *     zn     - 近平面
+	 *     zf     - 远平面
+	 */
+
+	/*void matrix_set_perspective(matrix_t *m, float fovy, float aspect, float zn, float zf) {
+		float fax = 1.0f / (float)tan(fovy * 0.5f);
+		matrix_set_zero(m);
+		m->m[0][0] = (float)(fax / aspect);
+		m->m[1][1] = (float)(fax);
+		m->m[2][2] = zf / (zf - zn);
+		m->m[3][2] = -zn * zf / (zf - zn);
+		m->m[2][3] = 1;
+	}*/
+
+	template<typename T>
+	Matrix4<T> GetPerspectiveMatrix(T fovy, T aspect, T zn, T zf) = delete;
+
+	template<>
+	inline Matrix4<float> GetPerspectiveMatrix(float fovy, float aspect, float zn, float zf)
+	{
+		float fax = 1.0f / std::tanf(fovy * 0.5f);
+		return {
+			{ fax / aspect, 0, 0, 0 },
+			{ 0, fax, 0, 0 },
+			{ 0, 0, zf / (zf - zn) ,1 },
+			{ 0, 0, -zn * zf / (zf - zn) , 0 },
+		};
+	}
+
+	template<>
+	inline Matrix4<double> GetPerspectiveMatrix(double fovy, double aspect, double zn, double zf)
+	{
+		double fax = 1.0f / std::tan(fovy * 0.5f);
+		return {
+			{ fax / aspect, 0, 0, 0 },
+			{ 0, fax, 0, 0 },
+			{ 0, 0, zf / (zf - zn) ,1 },
+			{ 0, 0, -zn * zf / (zf - zn) , 0 },
+		};
+	}
 }

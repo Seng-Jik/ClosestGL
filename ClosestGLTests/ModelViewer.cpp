@@ -3,7 +3,6 @@
 #include <Vector3.h>
 #include <MatrixTransform.h>
 
-#define MORETIME if (time <= 10000) time += 10000;
 
 void ClosestGLTests::Tools::ViewModel(TestTex & sur, const ModelRenderer & renderer, uint64_t time)
 {
@@ -25,6 +24,7 @@ void ClosestGLTests::Tools::ViewModel(TestTex & sur, const ModelRenderer & rende
 	SDL::Mouse mouse;
 	SDL::Keyboard keyboard;
 
+	bool killWithTimeOut = true;
 	auto p = sdl.GetTicks();
 	auto lastMouse = mouse.GetMouseState();
 	while (true)
@@ -55,9 +55,9 @@ void ClosestGLTests::Tools::ViewModel(TestTex & sur, const ModelRenderer & rende
 			auto mouseState = mouse.GetMouseState();
 			if (mouseState.leftButton) 
 			{
-				MORETIME
-				rotate.y += (mouseState.position.x - lastMouse.position.x) / 200.0f;
-				rotate.x += (mouseState.position.y - lastMouse.position.y) / 200.0f;
+				killWithTimeOut = false;
+				rotate.y -= (mouseState.position.x - lastMouse.position.x) / 200.0f;
+				rotate.x -= (mouseState.position.y - lastMouse.position.y) / 200.0f;
 			}
 
 			lastMouse = mouseState;
@@ -66,18 +66,21 @@ void ClosestGLTests::Tools::ViewModel(TestTex & sur, const ModelRenderer & rende
 		{
 			if (keyboard.KeyPressed("Z"))
 			{
-				MORETIME
+				killWithTimeOut = false;
 				rotate.z += 0.05f;
 			}
 
 			if (keyboard.KeyPressed("X"))
 			{
-				MORETIME
+				killWithTimeOut = false;
 				rotate.z -= 0.05f;
 			}
 		}
 
-		if (sdl.QuitRequested() || sdl.GetTicks() - p > time) break;
+		if (sdl.QuitRequested()) break;
+
+		if (killWithTimeOut && sdl.GetTicks() - p > time)
+			break;
 	}
 }
 

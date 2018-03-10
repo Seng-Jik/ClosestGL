@@ -34,15 +34,21 @@ namespace ClosestGLTests::RenderPipelineTest
 			PixelShader ps{ &rt,PS{} };
 			LineRasterizer raster = { &ps };
 			Primitive::PrimitiveListReader<2> lineReader{ ibo.data(), ibo.size() };
+
+			auto size = tex.GetSize();
+			float aspect = size.x / float(size.y);
+
+			const auto projection =
+				ClosestGL::Math::GetPerspectiveMatrix(3.1415926f / 2.0f, aspect, 1.0f, 500.0f);
 			
 
 			Tools::ViewModel(tex,
-				[&vbo,&ibo,&raster,&tex,&lineReader,&runner, scale](const auto& view) {
+				[&vbo,&ibo,&raster,&tex,&lineReader,&runner, scale, projection](const auto& view) {
 
 				std::vector<Vertex> transformed{ vbo.size() };
 
 				ClosestGL::Primitive::FixedTransform
-				([scale,&view](const Vertex& v) {
+				([scale,&view, projection](const Vertex& v) {
 					auto Scale = 
 						ClosestGL::Math::Matrix4<float>
 						(ClosestGL::Math::GetScaleMatrix(scale, scale, scale));
@@ -50,13 +56,13 @@ namespace ClosestGLTests::RenderPipelineTest
 					auto MoveToCenter = 
 						ClosestGL::Math::Matrix4<float>
 						(ClosestGL::Math::GetTransformMatrix(
-							ClosestGL::Math::Vector3<float>{0.5f,0.5f, 0}
+							ClosestGL::Math::Vector3<float>{0.5f,0.5f, -0.5f}
 					));
 
 					auto MoveToScreen = MoveToCenter * Scale;
 
 					return Vertex{
-						MoveToScreen * (view * v.SVPosition)
+						projection * (MoveToScreen * (view * v.SVPosition))
 					};
 				}, vbo.data(), transformed.data(), vbo.size(), runner);
 				

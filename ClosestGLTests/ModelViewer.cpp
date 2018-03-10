@@ -79,13 +79,25 @@ void ClosestGLTests::Tools::ViewModel(TestTex & sur, const ModelRenderer & rende
 			if (keyboard.KeyPressed("W"))
 			{
 				killWithTimeOut = false;
-				transform.z -= 0.03f;
+				transform.z += 1;
 			}
 
 			if (keyboard.KeyPressed("S"))
 			{
 				killWithTimeOut = false;
-				transform.z += 0.03f;
+				transform.z -= 1;
+			}
+
+			if (keyboard.KeyPressed("A"))
+			{
+				killWithTimeOut = false;
+				transform.x -= 1;
+			}
+
+			if (keyboard.KeyPressed("D"))
+			{
+				killWithTimeOut = false;
+				transform.x += 1;
 			}
 		}
 

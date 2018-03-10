@@ -79,5 +79,15 @@ namespace ClosestGLTests::RenderPipelineTest
 		{
 			ViewModel("Models\\Candy.obj",48);
 		}
+
+		TEST_METHOD(TestAliceRoomWireFrame)
+		{
+			ViewModel("Models\\Alice's Room.obj", 1600);
+		}
+
+		TEST_METHOD(TestTHDMZStage1)
+		{
+			ViewModel("Models\\THDMZStage1.obj", 1600);
+		}
 	};
 }

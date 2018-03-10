@@ -38,10 +38,14 @@ namespace ClosestGLTests::Tools
 
 			if (mark == "f")
 			{
-				size_t index;
+				std::string f;
 				for (int i = 0; i < 3; ++i)
 				{
-					sr >> index;
+					sr >> f;
+					auto pos = f.find('/');
+					if (pos != std::string::npos)
+						f = f.substr(0, pos);
+					auto index = std::atoi(f.c_str());
 					std::get<1>(ret).push_back(index - 1);
 				}
 			}

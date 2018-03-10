@@ -18,3 +18,13 @@
 #include <../SDLClasses/include/Keyboard.h>
 #include "SurfaceViewer.h"
 #include "Blenders.h"
+#include <Vector4.h>
+#include "SurfaceViewer.h"
+#include "Blenders.h"
+#include <LineRasterizer.h>
+#include <RenderTarget.h>
+#include <PixelShader.h>
+#include <array>
+#include <functional>
+#include <Matrix4.h>
+#include <MathCommon.h>

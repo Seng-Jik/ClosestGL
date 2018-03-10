@@ -48,10 +48,10 @@ namespace ClosestGL::RenderPipeline
 				const auto pos = 
 					Math::ConvertVertexPosToRenderTargetPos(p.SVPosition, rtSize);
 
-				if (pos.x < 0) return;
-				if (pos.y < 0) return;
-				if (pos.x >= rtSize.x) return;
-				if (pos.y >= rtSize.y) return;
+				if (pos.x < 0) continue;
+				if (pos.y < 0) continue;
+				if (pos.x >= rtSize.x) continue;
+				if (pos.y >= rtSize.y) continue;
 				nextStage->EmitPixel(p, pos);
 			}
 		}

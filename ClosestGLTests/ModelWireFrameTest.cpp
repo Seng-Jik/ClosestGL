@@ -21,7 +21,7 @@ namespace ClosestGLTests::RenderPipelineTest
 	TEST_CLASS(ModelWireFrameTest)
 	{
 	private:
-		void ViewModel(const char* path,float scale)
+		void ViewModel(const char* path,float distance)
 		{
 			auto obj = Tools::LoadModelOBJ<Vertex>(path);
 			auto& vbo = std::get<0>(obj);
@@ -39,31 +39,30 @@ namespace ClosestGLTests::RenderPipelineTest
 			float aspect = size.x / float(size.y);
 
 			const auto projection =
-				ClosestGL::Math::GetPerspectiveMatrix(3.1415926f / 2.0f, aspect, 1.0f, 500.0f);
-			
+				ClosestGL::Math::GetPerspectiveMatrixLH(3.1415926f / 2.0f, aspect, 1.0f, 500.0f);
+
+			const auto view = Math::GetLookAtMatrix(
+				Math::Vector3<float>{0, 0, distance},
+				Math::Vector3<float>{0, 0, -1},
+				Math::Vector3<float>{0, 1, 0}
+			);
+
+			const auto projectionView = projection * view;
 
 			Tools::ViewModel(tex,
-				[&vbo,&ibo,&raster,&tex,&lineReader,&runner, scale, projection](const auto& view) {
+				[projectionView,&vbo,&ibo,&raster,&tex,&lineReader,&runner, projection](const auto& world) {
 
 				std::vector<Vertex> transformed{ vbo.size() };
 
 				ClosestGL::Primitive::FixedTransform
-				([scale,&view, projection](const Vertex& v) {
-					auto Scale = 
-						ClosestGL::Math::Matrix4<float>
-						(ClosestGL::Math::GetScaleMatrix(scale, scale, scale));
+				([world, projectionView](const Vertex& v) {
+					auto transform = projectionView * world;
 
-					auto MoveToCenter = 
-						ClosestGL::Math::Matrix4<float>
-						(ClosestGL::Math::GetTransformMatrix(
-							ClosestGL::Math::Vector3<float>{0.5f,0.5f, -0.5f}
-					));
-
-					auto MoveToScreen = MoveToCenter * Scale;
-
-					return Vertex{
-						projection * (MoveToScreen * (view * v.SVPosition))
+					Vertex vtx{
+						(transform * v.SVPosition)
 					};
+
+					return Vertex{ vtx.SVPosition / vtx.SVPosition.w };
 				}, vbo.data(), transformed.data(), vbo.size(), runner);
 				
 				tex.Clear(Tools::TestCol{ 0,0,0,0 },runner);
@@ -77,12 +76,12 @@ namespace ClosestGLTests::RenderPipelineTest
 	public:
 		TEST_METHOD(TestCubeWireFrame)
 		{
-			ViewModel("Models\\Cube.obj",0.5f);
+			ViewModel("Models\\Cube.obj",1.5f);
 		}
 
 		TEST_METHOD(TestCandyWireFrame)
 		{
-			ViewModel("Models\\Candy.obj",0.01f);
+			ViewModel("Models\\Candy.obj",48);
 		}
 	};
 }

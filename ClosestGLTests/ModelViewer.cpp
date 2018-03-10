@@ -29,15 +29,15 @@ void ClosestGLTests::Tools::ViewModel(TestTex & sur, const ModelRenderer & rende
 	auto lastMouse = mouse.GetMouseState();
 	while (true)
 	{
-		auto trans = Matrix4(ClosestGL::Math::GetTransformMatrix(transform));
+		auto trans = ClosestGL::Math::GetTransformMatrix(transform);
 		auto rotX = Matrix4(ClosestGL::Math::GetXRotateMatrix(rotate.x));
 		auto rotY = Matrix4(ClosestGL::Math::GetYRotateMatrix(rotate.y));
 		auto rotZ = Matrix4(Matrix3(ClosestGL::Math::GetZRotateMatrix(rotate.z)));
 
 		auto rot = rotX * (rotY * rotZ);
-		auto view = trans * rot;
+		auto model = trans*rot;
 
-		renderer(view);
+		renderer(model);
 
 		window.GetWindowSurface().Shade(
 			[&sur](int x, int y, auto&, auto&)
@@ -57,7 +57,7 @@ void ClosestGLTests::Tools::ViewModel(TestTex & sur, const ModelRenderer & rende
 			{
 				killWithTimeOut = false;
 				rotate.y -= (mouseState.position.x - lastMouse.position.x) / 200.0f;
-				rotate.x -= (mouseState.position.y - lastMouse.position.y) / 200.0f;
+				rotate.x += (mouseState.position.y - lastMouse.position.y) / 200.0f;
 			}
 
 			lastMouse = mouseState;
@@ -74,6 +74,18 @@ void ClosestGLTests::Tools::ViewModel(TestTex & sur, const ModelRenderer & rende
 			{
 				killWithTimeOut = false;
 				rotate.z -= 0.05f;
+			}
+
+			if (keyboard.KeyPressed("W"))
+			{
+				killWithTimeOut = false;
+				transform.z -= 0.03f;
+			}
+
+			if (keyboard.KeyPressed("S"))
+			{
+				killWithTimeOut = false;
+				transform.z += 0.03f;
 			}
 		}
 

@@ -138,21 +138,11 @@ namespace ClosestGL::Math
 	 *     zf     - 远平面
 	 */
 
-	/*void matrix_set_perspective(matrix_t *m, float fovy, float aspect, float zn, float zf) {
-		float fax = 1.0f / (float)tan(fovy * 0.5f);
-		matrix_set_zero(m);
-		m->m[0][0] = (float)(fax / aspect);
-		m->m[1][1] = (float)(fax);
-		m->m[2][2] = zf / (zf - zn);
-		m->m[3][2] = -zn * zf / (zf - zn);
-		m->m[2][3] = 1;
-	}*/
-
 	template<typename T>
-	Matrix4<T> GetPerspectiveMatrix(T fovy, T aspect, T zn, T zf) = delete;
+	Matrix4<T> GetPerspectiveMatrixLH(T fovy, T aspect, T zn, T zf) = delete;
 
 	template<>
-	inline Matrix4<float> GetPerspectiveMatrix(float fovy, float aspect, float zn, float zf)
+	inline Matrix4<float> GetPerspectiveMatrixLH(float fovy, float aspect, float zn, float zf)
 	{
 		float fax = 1.0f / std::tanf(fovy * 0.5f);
 		return {
@@ -164,7 +154,7 @@ namespace ClosestGL::Math
 	}
 
 	template<>
-	inline Matrix4<double> GetPerspectiveMatrix(double fovy, double aspect, double zn, double zf)
+	inline Matrix4<double> GetPerspectiveMatrixLH(double fovy, double aspect, double zn, double zf)
 	{
 		double fax = 1.0f / std::tan(fovy * 0.5f);
 		return {
@@ -172,6 +162,31 @@ namespace ClosestGL::Math
 			{ 0, fax, 0, 0 },
 			{ 0, 0, zf / (zf - zn) ,1 },
 			{ 0, 0, -zn * zf / (zf - zn) , 0 },
+		};
+	}
+
+	/* 获取视角矩阵
+	 *     eyePos - 眼睛位置
+	 *     lookAt - 看向
+	 *     up     - 上方向
+	 */
+
+	template<typename T>
+	constexpr Matrix4<T> GetLookAtMatrix(Vector3<T> eyePos, Vector3<T> lookAt, Vector3<T> up)
+	{
+		auto zaxis = Normalize(lookAt - eyePos);
+		auto xaxis = Normalize(Cross(up,zaxis));
+		auto yaxis = Normalize(Cross(zaxis,xaxis));
+
+		auto eyex = Dot(xaxis * T(-1), eyePos);
+		auto eyey = Dot(yaxis * T(-1), eyePos);
+		auto eyez = Dot(zaxis * T(-1), eyePos);
+
+		return {
+			{ xaxis.x, yaxis.x, zaxis.x, 0},
+			{ xaxis.y, yaxis.y, zaxis.y, 0},
+			{ xaxis.z, yaxis.z, zaxis.z, 0},
+			{ eyex, eyey,eyez , 1}
 		};
 	}
 }

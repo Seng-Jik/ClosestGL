@@ -74,4 +74,15 @@ namespace ClosestGL::Math
 	{
 		return a.x * b.x + a.y * b.y + a.z * b.z;
 	}
+
+	/* ²æ³Ë */
+	template<typename T>
+	constexpr Vector3<T> Cross(const Vector3<T>& x, const Vector3<T>& y)
+	{
+		return {
+			x.y * y.z - x.z * y.y,
+			x.z * y.x - x.x * y.z,
+			x.x * y.y - x.y * y.x
+		};
+	}
 }

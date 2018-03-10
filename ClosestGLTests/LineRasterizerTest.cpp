@@ -33,7 +33,7 @@ namespace ClosestGLTests::RenderPipelineTest
 	public:
 		TEST_METHOD(TestDrawLine)
 		{
-			auto PS = [](const Vertex& psi)
+			const auto PS = [](const Vertex& psi)
 			{
 				std::array<Math::Vector4<float>, 1> ret{ psi.Color };
 				return ret;
@@ -49,14 +49,14 @@ namespace ClosestGLTests::RenderPipelineTest
 
 			RenderPipeline::LineRasterizer<decltype(ps),float> lr(&ps);
 
-			Vertex vertex[] = 
+			const Vertex vertex[] = 
 			{
 				{{1,0},{1,0,0,1}},
 				{{0,1},{0,1,0,1}},
 				{{0,0.5},{0,0,1,0}}
 			};
 			
-			std::vector<size_t> ibo = { 0,1,0,2 };
+			const std::vector<size_t> ibo = { 0,1,0,2 };
 
 			Primitive::PrimitiveListReader<2> preader(ibo.data(),ibo.size());
 

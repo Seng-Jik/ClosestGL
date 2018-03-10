@@ -13,13 +13,13 @@ namespace ClosestGL::Primitive
 	class PrimitiveStripReader
 	{
 	private:
-		size_t* indexBuffer_;
-		size_t size_;
+		const size_t* const indexBuffer_;
+		const size_t size_;
 		size_t offset_;
 	public:
 		static constexpr int GetVertexPerPrimitive() { return VertexPerPrimitive; }
 
-		inline PrimitiveStripReader(size_t* indexBuffer, size_t size) :
+		inline PrimitiveStripReader(const size_t* indexBuffer, size_t size) :
 			indexBuffer_{ indexBuffer },
 			size_{ size },
 			offset_{ VertexPerPrimitive - 1 }

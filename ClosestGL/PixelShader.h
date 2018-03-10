@@ -22,7 +22,7 @@ namespace ClosestGL::RenderPipeline
 	{
 	private:
 		TPixelShader ps_;
-		TRenderTarget* target_;
+		TRenderTarget* const target_;
 	public:
 		PixelShader(TRenderTarget* rt, const TPixelShader& ps):
 			ps_{ps},

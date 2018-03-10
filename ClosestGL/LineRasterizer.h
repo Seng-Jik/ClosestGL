@@ -24,7 +24,7 @@ namespace ClosestGL::RenderPipeline
 	class LineRasterizer
 	{
 	private:
-		TNextStage* nextStage_;
+		TNextStage* const nextStage_;
 
 		template<typename TVertexAttributes,typename TRunner>
 		void DrawLine(
@@ -70,7 +70,7 @@ namespace ClosestGL::RenderPipeline
 
 		void EmitPrimitive(
 			TPrimitiveReader& primitiveReader, 
-			TVertexBuffer* vbo,
+			const TVertexBuffer* vbo,
 			TRunner& runner)
 		{
 			static_assert(primitiveReader.GetVertexPerPrimitive() == 2);

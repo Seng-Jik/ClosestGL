@@ -24,13 +24,13 @@ namespace ClosestGL::Primitive
 	class PrimitiveListReader
 	{
 	private:
-		size_t* indexBuffer_;
-		size_t size_;
+		const size_t* indexBuffer_;
+		const size_t size_;
 		size_t offset_;
 	public:
 		static constexpr int GetVertexPerPrimitive() { return VertexPerPrimitive; }
 
-		inline PrimitiveListReader(size_t* indexBuffer, size_t size):
+		inline PrimitiveListReader(const size_t* indexBuffer, size_t size):
 			indexBuffer_{ indexBuffer },
 			size_{ size },
 			offset_{0}

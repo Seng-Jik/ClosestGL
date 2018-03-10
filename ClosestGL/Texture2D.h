@@ -15,7 +15,7 @@ namespace ClosestGL::Texture
 	{
 	private:
 		std::vector<ColorType> color_;
-		Math::Vector2<size_t> size_;
+		const Math::Vector2<size_t> size_;
 
 	public:
 

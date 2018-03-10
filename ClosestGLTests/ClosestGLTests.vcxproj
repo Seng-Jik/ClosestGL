@@ -114,6 +114,14 @@
       <Command>if not exist $(OutDir)SDL2.dll copy $(SolutionDir)..\SDL2\lib\x86\SDL2.dll $(OutDir)</Command>
       <Message>准备SDL2的DLL</Message>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>md $(OutDir)Models
+copy $(ProjectDir)Models\* $(OutDir)Models
+</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>准备模型文件</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -134,6 +142,14 @@
       <Command>if not exist $(OutDir)SDL2.dll copy $(SolutionDir)..\SDL2\lib\x64\SDL2.dll $(OutDir)</Command>
       <Message>准备SDL2的DLL</Message>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>md $(OutDir)Models
+copy $(ProjectDir)Models\* $(OutDir)Models
+</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>准备模型文件</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -158,6 +174,14 @@
       <Command>if not exist $(OutDir)SDL2.dll copy $(SolutionDir)..\SDL2\lib\x86\SDL2.dll $(OutDir)</Command>
       <Message>准备SDL2的DLL</Message>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>md $(OutDir)Models
+copy $(ProjectDir)Models\* $(OutDir)Models
+</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>准备模型文件</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -182,13 +206,23 @@
       <Command>if not exist $(OutDir)SDL2.dll copy $(SolutionDir)..\SDL2\lib\x64\SDL2.dll $(OutDir)</Command>
       <Message>准备SDL2的DLL</Message>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>md $(OutDir)Models
+copy $(ProjectDir)Models\* $(OutDir)Models
+</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>准备模型文件</Message>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Blenders.h" />
+    <ClInclude Include="OBJLoader.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SurfaceViewer.h" />
     <ClInclude Include="targetver.h" />
     <ClCompile Include="LineRasterizerTest.cpp" />
+    <ClCompile Include="OBJLoaderTest.cpp" />
     <ClCompile Include="PixelShaderTest.cpp" />
     <ClCompile Include="RenderTargetTest.cpp" />
     <ClCompile Include="IndexBufferGeneratorTest.cpp" />

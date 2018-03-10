@@ -45,6 +45,9 @@
     <ClInclude Include="Blenders.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="OBJLoader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -94,6 +97,9 @@
     </ClCompile>
     <ClCompile Include="LineRasterizerTest.cpp">
       <Filter>源文件\RenderPipelineTest</Filter>
+    </ClCompile>
+    <ClCompile Include="OBJLoaderTest.cpp">
+      <Filter>源文件\TestTools</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

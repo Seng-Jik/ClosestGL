@@ -92,5 +92,8 @@
     <ClCompile Include="PixelShaderTest.cpp">
       <Filter>源文件\RenderPipelineTest</Filter>
     </ClCompile>
+    <ClCompile Include="LineRasterizerTest.cpp">
+      <Filter>源文件\RenderPipelineTest</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

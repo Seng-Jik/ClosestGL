@@ -102,6 +102,12 @@
     <ClInclude Include="PixelShader.h">
       <Filter>头文件\RenderPipeline</Filter>
     </ClInclude>
+    <ClInclude Include="LineRasterizer.h">
+      <Filter>头文件\RenderPipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="CoordinateSystem.h">
+      <Filter>头文件\Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="RenderPipeline.dgml" />

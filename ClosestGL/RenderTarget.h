@@ -70,7 +70,7 @@ namespace ClosestGL::RenderPipeline
 			}
 		}
 
-		auto GetSize() const
+		auto GetRenderTargetSize() const
 		{
 			return size_;
 		}

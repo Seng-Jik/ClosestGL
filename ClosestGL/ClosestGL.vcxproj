@@ -116,7 +116,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ConcurrentQueue.h" />
+    <ClInclude Include="CoordinateSystem.h" />
     <ClInclude Include="FixedTransform.h" />
+    <ClInclude Include="LineRasterizer.h" />
     <ClInclude Include="PixelShader.h" />
     <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="IndexBufferGenerator.h" />

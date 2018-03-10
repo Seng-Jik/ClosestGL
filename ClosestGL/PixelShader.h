@@ -17,7 +17,7 @@ namespace ClosestGL::RenderPipeline
 	 *     data - 像素着色器输入参数
 	 *     pos  - 坐标，坐标系在RenderTarget的纹理空间，以像素为单位。
 	 */
-	template<typename TRenderTarget,typename TPixelShader,typename TData>
+	template<typename TRenderTarget,typename TPixelShader>
 	class PixelShader
 	{
 	private:
@@ -29,9 +29,15 @@ namespace ClosestGL::RenderPipeline
 			target_{rt}
 		{}
 
-		void EmitPixel(const TData& data,const Math::Vector2<size_t>& pos)
+		template<typename TPixelAttributes>
+		void EmitPixel(const TPixelAttributes& data,const Math::Vector2<size_t>& pos)
 		{
 			target_->EmitPixel(ps_(data),pos);
+		}
+
+		auto GetRenderTargetSize() const
+		{
+			return target_->GetRenderTargetSize();
 		}
 	};
 }

@@ -188,6 +188,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SurfaceViewer.h" />
     <ClInclude Include="targetver.h" />
+    <ClCompile Include="LineRasterizerTest.cpp" />
     <ClCompile Include="PixelShaderTest.cpp" />
     <ClCompile Include="RenderTargetTest.cpp" />
     <ClCompile Include="IndexBufferGeneratorTest.cpp" />

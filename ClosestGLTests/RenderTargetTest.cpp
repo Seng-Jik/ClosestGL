@@ -34,7 +34,7 @@ namespace ClosestGLTests::RenderPipelineTest
 			ClosestGL::ParallelStrategy::MultiThreadRunner
 				runner(std::thread::hardware_concurrency());
 
-			auto size = fb.GetSize();
+			auto size = fb.GetRenderTargetSize();
 			runner.Commit(0, size.y,
 				[&fb, size](auto y, auto)
 			{

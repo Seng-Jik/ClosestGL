@@ -6,7 +6,7 @@ namespace ClosestGL::Math
 
 	/* ²åÖµÔËËã */
 	template<typename T,typename U>
-	constexpr auto Lerp(const T& top, const T& bottom, const U& x)
+	constexpr auto Lerp(U x, T top, T bottom)
 	{
 		return (bottom - top) * x + top;
 	}

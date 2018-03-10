@@ -16,13 +16,6 @@ namespace ClosestGL::Utils
 		mutable std::mutex lock_;
 	public:
 
-		/* 压入对象 */
-		void Push(T&& obj)
-		{
-			auto g = Lock();
-			PushUnsafe(obj);
-		}
-
 		/* 不加锁的情况下压入对象 */
 		void PushUnsafe(T&& obj)
 		{

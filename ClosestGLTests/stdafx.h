@@ -14,5 +14,7 @@
 #include <../SDLClasses/include/SDLInstance.h>
 #include <../SDLClasses/include/Window.h>
 #include <../SDLClasses/include/Vector4.h>
+#include <../SDLClasses/include/Mouse.h>
+#include <../SDLClasses/include/Keyboard.h>
 #include "SurfaceViewer.h"
 #include "Blenders.h"

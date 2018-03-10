@@ -126,6 +126,17 @@ namespace ClosestGL::ParallelStrategy
 			}
 		}
 
+		template<typename Action>
+		inline void Commit(const Action& action)
+		{
+			auto g = taskQueue_.Lock();
+			Task task
+			{ 
+				[action](auto) {action(); } 
+			};
+			taskQueue_.PushUnsafe(std::move(task));
+		}
+
 		inline size_t ParallelSize() const { return threads_.size(); }
 
 		/* threadCount - 使用的线程数 */

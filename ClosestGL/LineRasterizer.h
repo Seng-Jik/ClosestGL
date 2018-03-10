@@ -26,13 +26,12 @@ namespace ClosestGL::RenderPipeline
 	private:
 		TNextStage* const nextStage_;
 
-		template<typename TVertexAttributes,typename TRunner>
+		template<typename TVertexAttributes>
 		void DrawLine(
 			const TVertexAttributes& v1,
 			const TVertexAttributes& v2, 
 			const Math::Vector2<size_t>& rtSize,
-			size_t rtSizeLength, 
-			TRunner& runner)
+			size_t rtSizeLength)
 		{
 			const auto stepCount = static_cast<size_t>
 				(Math::Distance(v1.SVPosition, v2.SVPosition) * rtSizeLength) + 1;
@@ -41,8 +40,7 @@ namespace ClosestGL::RenderPipeline
 
 			auto nextStage = nextStage_;
 
-			runner.Commit(0,stepCount,
-				[v1,v2, stepCountLerp, rtSize, nextStage](size_t step, auto)
+			for(size_t step = 0; step < stepCount;++step)
 			{
 				const auto lerper = step / stepCountLerp;
 				const auto p = TVertexAttributes::Lerp(lerper, v1, v2);
@@ -55,7 +53,7 @@ namespace ClosestGL::RenderPipeline
 				if (pos.x >= rtSize.x) return;
 				if (pos.y >= rtSize.y) return;
 				nextStage->EmitPixel(p, pos);
-			});
+			}
 		}
 
 	public:
@@ -81,8 +79,10 @@ namespace ClosestGL::RenderPipeline
 			while (primitiveReader.CanRead())
 			{
 				auto ps = primitiveReader.Read();
-				DrawLine<std::decay<TVertexBuffer>::type,TRunner>
-					(vbo[ps[0]], vbo[ps[1]], rtSize, rtSizeLength, runner);
+
+				runner.Commit([vbo,ps,rtSize, rtSizeLength,this] {
+					DrawLine(vbo[ps[0]], vbo[ps[1]], rtSize, rtSizeLength);
+				});
 			}
 		}
 	};

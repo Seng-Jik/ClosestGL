@@ -48,6 +48,9 @@
     <ClInclude Include="OBJLoader.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="ModelViewer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -100,6 +103,12 @@
     </ClCompile>
     <ClCompile Include="OBJLoaderTest.cpp">
       <Filter>源文件\TestTools</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelViewer.cpp">
+      <Filter>源文件\TestTools</Filter>
+    </ClCompile>
+    <ClCompile Include="ModelWireFrameTest.cpp">
+      <Filter>源文件\RenderPipelineTest</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

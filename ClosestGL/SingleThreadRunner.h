@@ -20,6 +20,8 @@ namespace ClosestGL::ParallelStrategy
 	 *         void action(size_t index,size_t threadID)
 	 *             index    - 此时的循环变量
 	 *             threadID - 执行此次循环体的线程的ID（在0~执行策略的ParallelSize之间)
+	 *
+	 * 可以派发单个动作，传入action即可，此action没有返回值没有参数
 	 */
 	class SingleThreadRunner
 	{
@@ -39,6 +41,12 @@ namespace ClosestGL::ParallelStrategy
 		{
 			for (size_t i = first; i < end; ++i)
 				action(i, 0);
+		}
+
+		template<typename Action>
+		inline void Commit(const Action& action)
+		{
+			action();
 		}
 	};
 }

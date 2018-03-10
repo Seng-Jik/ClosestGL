@@ -108,6 +108,9 @@
     <ClInclude Include="CoordinateSystem.h">
       <Filter>头文件\Math</Filter>
     </ClInclude>
+    <ClInclude Include="OpenMPRunner.h">
+      <Filter>头文件\ParallelStrategy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="RenderPipeline.dgml" />

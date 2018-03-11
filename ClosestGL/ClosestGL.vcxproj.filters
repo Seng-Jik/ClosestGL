@@ -75,12 +75,6 @@
     <ClInclude Include="ConcurrentQueue.h">
       <Filter>头文件\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="FixedTransform.h">
-      <Filter>头文件\Primitive</Filter>
-    </ClInclude>
-    <ClInclude Include="RebuildTransform.h">
-      <Filter>头文件\Primitive</Filter>
-    </ClInclude>
     <ClInclude Include="Texture2D.h">
       <Filter>头文件\Texture</Filter>
     </ClInclude>
@@ -107,6 +101,9 @@
     </ClInclude>
     <ClInclude Include="CoordinateSystem.h">
       <Filter>头文件\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Transformers.h">
+      <Filter>头文件\Primitive</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

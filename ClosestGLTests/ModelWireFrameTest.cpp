@@ -8,7 +8,7 @@
 #include "OBJLoader.h"
 #include <MultiThreadRunner.h>
 #include "ModelViewer.h"
-#include <FixedTransform.h>
+#include <Transformers.h>
 #include <MatrixTransform.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;

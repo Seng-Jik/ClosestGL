@@ -117,7 +117,6 @@
   <ItemGroup>
     <ClInclude Include="ConcurrentQueue.h" />
     <ClInclude Include="CoordinateSystem.h" />
-    <ClInclude Include="FixedTransform.h" />
     <ClInclude Include="LineRasterizer.h" />
     <ClInclude Include="PixelShader.h" />
     <ClInclude Include="RenderTarget.h" />
@@ -127,12 +126,12 @@
     <ClInclude Include="Matrix3.h" />
     <ClInclude Include="Matrix4.h" />
     <ClInclude Include="MatrixTransform.h" />
+    <ClInclude Include="Transformers.h" />
     <ClInclude Include="TypeMaxValues.h" />
     <ClInclude Include="MultiThreadRunner.h" />
     <ClInclude Include="Number.h" />
     <ClInclude Include="PrimitiveListReader.h" />
     <ClInclude Include="PrimitiveStripReader.h" />
-    <ClInclude Include="RebuildTransform.h" />
     <ClInclude Include="SingleThreadRunner.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="Vector2.h" />

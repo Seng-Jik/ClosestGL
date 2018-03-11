@@ -108,7 +108,7 @@ void ClosestGLTests::Tools::ViewModel(TestTex & sur, const ModelRenderer & rende
 	}
 }
 
-#include <RebuildTransform.h>
+#include <Transformers.h>
 #include <PrimitiveListReader.h>
 #include <SingleThreadRunner.h>
 std::vector<size_t> ClosestGLTests::Tools::WireFrameViewer::ConvertTranglesToLines(const std::vector<size_t>& ibo)

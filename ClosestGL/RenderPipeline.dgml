@@ -1,32 +1,35 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <DirectedGraph GraphDirection="TopToBottom" Layout="ForceDirected" ZoomLevel="-1" xmlns="http://schemas.microsoft.com/vs/2009/dgml">
   <Nodes>
-    <Node Id="Pass" Bounds="20,416.6004356776,50,25.8366666666666" Label="阶段" />
-    <Node Id="像素着色器" Bounds="667.538757324219,152.562437497559,80,25.8366666666667" Label="像素着色器" />
-    <Node Id="像素阶段" Bounds="550.445901486503,0.000307778107242029,482.5977649002,310.072429719451" Group="Expanded" />
-    <Node Id="光栅器" Bounds="926.458946197317,151.673280436198,56,25.8366666666667" Label="光栅器" />
-    <Node Id="几何着色器" Bounds="95.6801832817972,182.45172281901,80,25.8366666666667" Label="几何着色器" />
-    <Node Id="图例" Bounds="0,376.6004356776,90,141.673333333333" Group="Expanded" />
-    <Node Id="图元" Category="Category7" Bounds="205.680286278623,183.67264519319,50,25.8366666666666" />
-    <Node Id="图元1" Category="Category7" Bounds="15.6800745629251,181.909598928541,50,25.8366666666667" Label="图元" />
-    <Node Id="图元装配器" Bounds="285.680385460752,185.087846476237,80,25.8366666666667" Label="图元装配器" />
-    <Node Id="坐标(X,Y)、MRT颜色表" Category="Category2" Bounds="575.99142277772,96.7256708308919,144.323333333333,25.8366666666666" Label="坐标(X,Y)、MRT颜色表" UseManualLocation="True" />
-    <Node Id="坐标(X,Y,Z)、插值器" Category="Category2" Bounds="872.827954917476,207.509965616862,140.216666666667,25.8366666666667" Label="坐标(X,Y,Z)、属性列表" />
-    <Node Id="坐标(X,Y,Z)、插值器1" Category="Category2" Bounds="698.611271158854,208.399204164225,140.216666666667,25.8366666666667" Label="坐标(X,Y,Z)、属性列表" />
-    <Node Id="数据" Category="Category2" Bounds="20,472.437102344266,50,25.8366666666666" Label="数据" />
-    <Node Id="深度测试" Bounds="813.762268066406,264.235970830892,68,25.8366666666667" Label="深度测试" />
-    <Node Id="深度缓存" Category="Category2" Bounds="1087.04462158414,123.648436531576,68,25.8366666666666" Label="深度缓存" />
-    <Node Id="渲染目标" Bounds="570.444969146536,39.9998146280932,68,25.8366666666666" Label="渲染目标" />
-    <Node Id="管线输入" Bounds="206.58751272321,320.763769010933,68,25.8366666666667" />
-    <Node Id="输入顶点" Category="Category7" Bounds="206.670362927948,262.162786834997,128,25.8366666666667" Label="输入顶点、索引缓存" />
-    <Node Id="输出" Category="Category2" Bounds="1067.04462158414,83.6483365315756,108,141.673633333333" Group="Expanded" Label="管线输出" />
-    <Node Id="顶点" Category="Category7" Bounds="395.680477013487,186.326127726237,104,25.8366666666667" Label="顶点、索引缓存" />
-    <Node Id="顶点着色器" Bounds="392.209865441221,116.318235117594,80,25.8366666666667" Label="顶点着色器" />
-    <Node Id="顶点阶段" Bounds="-4.31992543707503,76.3181351175944,524.000402450562,155.844759275309" Group="Expanded" />
-    <Node Id="颜色缓存" Category="Category2" Bounds="1087.04462158414,179.485203198242,68,25.8366666666666" />
+    <Node Id="CVV剪裁" Bounds="775.395854471475,121.159017457335,68.26,25.24" Label="CVV剪裁" />
+    <Node Id="Pass" Bounds="20,489.076554345364,50,25.24" Label="阶段" />
+    <Node Id="像素着色器" Bounds="685.214310300876,253.895409273316,80,25.24" Label="像素着色器" />
+    <Node Id="像素阶段" Bounds="580.468347567575,41.1589915335976,499.187706903899,313.216417739718" Group="Expanded" />
+    <Node Id="光栅器" Bounds="755.395854471475,81.1589915335976,304.2602,85.2789282542642" Group="Expanded" Label="光栅器" />
+    <Node Id="几何着色器" Bounds="20.0000000000001,95.7057399687131,242.423333333333,25.24" Label="用于实现几何着色器的RebuildTransform" />
+    <Node Id="图例" Bounds="0,449.076554345364,90,140.48" Group="Expanded" />
+    <Node Id="图元" Category="Category7" Bounds="135.070769912857,152.876540593709,50,25.24" />
+    <Node Id="图元1" Category="Category7" Bounds="106.603464814711,40,50,25.24" Label="图元" />
+    <Node Id="图元装配器" Bounds="86.5649017895274,208.116542377472,194.676666666667,25.24" Label="用于装配图元的PrimitiveReader" />
+    <Node Id="坐标(X,Y)、MRT颜色表" Category="Category2" Bounds="600.468347567575,198.655409273316,144.323333333333,25.24" Label="坐标(X,Y)、MRT颜色表" />
+    <Node Id="坐标(X,Y,Z)、插值器" Category="Category2" Bounds="802.704672062802,198.655409273316,140.216666666667,25.24" Label="坐标(X,Y,Z)、属性列表" />
+    <Node Id="坐标(X,Y,Z)、插值器1" Category="Category2" Bounds="711.368177874958,309.135409273316,140.216666666667,25.24" Label="坐标(X,Y,Z)、属性列表" />
+    <Node Id="数据" Category="Category2" Bounds="20,544.316554345364,50,25.24" Label="数据" />
+    <Node Id="深度测试" Bounds="795.214410300876,253.895409273316,68,25.24" Label="深度测试" />
+    <Node Id="深度缓存" Category="Category2" Bounds="1129.65615447147,167.383030639879,68,25.24" Label="深度缓存" />
+    <Node Id="渲染目标" Bounds="605.573630479047,141.630880725999,68,25.24" Label="渲染目标" />
+    <Node Id="管线输入" Bounds="63.2199553182369,393.83650479546,68,25.24" />
+    <Node Id="输入顶点" Category="Category7" Bounds="161.220055318237,393.836554345364,128,25.24" Label="输入顶点、索引缓存" />
+    <Node Id="输出" Category="Category2" Bounds="1109.65615447147,127.383030639879,108,140.48" Group="Expanded" Label="管线输出" />
+    <Node Id="透视缓存" Category="Category2" Bounds="971.656054471475,121.158991533598,68.0000000000001,25.24" Label="透视缓存" />
+    <Node Id="透视除法" Bounds="873.655954471475,121.197919787862,68,25.24" Label="透视除法" />
+    <Node Id="顶点" Category="Category7" Bounds="198.023826498991,263.356547464798,104,25.24" Label="顶点、索引缓存" />
+    <Node Id="顶点着色器" Bounds="194.72809956669,318.596554345364,228.796666666667,25.24" Label="用于实现顶点着色器的FixedTransform" />
+    <Node Id="顶点阶段" Bounds="5.6843418860808E-14,0,443.524766233357,363.836554345364" Group="Expanded" />
+    <Node Id="颜色缓存" Category="Category2" Bounds="1129.65615447147,222.623030639879,68,25.24" />
   </Nodes>
   <Links>
-    <Link Source="像素着色器" Target="坐标(X,Y)、MRT颜色表" Bounds="668.449357087148,128.727362170172,25.3499969962973,23.8350753273864" />
+    <Link Source="像素着色器" Target="坐标(X,Y)、MRT颜色表" Bounds="690.848633658327,230.414137225691,22.3523924940895,23.4812720476247" />
     <Link Source="像素阶段" Target="像素着色器" Category="Contains" />
     <Link Source="像素阶段" Target="光栅器" Category="Contains" />
     <Link Source="像素阶段" Target="坐标(X,Y)、MRT颜色表" Category="Contains" />
@@ -34,25 +37,30 @@
     <Link Source="像素阶段" Target="坐标(X,Y,Z)、插值器1" Category="Contains" />
     <Link Source="像素阶段" Target="深度测试" Category="Contains" />
     <Link Source="像素阶段" Target="渲染目标" Category="Contains" />
-    <Link Source="光栅器" Target="坐标(X,Y,Z)、插值器" Bounds="947.420508599747,177.509947102865,4.37232559036033,21.1857729602611" />
-    <Link Source="几何着色器" Target="图元1" Bounds="74.6799292477235,195.02205772477,21.0002465007962,0.119823894293518" />
+    <Link Source="光栅器" Target="CVV剪裁" Category="Contains" />
+    <Link Source="光栅器" Target="坐标(X,Y,Z)、插值器" Bounds="881.140522600936,166.437919787862,9.46507187034888,23.8520688964027" />
+    <Link Source="光栅器" Target="透视缓存" Category="Contains" />
+    <Link Source="光栅器" Target="透视除法" Category="Contains" />
+    <Link Source="几何着色器" Target="图元1" Bounds="135.309923801039,74.1090406840323,3.72502808830362,21.5966992846808" />
     <Link Source="图例" Target="Pass" Category="Contains" />
     <Link Source="图例" Target="数据" Category="Contains" />
-    <Link Source="图元" Target="几何着色器" Bounds="184.679432565453,195.999850227126,21.0008431830671,0.269901486237188" />
-    <Link Source="图元1" Target="光栅器" Bounds="65.6800756454468,165.815756010596,851.783770718449,28.1849526808113" />
-    <Link Source="图元装配器" Target="图元" Bounds="264.679277385293,197.097504483944,21.0010983632265,0.312835603942489" />
-    <Link Source="坐标(X,Y)、MRT颜色表" Target="渲染目标" Bounds="619.892671557525,72.966292476194,18.3067571594149,23.7593783546979" />
-    <Link Source="坐标(X,Y,Z)、插值器" Target="深度测试" Bounds="877.167175504737,233.346632283529,44.0941938486025,26.2814638837879" />
-    <Link Source="坐标(X,Y,Z)、插值器1" Target="像素着色器" Bounds="728.341159442322,184.466105734571,26.2237110902549,23.9330984296545" />
-    <Link Source="深度测试" Target="坐标(X,Y,Z)、插值器1" Bounds="794.35770126905,239.428622863032,35.1173425083498,24.80734796786" />
-    <Link Source="深度测试" Target="深度缓存" Bounds="872.873692630629,153.602214815991,215.056474139448,110.6337560149" />
-    <Link Source="渲染目标" Target="颜色缓存" Bounds="638.454975671626,62.1043454269822,439.900840190807,118.773200916004" />
-    <Link Source="管线输入" Target="输入顶点" Bounds="247.219162236479,296.006218775192,12.7093374845946,24.7575462801465" />
-    <Link Source="输入顶点" Target="顶点着色器" Bounds="280.116852100461,81.672891809334,137.45875502209,133.9490849722" />
+    <Link Source="图元" Target="几何着色器" Bounds="148.194082032722,129.49272079291,7.71369067937712,23.3838198007986" />
+    <Link Source="图元1" Target="光栅器" Bounds="65.6800745629251,165.517422255318,851.783794655052,28.1849437553107" />
+    <Link Source="图元装配器" Target="图元" Bounds="169.080732962886,186.380254073184,9.37779359302678,21.7362883042878" />
+    <Link Source="坐标(X,Y)、MRT颜色表" Target="渲染目标" Bounds="651.402921355284,174.657218583826,13.9114416387301,23.9981906894896" />
+    <Link Source="坐标(X,Y,Z)、插值器" Target="深度测试" Bounds="844.750700952292,223.895409273316,18.1018723275839,22.9353130574721" />
+    <Link Source="坐标(X,Y,Z)、插值器1" Target="像素着色器" Bounds="744.489872945987,285.440763478142,24.1331086560117,23.6946457951737" />
+    <Link Source="深度测试" Target="坐标(X,Y,Z)、插值器1" Bounds="798.267339941558,279.135409273316,20.0409826231048,23.1904608527747" />
+    <Link Source="深度测试" Target="深度缓存" Bounds="887.945570452363,162.203398287161,230.340702764547,110.57468826069" />
+    <Link Source="渲染目标" Target="颜色缓存" Bounds="728.821812983697,72.3104972411595,381.33129206657,115.711099590445" />
+    <Link Source="管线输入" Target="输入顶点" Bounds="131.219955318237,406.456517957143,21.0001000000006,8.12931358495916E-06" />
+    <Link Source="输入顶点" Target="顶点着色器" Bounds="289.645019461867,141.952479185568,131.670013350677,117.334640565409" />
     <Link Source="输出" Target="深度缓存" Category="Contains" />
     <Link Source="输出" Target="颜色缓存" Category="Contains" />
-    <Link Source="顶点" Target="图元装配器" Bounds="374.679912208375,198.503517993008,21.0005635401448,0.213149905618536" />
-    <Link Source="顶点着色器" Target="顶点" Bounds="435.064599297634,142.15489878382,7.81912875942027,35.383239594539" />
+    <Link Source="透视除法" Target="CVV剪裁" Bounds="852.655853764247,133.796115753252,21.0001007072276,0.00832520153144856" />
+    <Link Source="透视除法" Target="透视缓存" Bounds="941.655954471475,133.796072280512,21.0001007100506,0.00834180026362219" />
+    <Link Source="顶点" Target="图元装配器" Bounds="205.91580699138,239.126798070815,29.0022666777977,24.2297493939823" />
+    <Link Source="顶点着色器" Target="顶点" Bounds="270.101457720435,294.742022531879,25.5225349211416,23.8545318134857" />
     <Link Source="顶点阶段" Target="几何着色器" Category="Contains" />
     <Link Source="顶点阶段" Target="图元" Category="Contains" />
     <Link Source="顶点阶段" Target="图元1" Category="Contains" />
@@ -82,7 +90,6 @@
     <Property Id="Layout" DataType="System.String" />
     <Property Id="OutgoingActionLabel" Label="OutgoingActionLabel" Description="OutgoingActionLabel" DataType="System.String" />
     <Property Id="TargetType" DataType="System.Type" />
-    <Property Id="UseManualLocation" DataType="System.Boolean" />
     <Property Id="Value" DataType="System.String" />
     <Property Id="ValueLabel" DataType="System.String" />
     <Property Id="ZoomLevel" DataType="System.String" />

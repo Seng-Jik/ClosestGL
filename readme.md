@@ -36,6 +36,10 @@
 #include <Texture2D.h>
 #include <Vector4.h>
 #include <RenderTarget.h>
+#include <PixelShader.h>
+#include <LineRasterizer.h>
+#include <PrimitiveStripReader.h>
+#include <MultiThreadRunner.h>
 
 using namespace ClosestGL;
 

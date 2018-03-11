@@ -50,12 +50,14 @@ namespace ClosestGLTests::RenderPipelineTest
 
 			const auto projectionView = projection * view;
 
+			std::vector<Vertex> transformed{ vbo.size() };
+
 			std::vector<std::array<size_t, 2>> clipped;
 
 			Tools::ViewModel(tex,
-				[&clipped,projectionView,&vbo,&ibo,&raster,&tex,&lineReader,&runner, projection](const auto& world) {
+				[&transformed,&clipped,projectionView,&vbo,&ibo,&raster,&tex,&lineReader,&runner, projection](const auto& world) {
 
-				std::vector<Vertex> transformed{ vbo.size() };
+				
 				auto transform = projectionView * world;
 
 				ClosestGL::Primitive::FixedTransform
@@ -91,12 +93,12 @@ namespace ClosestGLTests::RenderPipelineTest
 	public:
 		TEST_METHOD(TestCubeWireFrame)
 		{
-			ViewModel("Models\\Cube.obj",1.5f);
+			ViewModel("Models\\Cube.obj",2.0f);
 		}
 
 		TEST_METHOD(TestCandyWireFrame)
 		{
-			ViewModel("Models\\Candy.obj",48);
+			ViewModel("Models\\Candy.obj",50);
 		}
 
 		TEST_METHOD(TestAliceRoomWireFrame)

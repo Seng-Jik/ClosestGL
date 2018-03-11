@@ -114,6 +114,9 @@
     <ClInclude Include="Transformers.h">
       <Filter>头文件\Primitive</Filter>
     </ClInclude>
+    <ClInclude Include="PrimitiveSender.h">
+      <Filter>头文件\RenderPipeline</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="RenderPipeline.dgml" />

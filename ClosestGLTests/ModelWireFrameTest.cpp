@@ -53,8 +53,9 @@ namespace ClosestGLTests::RenderPipelineTest
 
 			std::vector<Vertex> transformed{ vbo.size() };
 
+			Primitive::PrimitiveListReader<2> tr{ibo.data(), ibo.size()};
 			Primitive::CVVClipper<Primitive::PrimitiveListReader<2>, Vertex>
-				lineReader{ transformed.data() ,ibo.data(), ibo.size() };
+				lineReader{ transformed.data() ,&tr };
 
 			std::vector<std::array<size_t,2>> clippedPrmitive;
 

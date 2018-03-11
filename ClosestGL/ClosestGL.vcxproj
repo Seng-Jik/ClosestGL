@@ -118,6 +118,7 @@
     <ClInclude Include="ConcurrentQueue.h" />
     <ClInclude Include="CoordinateSystem.h" />
     <ClInclude Include="CVVClipper.h" />
+    <ClInclude Include="PrimitiveSender.h" />
     <ClInclude Include="Transformers.h" />
     <ClInclude Include="LineRasterizer.h" />
     <ClInclude Include="OpenMPRunner.h" />

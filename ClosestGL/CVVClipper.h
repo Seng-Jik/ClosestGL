@@ -18,12 +18,12 @@ namespace ClosestGL::Primitive
 	class CVVClipper
 	{
 	private:
-		TPrimitiveReader reader_;
+		TPrimitiveReader* const reader_;
 		const TVertex* const vb_;
 
 	public:
 		static constexpr auto GetVertexPerPrimitive() { return TPrimitiveReader::GetVertexPerPrimitive(); }
-		using Primitive = decltype(reader_.Read());
+		using Primitive = decltype(reader_->Read());
 		
 	private:
 		std::optional<Primitive> next_;
@@ -32,9 +32,9 @@ namespace ClosestGL::Primitive
 		{
 			next_.reset();
 
-			while (reader_.CanRead())
+			while (reader_->CanRead())
 			{
-				auto primitive = reader_.Read();
+				auto primitive = reader_->Read();
 
 				int clipped = 0;
 				for (int i = 0; i < GetVertexPerPrimitive(); ++i)
@@ -63,9 +63,8 @@ namespace ClosestGL::Primitive
 		}
 
 	public:
-		template<typename ...TArgs>
-		CVVClipper(const TVertex* vertexBuffer,TArgs... args):
-			reader_ {args...},
+		CVVClipper(const TVertex* vertexBuffer, TPrimitiveReader* reader):
+			reader_ { reader },
 			vb_{ vertexBuffer }
 		{
 			PrepareNextPrimitive();
@@ -75,7 +74,7 @@ namespace ClosestGL::Primitive
 
 		inline void Reset()
 		{
-			reader_.Reset();
+			reader_->Reset();
 			PrepareNextPrimitive();
 		}
 

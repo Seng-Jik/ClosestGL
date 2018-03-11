@@ -23,7 +23,10 @@ namespace ClosestGL::ParallelStrategy
 			int e = int(end);
 #pragma omp parallel for
 			for (int i = int(first); i < e; ++i)
-				action(i, omp_get_thread_num());
+			{
+				auto threadID = omp_get_thread_num();
+				action(i, threadID);
+			}
 		}
 
 		template<typename Action>

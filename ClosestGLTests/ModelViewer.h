@@ -9,6 +9,7 @@
 #include <functional>
 #include <Matrix4.h>
 #include <MathCommon.h>
+#include <utility>
 namespace ClosestGLTests::Tools
 {
 	namespace WireFrameViewer
@@ -29,7 +30,8 @@ namespace ClosestGLTests::Tools
 		{
 			std::array<TestCol, 1> operator() (const Vertex& v)
 			{
-				return { {1,1,1,1} };
+				float col = std::clamp((1 / v.SVPosition.z) * 70,0.0f,1.0f);
+				return { { col,col,col,1} };
 			}
 		};
 

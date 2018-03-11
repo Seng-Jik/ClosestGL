@@ -20,6 +20,7 @@ static inline void BlitTestTexToSurface(ClosestGLTests::Tools::TestTex& tex, SDL
 			byte[0] = uint8_t(col.z * 255);
 			byte[1] = uint8_t(col.y * 255);
 			byte[2] = uint8_t(col.z * 255);
+			byte[3] = 255;
 		}
 	}
 }

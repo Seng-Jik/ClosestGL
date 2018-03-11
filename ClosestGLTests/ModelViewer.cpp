@@ -8,7 +8,7 @@ static inline void BlitTestTexToSurface(ClosestGLTests::Tools::TestTex& tex, SDL
 {
 	const int bytePerPixel = surface->format->BytesPerPixel;
 
-//#pragma omp parallel for
+#pragma omp parallel for
 	for (int y = 0; y < surface->h; ++y)
 	{
 		for (int x = 0; x < surface->w; ++x)
@@ -135,7 +135,7 @@ void ClosestGLTests::Tools::ViewModel(TestTex & sur, const ModelRenderer & rende
 	}
 }
 
-#include <Transformers.h>
+#include <RebuildTransform.h>
 #include <PrimitiveListReader.h>
 #include <SingleThreadRunner.h>
 std::vector<size_t> ClosestGLTests::Tools::WireFrameViewer::ConvertTranglesToLines(const std::vector<size_t>& ibo)

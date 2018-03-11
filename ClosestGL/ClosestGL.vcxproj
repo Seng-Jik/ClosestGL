@@ -117,12 +117,10 @@
   <ItemGroup>
     <ClInclude Include="ConcurrentQueue.h" />
     <ClInclude Include="CoordinateSystem.h" />
-    <ClInclude Include="CVVClipper.h" />
-    <ClInclude Include="Transformers.h" />
+    <ClInclude Include="FixedTransform.h" />
     <ClInclude Include="LineRasterizer.h" />
     <ClInclude Include="OpenMPRunner.h" />
     <ClInclude Include="PixelShader.h" />
-    <ClInclude Include="PrimitiveReader.h" />
     <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="IndexBufferGenerator.h" />
     <ClInclude Include="MathCommon.h" />
@@ -135,6 +133,7 @@
     <ClInclude Include="Number.h" />
     <ClInclude Include="PrimitiveListReader.h" />
     <ClInclude Include="PrimitiveStripReader.h" />
+    <ClInclude Include="RebuildTransform.h" />
     <ClInclude Include="SingleThreadRunner.h" />
     <ClInclude Include="Texture2D.h" />
     <ClInclude Include="Vector2.h" />

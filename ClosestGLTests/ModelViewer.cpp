@@ -11,10 +11,14 @@ inline static void BlitToSurface(SDL_Surface* sur, ClosestGLTests::Tools::TestTe
 			auto px = static_cast<Uint8*>(sur->pixels);
 			px += sur->pitch * y;
 			px += sur->format->BytesPerPixel * x;
-			auto pxUint32 = reinterpret_cast<Uint32*>(px);
 
 			auto newCol = tex.AccessPixelUnsafe(ClosestGL::Math::Vector2<size_t>{size_t(x), size_t(y)});
-			*pxUint32 = SDL_MapRGBA(sur->format, newCol.x * 255, newCol.y * 255, newCol.z * 255, 255);
+			const uint8_t r = uint8_t(newCol.x * 255);
+			const uint8_t g = uint8_t(newCol.y * 255);
+			const uint8_t b = uint8_t(newCol.z * 255);
+			px[0] = b;
+			px[1] = g;
+			px[2] = r;
 		}
 	}
 }

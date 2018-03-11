@@ -13,7 +13,6 @@
 #include <OpenMPRunner.h>
 #include <CVVClipper.h>
 #include <PrimitiveReader.h>
-#include <PrimitiveSender.h>
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace ClosestGL;
 using namespace std::chrono_literals;
@@ -24,17 +23,17 @@ namespace ClosestGLTests::RenderPipelineTest
 	TEST_CLASS(ModelWireFrameTest)
 	{
 	private:
-		void ViewModel(const char* path, float distance)
+		void ViewModel(const char* path,float distance)
 		{
 			auto obj = Tools::LoadModelOBJ<Vertex>(path);
 			auto& vbo = std::get<0>(obj);
 			auto ibo = ConvertTranglesToLines(std::get<1>(obj));
 
 			//ParallelStrategy::SingleThreadRunner runner;
-			ParallelStrategy::MultiThreadRunner runner(std::thread::hardware_concurrency());
-			//ParallelStrategy::OpenMPRunner runner;
-			Tools::TestTex tex{ { 1024,768 } };
-			RenderTarget rt{ Tools::Blenders::NoBlend,{ &tex } };
+			//ParallelStrategy::MultiThreadRunner runner(std::thread::hardware_concurrency());
+			ParallelStrategy::OpenMPRunner runner;
+			Tools::TestTex tex{ {1024,768} };
+			RenderTarget rt{ Tools::Blenders::NoBlend,{&tex} };
 			PixelShader ps{ &rt,PS{} };
 			LineRasterizer raster = { &ps };
 
@@ -52,36 +51,55 @@ namespace ClosestGLTests::RenderPipelineTest
 
 			const auto projectionView = projection * view;
 
-			Primitive::PrimitiveListReader<2> tr{ ibo.data(), ibo.size() };
-			ClosestGL::RenderPipeline::PrimitiveSender<Vertex, Primitive::PrimitiveListReader<2>>
-				sender{ &tr,vbo.size() };
+			std::vector<Vertex> transformed{ vbo.size() };
+
+			Primitive::PrimitiveListReader<2> tr{ibo.data(), ibo.size()};
+			Primitive::CVVClipper<Primitive::PrimitiveListReader<2>, Vertex>
+				lineReader{ transformed.data() ,&tr };
+
+			std::vector<std::array<size_t,2>> clippedPrmitive;
 
 			Tools::ViewModel(tex,
-				[&tr,&sender, projectionView, &vbo, &ibo, &raster, &tex, &runner, projection](const auto& world) {
+				[projectionView,&vbo,&ibo,&raster,&tex,&lineReader,&runner, projection,&transformed,&clippedPrmitive](const auto& world) {		
 				auto transform = projectionView * world;
 
 				ClosestGL::Primitive::FixedTransform
 				([transform](const Vertex& v) {
 					auto pos = transform * v.SVPosition;
 					return Vertex{ pos };
-				}, vbo.data(), sender.GetVertexBuffer().data(), vbo.size(), runner);
-
-				tex.Clear(Tools::TestCol{ 0,0,0,0 }, runner);
+				}, vbo.data(), transformed.data(), vbo.size(), runner);
+				
+				tex.Clear(Tools::TestCol{ 0,0,0,0 },runner);
 				runner.Wait();
 
-				sender.Send(tr, raster, runner);
+				lineReader.Reset();
+
+				clippedPrmitive.clear();
+				lineReader.WriteToVertexList(clippedPrmitive);
+
+				ClosestGL::Primitive::PlaceTransform(
+				[](Vertex& v)
+				{
+					v.SVPosition /= v.SVPosition.w;
+				},transformed.data(),transformed.size(),runner);
+				runner.Wait();
+
+				Primitive::PrimitiveReader<std::array<size_t, 2>> reader(clippedPrmitive.data(), clippedPrmitive.size());
+
+
+				raster.EmitPrimitive(reader, transformed.data(),runner);
 				runner.Wait();
 			});
 		}
 	public:
 		TEST_METHOD(TestCubeWireFrame)
 		{
-			ViewModel("Models\\Cube.obj", 2.5f);
+			ViewModel("Models\\Cube.obj",2.5f);
 		}
 
 		TEST_METHOD(TestCandyWireFrame)
 		{
-			ViewModel("Models\\Candy.obj", 48);
+			ViewModel("Models\\Candy.obj",48);
 		}
 
 		TEST_METHOD(TestAliceRoomWireFrame)

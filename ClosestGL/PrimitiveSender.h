@@ -10,10 +10,20 @@ namespace ClosestGL::RenderPipeline
 	{
 	private:
 		std::vector<TVertex> vb_;
-		std::vector<decltype(TPrimitiveReader::Read())> ibClipped_;	// Cache
+		ClosestGL::Primitive::CVVClipper<TPrimitiveReader, TVertex> reader_;
+
+		using Primitive = std::array<size_t, TPrimitiveReader::GetVertexPerPrimitive()>;
+		std::vector<Primitive> ibClipped_;	// Cache
 
 	public:
-		std::vector<TVertex>& GetVertexBuffer()
+		PrimitiveSender(TPrimitiveReader* reader,size_t vbSize = 0):
+			vb_{ vbSize },
+			reader_{ vb_.data(),reader }
+		{
+			ibClipped_.reserve(100000);
+		}
+
+		inline std::vector<TVertex>& GetVertexBuffer()
 		{
 			return vb_;
 		}
@@ -24,27 +34,24 @@ namespace ClosestGL::RenderPipeline
 			//CVVClip
 			{
 				ibClipped_.clear();
-				Primitive::CVVClipper<TPrimitiveReader, TVertex>
-					cvvCliper{ vb_.data(),&reader };
-
-				cvvCliper.WriteToVertexList(ibClipped_);
+				reader_.Reset();
+				reader_.WriteToVertexList(ibClipped_);
 			}
 
 			//PerspectiveDivision
 			{
-				Primitive::PlaceTransform(
-					[](){auto& vertex}
+				ClosestGL::Primitive::PlaceTransform(
+					[](auto& v)
 				{
-					auto w = vertex.SVPosition.w;
-					vertex.SVPosition /= w;
-					vertex.SVPosition.w = w;
-				}, vb_.data(),vb.size(),runner);
+					v.SVPosition /= v.SVPosition.w;
+				}, vb_.data(),vb_.size(),runner);
 			}
 
 			//SendToRasterizer
 			{
-				Primitive::PrimitiveReader<decltype(TPrimitiveReader::Read() >
-					reader(ibClipped_);
+				runner.Wait();
+				ClosestGL::Primitive::PrimitiveReader<Primitive>
+					reader{ ibClipped_.data(),ibClipped_.size() };
 				rasterizer.EmitPrimitive(reader, vb_.data(), runner);
 			}
 		}

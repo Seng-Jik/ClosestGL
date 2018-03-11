@@ -51,7 +51,6 @@ namespace ClosestGL::RenderPipeline
 			for(size_t step = 0; step < stepCount;++step)
 			{
 				const auto lerper = step / stepCountLerp;
-				const auto p = TVertexAttributes::Lerp(lerper, v1, v2);
 				const auto pdpos = ClosestGL::Math::Lerp(lerper, pdpos1, pdpos2);
 
 				const auto pos = 
@@ -61,6 +60,8 @@ namespace ClosestGL::RenderPipeline
 				if (pos.y < 0) continue;
 				if (pos.x >= rtSize.x) continue;
 				if (pos.y >= rtSize.y) continue;
+
+				const auto p = TVertexAttributes::Lerp(lerper, v1, v2);
 				nextStage->EmitPixel(p, pos);
 			}
 		}

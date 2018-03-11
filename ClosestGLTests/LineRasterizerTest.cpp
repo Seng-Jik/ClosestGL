@@ -63,7 +63,7 @@ namespace ClosestGLTests::RenderPipelineTest
 			ParallelStrategy::MultiThreadRunner 
 				sr(std::thread::hardware_concurrency());
 
-			lr.EmitPrimitive(preader, vertex, sr);
+			lr.EmitPrimitive(preader, vertex,3, sr);
 
 			Tools::ViewSurface(tex);
 		}

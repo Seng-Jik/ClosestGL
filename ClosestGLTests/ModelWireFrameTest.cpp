@@ -12,6 +12,8 @@
 #include <MatrixTransform.h>
 #include <CVVClipper.h>
 #include <PrimitiveReader.h>
+#include <PerspectiveDivisionBuffer.h>
+
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace ClosestGL;
 using namespace std::chrono_literals;
@@ -52,18 +54,16 @@ namespace ClosestGLTests::RenderPipelineTest
 
 			std::vector<Vertex> transformed{ vbo.size() };
 
-			std::vector<std::array<size_t, 2>> clipped;
 
 			Tools::ViewModel(tex,
-				[&transformed,&clipped,projectionView,&vbo,&ibo,&raster,&tex,&lineReader,&runner, projection](const auto& world) {
+				[&transformed,projectionView,&vbo,&raster,&tex,&lineReader,&runner](const auto& world) {
 
 				
 				auto transform = projectionView * world;
 
 				ClosestGL::Primitive::FixedTransform
 				([transform](const Vertex& v) {
-					auto pos = transform * v.SVPosition;
-					return Vertex{ pos };
+					return Vertex{ transform * v.SVPosition };
 				}, vbo.data(), transformed.data(), vbo.size(), runner);
 				
 				tex.Clear(Tools::TestCol{ 0,0,0,0 },runner);
@@ -71,22 +71,7 @@ namespace ClosestGLTests::RenderPipelineTest
 
 				runner.Wait();
 
-				//CVVClip
-				clipped.clear();
-				Primitive::CVVClipper<Primitive::PrimitiveListReader<2>, Vertex> clipper{ transformed.data(),&lineReader };
-				clipper.WriteToVertexList(clipped);
-
-				Primitive::PrimitiveReader<std::array<size_t, 2>> r{ clipped.data(),clipped.size() };
-
-				ClosestGL::Primitive::PlaceTransform(
-					[](auto& v)
-				{
-					v.SVPosition /= v.SVPosition.w;
-				}, transformed.data(), transformed.size(), runner);
-				
-
-				runner.Wait();
-				raster.EmitPrimitive(r, transformed.data(),runner);
+				raster.EmitPrimitive(lineReader, transformed.data(), transformed.size(),runner);
 				runner.Wait();
 			});
 		}

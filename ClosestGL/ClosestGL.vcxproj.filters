@@ -111,6 +111,9 @@
     <ClInclude Include="PrimitiveReader.h">
       <Filter>头文件\Primitive</Filter>
     </ClInclude>
+    <ClInclude Include="PerspectiveDivisionBuffer.h">
+      <Filter>头文件\Primitive</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="RenderPipeline.dgml" />

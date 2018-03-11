@@ -2,6 +2,22 @@
 #include "ModelViewer.h"
 #include <Vector3.h>
 #include <MatrixTransform.h>
+#include "../SDL2/include/SDL.h"
+
+inline static void BlitToSurface(SDL_Surface* sur, ClosestGLTests::Tools::TestTex& tex)
+{
+	for (int y = 0; y < sur->h; ++y) {
+		for (int x = 0; x < sur->w; ++x) {
+			auto px = static_cast<Uint8*>(sur->pixels);
+			px += sur->pitch * y;
+			px += sur->format->BytesPerPixel * x;
+			auto pxUint32 = reinterpret_cast<Uint32*>(px);
+
+			auto newCol = tex.AccessPixelUnsafe(ClosestGL::Math::Vector2<size_t>{size_t(x), size_t(y)});
+			*pxUint32 = SDL_MapRGBA(sur->format, newCol.x * 255, newCol.y * 255, newCol.z * 255, 255);
+		}
+	}
+}
 
 
 void ClosestGLTests::Tools::ViewModel(TestTex & sur, const ModelRenderer & renderer, uint64_t time)
@@ -12,7 +28,7 @@ void ClosestGLTests::Tools::ViewModel(TestTex & sur, const ModelRenderer & rende
 
 	SDL::Window window
 	{
-		"ClosestGL Demo",
+		"",
 		SDL::Rect<int>{ SDL::Window::Center,SDL::Window::Center,int(s.x),int(s.y) },
 		SDL::Window::WindowFlag::Null
 	};
@@ -27,8 +43,20 @@ void ClosestGLTests::Tools::ViewModel(TestTex & sur, const ModelRenderer & rende
 	bool killWithTimeOut = true;
 	auto p = sdl.GetTicks();
 	auto lastMouse = mouse.GetMouseState();
+
+	int fpsCounter = 0;
+	auto fpsTimer = sdl.GetTicks();
 	while (true)
 	{
+		fpsCounter++;
+		if (sdl.GetTicks() - fpsTimer >= 1000)
+		{
+			fpsTimer = sdl.GetTicks();
+			window.SetWindowTitle("FPS:" + std::to_string(fpsCounter));
+			
+			fpsCounter = 0;
+		}
+
 		auto trans = ClosestGL::Math::GetTransformMatrix(transform);
 		auto rotX = Matrix4(ClosestGL::Math::GetXRotateMatrix(rotate.x));
 		auto rotY = Matrix4(ClosestGL::Math::GetYRotateMatrix(rotate.y));
@@ -39,13 +67,9 @@ void ClosestGLTests::Tools::ViewModel(TestTex & sur, const ModelRenderer & rende
 
 		renderer(model);
 
-		window.GetWindowSurface().Shade(
-			[&sur](int x, int y, auto&, auto&)
-		{
-			auto col = sur.AccessPixelUnsafe({ size_t(x),size_t(y) });
-			return SDL::Color<uint8_t>{ uint8_t(col.x * 255), uint8_t(col.y * 255), uint8_t(col.z * 255), uint8_t(col.w * 255) };
-		}
-		);
+		BlitToSurface(window.GetWindowSurface().GetPtrToSDL_Surface(), sur);
+
+
 
 		window.UpdateWindowSurface();
 

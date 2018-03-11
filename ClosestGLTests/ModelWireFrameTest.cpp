@@ -14,6 +14,7 @@
 #include <CVVClipper.h>
 #include <PrimitiveReader.h>
 #include <PerspectiveDivisionBuffer.h>
+#include <DepthTest.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace ClosestGL;
@@ -36,7 +37,8 @@ namespace ClosestGLTests::RenderPipelineTest
 			Tools::TestTex tex{ {1024,768} };
 			RenderTarget rt{ Tools::Blenders::NoBlend,{&tex} };
 			PixelShader ps{ &rt,PS{} };
-			LineRasterizer raster = { &ps };
+			ClosestGL::RenderPipeline::DepthTest<decltype(ps), float> dptest{ &ps };
+			ClosestGL::RenderPipeline::LineRasterizer<decltype(dptest), float> raster = { &dptest };
 			Primitive::PrimitiveListReader<2> lineReader{ ibo.data(), ibo.size() };
 
 			auto size = tex.GetSize();
@@ -57,7 +59,7 @@ namespace ClosestGLTests::RenderPipelineTest
 
 
 			Tools::ViewModel(tex,
-				[&transformed,projectionView,&vbo,&raster,&tex,&lineReader,&runner](const auto& world) {
+				[&dptest,&transformed,projectionView,&vbo,&raster,&tex,&lineReader,&runner](const auto& world) {
 
 				
 				auto transform = projectionView * world;
@@ -68,6 +70,7 @@ namespace ClosestGLTests::RenderPipelineTest
 				}, vbo.data(), transformed.data(), vbo.size(), runner);
 				
 				tex.Clear(Tools::TestCol{ 0,0,0,0 },runner);
+				dptest.ClearDepthBuffer(runner);
 				lineReader.Reset();
 
 				runner.Wait();

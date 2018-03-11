@@ -21,15 +21,16 @@ namespace ClosestGL::Texture
 
 		/* 传入纹理大小，构造一个2D纹理。 */
 		Texture2D(Math::Vector2<size_t> size) :
-			size_{ size },
-			color_{ size.x * size.y }
-		{}
+			size_{ size }
+		{
+			color_.resize(size_t(size.x * size.y));
+		}
 
 		/* 获取纹理大小 */
-		Math::Vector2<size_t> GetSize() const { return size_; };
+		auto GetSize() const { return size_; };
 
 		/* 获取指向第一个像素的指针 */
-		ColorType* Data() { return color_.data(); }
+		auto Data() { return color_.data(); }
 
 		/* 计算坐标pos位置对应的像素的偏移量。 */
 		size_t CalcOffset(Math::Vector2<size_t> pos)

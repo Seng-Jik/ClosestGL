@@ -42,9 +42,6 @@ namespace ClosestGLTests::Tools
 		using PixelShader = ClosestGL::RenderPipeline::PixelShader
 			<RenderTarget, PS>;
 
-		using LineRasterizer =
-			ClosestGL::RenderPipeline::LineRasterizer<PixelShader, float>;
-
 		std::vector<size_t> ConvertTranglesToLines(const std::vector<size_t>&);
 	}
 

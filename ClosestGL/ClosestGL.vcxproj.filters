@@ -117,6 +117,9 @@
     <ClInclude Include="OpenMPRunner.h">
       <Filter>头文件\ParallelStrategy</Filter>
     </ClInclude>
+    <ClInclude Include="DepthTest.h">
+      <Filter>头文件\RenderPipeline</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="RenderPipeline.dgml" />

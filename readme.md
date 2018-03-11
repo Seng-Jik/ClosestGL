@@ -44,6 +44,7 @@
 #include <LineRasterizer.h>
 #include <PrimitiveStripReader.h>
 #include <MultiThreadRunner.h>
+#include <DepthTest.h>
 
 using namespace ClosestGL;
 
@@ -74,7 +75,10 @@ RenderPipeline::RenderTarget renderTarget<1,ColorType,decltype(NoBlend)>
 RenderPipeline::PixelShader<decltype(rt),decltype(PixelShader)>
 	ps(&renderTarget,PixelShader);	//创建像素着色器实例，并且将颜色输出导引到渲染目标上。
 	
-RenderPipeline::LineRasterizer<decltype(ps),float> lr(&ps);	//以float精度创建导引到ps着色器的直线光栅器lr
+RenderPipeline::DepthTest<decltype(ps),float> dptest { &ps };	//创建深度测试器，并把输出绑定到ps上。
+	
+RenderPipeline::LineRasterizer<decltype(dptest),float> lr(&dptest);
+//以float精度创建绑定到深度测试器dptest的直线光栅器lr
 
 const Vertex vertex[] = 		//三个顶点的顶点缓存
 {

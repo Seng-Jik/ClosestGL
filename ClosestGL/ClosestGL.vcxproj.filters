@@ -108,9 +108,6 @@
     <ClInclude Include="CVVClipper.h">
       <Filter>头文件\Primitive</Filter>
     </ClInclude>
-    <ClInclude Include="PrimitiveSender.h">
-      <Filter>头文件\RenderPipeline</Filter>
-    </ClInclude>
     <ClInclude Include="PrimitiveReader.h">
       <Filter>头文件\Primitive</Filter>
     </ClInclude>

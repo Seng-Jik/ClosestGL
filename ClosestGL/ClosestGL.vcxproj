@@ -121,7 +121,6 @@
     <ClInclude Include="LineRasterizer.h" />
     <ClInclude Include="PixelShader.h" />
     <ClInclude Include="PrimitiveReader.h" />
-    <ClInclude Include="PrimitiveSender.h" />
     <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="IndexBufferGenerator.h" />
     <ClInclude Include="MathCommon.h" />

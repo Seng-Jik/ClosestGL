@@ -117,8 +117,11 @@
   <ItemGroup>
     <ClInclude Include="ConcurrentQueue.h" />
     <ClInclude Include="CoordinateSystem.h" />
+    <ClInclude Include="CVVClipper.h" />
     <ClInclude Include="LineRasterizer.h" />
     <ClInclude Include="PixelShader.h" />
+    <ClInclude Include="PrimitiveReader.h" />
+    <ClInclude Include="PrimitiveSender.h" />
     <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="IndexBufferGenerator.h" />
     <ClInclude Include="MathCommon.h" />

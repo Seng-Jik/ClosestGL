@@ -22,7 +22,7 @@
 ### 光栅渲染管线效果
 ![WireFrameRendering](WireFrameRendering.gif)
 ![CandyWireFrameRendering](CandyWireFrameRendering.gif)
-![CVVClip1](CVVClip1.gif)
+![CVVClip1](CVVClip.gif)
 ![CVVClip2](CVVClip2.gif)
 
 ### 使用说明

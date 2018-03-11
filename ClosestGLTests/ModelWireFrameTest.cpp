@@ -6,6 +6,7 @@
 #include <LineRasterizer.h>
 #include <PrimitiveListReader.h>
 #include "OBJLoader.h"
+#include <OpenMPRunner.h>
 #include <MultiThreadRunner.h>
 #include "ModelViewer.h"
 #include <Transformers.h>
@@ -16,7 +17,6 @@
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace ClosestGL;
-using namespace std::chrono_literals;
 using namespace ClosestGLTests::Tools::WireFrameViewer;
 
 namespace ClosestGLTests::RenderPipelineTest
@@ -32,6 +32,7 @@ namespace ClosestGLTests::RenderPipelineTest
 
 			//ParallelStrategy::SingleThreadRunner runner;
 			ParallelStrategy::MultiThreadRunner runner(std::thread::hardware_concurrency());
+			//ParallelStrategy::OpenMPRunner runner;
 			Tools::TestTex tex{ {1024,768} };
 			RenderTarget rt{ Tools::Blenders::NoBlend,{&tex} };
 			PixelShader ps{ &rt,PS{} };

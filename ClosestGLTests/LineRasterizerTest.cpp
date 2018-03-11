@@ -35,6 +35,7 @@ namespace ClosestGLTests::RenderPipelineTest
 		{
 			const auto PS = [](const Vertex& psi)
 			{
+				std::this_thread::sleep_for(1ms);
 				std::array<Math::Vector4<float>, 1> ret{ psi.Color };
 				return ret;
 			};
@@ -65,7 +66,7 @@ namespace ClosestGLTests::RenderPipelineTest
 
 			lr.EmitPrimitive(preader, vertex,3, sr);
 
-			Tools::ViewSurface(tex);
+			Tools::ViewSurface(tex,4000);
 		}
 	};
 }

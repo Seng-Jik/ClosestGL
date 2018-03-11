@@ -31,7 +31,6 @@ void ClosestGLTests::Tools::ViewSurface(TestTex & sur, uint64_t time)
 
 		sdl.ProcessEvents();
 		if (sdl.QuitRequested() || sdl.GetTicks() - p > time) break;
-		sdl.Delay(16);
 	}
 	
 }

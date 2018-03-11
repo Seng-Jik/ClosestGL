@@ -2,28 +2,6 @@
 #include "ModelViewer.h"
 #include <Vector3.h>
 #include <MatrixTransform.h>
-#include "../SDL2/include/SDL_surface.h"
-
-static inline void BlitTestTexToSurface(ClosestGLTests::Tools::TestTex& tex, SDL_Surface* surface)
-{
-	const int bytePerPixel = surface->format->BytesPerPixel;
-
-#pragma omp parallel for
-	for (int y = 0; y < surface->h; ++y)
-	{
-		for (int x = 0; x < surface->w; ++x)
-		{
-			const auto offset = y * surface->pitch + x * bytePerPixel;
-			const auto col = tex.AccessPixelUnsafe(ClosestGL::Math::Vector2<size_t>{size_t(x), size_t(y)});
-
-			uint8_t* byte = ((uint8_t*)surface->pixels) + offset;
-			byte[0] = uint8_t(col.z * 255);
-			byte[1] = uint8_t(col.y * 255);
-			byte[2] = uint8_t(col.z * 255);
-			byte[3] = 255;
-		}
-	}
-}
 
 
 void ClosestGLTests::Tools::ViewModel(TestTex & sur, const ModelRenderer & renderer, uint64_t time)
@@ -34,7 +12,7 @@ void ClosestGLTests::Tools::ViewModel(TestTex & sur, const ModelRenderer & rende
 
 	SDL::Window window
 	{
-		"",
+		"ClosestGL Demo",
 		SDL::Rect<int>{ SDL::Window::Center,SDL::Window::Center,int(s.x),int(s.y) },
 		SDL::Window::WindowFlag::Null
 	};
@@ -49,20 +27,8 @@ void ClosestGLTests::Tools::ViewModel(TestTex & sur, const ModelRenderer & rende
 	bool killWithTimeOut = true;
 	auto p = sdl.GetTicks();
 	auto lastMouse = mouse.GetMouseState();
-
-	int fpsCounter = 0;
-	uint64_t fpsTimer = sdl.GetTicks();
 	while (true)
 	{
-		fpsCounter++;
-
-		if (sdl.GetTicks() - fpsTimer >= 1000)
-		{
-			window.SetWindowTitle("FPS:" + std::to_string(fpsCounter));
-			fpsCounter = 0;
-			fpsTimer = sdl.GetTicks();
-		}
-
 		auto trans = ClosestGL::Math::GetTransformMatrix(transform);
 		auto rotX = Matrix4(ClosestGL::Math::GetXRotateMatrix(rotate.x));
 		auto rotY = Matrix4(ClosestGL::Math::GetYRotateMatrix(rotate.y));
@@ -73,7 +39,13 @@ void ClosestGLTests::Tools::ViewModel(TestTex & sur, const ModelRenderer & rende
 
 		renderer(model);
 
-		BlitTestTexToSurface(sur, window.GetWindowSurface().GetPtrToSDL_Surface());
+		window.GetWindowSurface().Shade(
+			[&sur](int x, int y, auto&, auto&)
+		{
+			auto col = sur.AccessPixelUnsafe({ size_t(x),size_t(y) });
+			return SDL::Color<uint8_t>{ uint8_t(col.x * 255), uint8_t(col.y * 255), uint8_t(col.z * 255), uint8_t(col.w * 255) };
+		}
+		);
 
 		window.UpdateWindowSurface();
 

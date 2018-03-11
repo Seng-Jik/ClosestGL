@@ -119,7 +119,6 @@
     <ClInclude Include="CoordinateSystem.h" />
     <ClInclude Include="FixedTransform.h" />
     <ClInclude Include="LineRasterizer.h" />
-    <ClInclude Include="OpenMPRunner.h" />
     <ClInclude Include="PixelShader.h" />
     <ClInclude Include="RenderTarget.h" />
     <ClInclude Include="IndexBufferGenerator.h" />

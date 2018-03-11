@@ -10,7 +10,6 @@
 #include "ModelViewer.h"
 #include <FixedTransform.h>
 #include <MatrixTransform.h>
-#include <OpenMPRunner.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace ClosestGL;
@@ -29,8 +28,7 @@ namespace ClosestGLTests::RenderPipelineTest
 			auto ibo = ConvertTranglesToLines(std::get<1>(obj));
 
 			//ParallelStrategy::SingleThreadRunner runner;
-			//ParallelStrategy::MultiThreadRunner runner(std::thread::hardware_concurrency());
-			ParallelStrategy::OpenMPRunner runner;
+			ParallelStrategy::MultiThreadRunner runner(std::thread::hardware_concurrency());
 			Tools::TestTex tex{ {1024,768} };
 			RenderTarget rt{ Tools::Blenders::NoBlend,{&tex} };
 			PixelShader ps{ &rt,PS{} };
@@ -51,12 +49,10 @@ namespace ClosestGLTests::RenderPipelineTest
 
 			const auto projectionView = projection * view;
 
-			std::vector<Vertex> transformed{ vbo.size() };
-
 			Tools::ViewModel(tex,
-				[projectionView,&vbo,&ibo,&raster,&tex,&lineReader,&runner, projection,&transformed](const auto& world) {
+				[projectionView,&vbo,&ibo,&raster,&tex,&lineReader,&runner, projection](const auto& world) {
 
-				
+				std::vector<Vertex> transformed{ vbo.size() };
 				auto transform = projectionView * world;
 
 				ClosestGL::Primitive::FixedTransform

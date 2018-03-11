@@ -80,7 +80,7 @@ namespace ClosestGL::RenderPipeline
 			{
 				auto ps = primitiveReader.Read();
 
-				runner.Commit([vbo,ps = std::move(ps),rtSize, rtSizeLength,this] {
+				runner.Commit([vbo,ps,rtSize, rtSizeLength,this] {
 					DrawLine(vbo[ps[0]], vbo[ps[1]], rtSize, rtSizeLength);
 				});
 			}

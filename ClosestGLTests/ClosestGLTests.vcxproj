@@ -116,8 +116,8 @@
       <Message>准备SDL2的DLL</Message>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>md $(OutDir)Models
-copy $(ProjectDir)Models\* $(OutDir)Models
+      <Command>md $(OutDir)Assets
+copy $(ProjectDir)Assets\* $(OutDir)Assets
 </Command>
     </PreBuildEvent>
     <PreBuildEvent>
@@ -145,8 +145,8 @@ copy $(ProjectDir)Models\* $(OutDir)Models
       <Message>准备SDL2的DLL</Message>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>md $(OutDir)Models
-copy $(ProjectDir)Models\* $(OutDir)Models
+      <Command>md $(OutDir)Assets
+copy $(ProjectDir)Assets\* $(OutDir)Assets
 </Command>
     </PreBuildEvent>
     <PreBuildEvent>
@@ -178,8 +178,8 @@ copy $(ProjectDir)Models\* $(OutDir)Models
       <Message>准备SDL2的DLL</Message>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>md $(OutDir)Models
-copy $(ProjectDir)Models\* $(OutDir)Models
+      <Command>md $(OutDir)Assets
+copy $(ProjectDir)Assets\* $(OutDir)Assets
 </Command>
     </PreBuildEvent>
     <PreBuildEvent>
@@ -211,8 +211,8 @@ copy $(ProjectDir)Models\* $(OutDir)Models
       <Message>准备SDL2的DLL</Message>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>md $(OutDir)Models
-copy $(ProjectDir)Models\* $(OutDir)Models
+      <Command>md $(OutDir)Assets
+copy $(ProjectDir)Assets\* $(OutDir)Assets
 </Command>
     </PreBuildEvent>
     <PreBuildEvent>

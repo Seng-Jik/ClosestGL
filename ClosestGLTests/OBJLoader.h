@@ -8,9 +8,9 @@
 namespace ClosestGLTests::Tools
 {
 	template<typename TVertex>
-	std::tuple<std::vector<TVertex>, std::vector<size_t>> LoadModelOBJ(const char* path)
+	std::tuple<std::vector<TVertex>, std::vector<size_t>> LoadModelOBJWireFrameOnly(const char* path)
 	{
-		std::ifstream in(path);
+		std::ifstream in((std::string{ "Assets\\" } + path + ".obj").c_str());
 		std::tuple<std::vector<TVertex>, std::vector<size_t>> ret;
 
 		if (in.fail()) std::terminate();

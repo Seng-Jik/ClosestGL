@@ -27,7 +27,7 @@ namespace ClosestGLTests::RenderPipelineTest
 	private:
 		void ViewModel(const char* path,float distance)
 		{
-			auto obj = Tools::LoadModelOBJ<Vertex>(path);
+			auto obj = Tools::LoadModelOBJWireFrameOnly<Vertex>(path);
 			auto& vbo = std::get<0>(obj);
 			auto ibo = ConvertTranglesToLines(std::get<1>(obj));
 
@@ -82,22 +82,22 @@ namespace ClosestGLTests::RenderPipelineTest
 	public:
 		TEST_METHOD(TestCubeWireFrame)
 		{
-			ViewModel("Models\\Cube.obj",2.0f);
+			ViewModel("Cube",50);
 		}
 
 		TEST_METHOD(TestCandyWireFrame)
 		{
-			ViewModel("Models\\Candy.obj",50);
+			ViewModel("Candy",50);
 		}
 
 		TEST_METHOD(TestAliceRoomWireFrame)
 		{
-			ViewModel("Models\\Alice's Room.obj", 1600);
+			ViewModel("Alice's Room", 1600);
 		}
 
 		TEST_METHOD(TestTHDMZStage1)
 		{
-			ViewModel("Models\\THDMZStage1.obj", 1600);
+			ViewModel("THDMZStage1", 1600);
 		}
 	};
 }

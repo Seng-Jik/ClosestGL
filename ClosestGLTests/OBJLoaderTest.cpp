@@ -28,7 +28,7 @@ namespace ClosestGLTests::Tools
 	public:
 		TEST_METHOD(TestLoadOBJ)
 		{
-			auto obj = LoadModelOBJ<Vertex>("Models\\Cube.obj");
+			auto obj = LoadModelOBJWireFrameOnly<Vertex>("Cube");
 
 			for (const auto& p : std::get<0>(obj))
 			{

@@ -73,12 +73,12 @@ namespace ClosestGL::RenderPipeline
 
 		template<
 			typename TPrimitiveReader,
-			typename TVertexBuffer,
+			typename TVertex,
 			typename TRunner>
 
 		void EmitPrimitive(
 			TPrimitiveReader& primitiveReader, 
-			const TVertexBuffer* vbo,
+			const TVertex* vbo,
 			size_t vertexCount,
 			TRunner& runner)
 		{
@@ -95,11 +95,12 @@ namespace ClosestGL::RenderPipeline
 			{
 				auto ps = primitiveReader.Read();
 
-				if (!Primitive::CheckCVV(vbo, ps)) continue;
-
-				runner.Commit([vbo,ps,rtSize, rtSizeLength,this] {
-					DrawLine(vbo[ps[0]], vbo[ps[1]], ps[0],ps[1], rtSize, rtSizeLength);
-				});
+				if (Primitive::CheckCVV(vbo, ps)) 
+				{
+					runner.Commit([vbo, ps, rtSize, rtSizeLength, this] {
+						DrawLine(vbo[ps[0]], vbo[ps[1]], ps[0], ps[1], rtSize, rtSizeLength);
+					});
+				}
 			}
 		}
 	};

@@ -110,5 +110,8 @@
     <ClCompile Include="ModelWireFrameTest.cpp">
       <Filter>源文件\RenderPipelineTest</Filter>
     </ClCompile>
+    <ClCompile Include="TriangleRasterizerTest.cpp">
+      <Filter>源文件\RenderPipelineTest</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

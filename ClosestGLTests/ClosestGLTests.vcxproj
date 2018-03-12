@@ -251,6 +251,7 @@ copy $(ProjectDir)Assets\* $(OutDir)Assets
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="MatrixTransformTest.cpp" />
+    <ClCompile Include="TriangleRasterizerTest.cpp" />
     <ClCompile Include="VectorTest.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

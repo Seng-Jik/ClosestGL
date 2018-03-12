@@ -132,6 +132,7 @@
     <ClInclude Include="Matrix4.h" />
     <ClInclude Include="MatrixTransform.h" />
     <ClInclude Include="Transformers.h" />
+    <ClInclude Include="TriangleRasterizer.h" />
     <ClInclude Include="TypeMaxValues.h" />
     <ClInclude Include="MultiThreadRunner.h" />
     <ClInclude Include="Number.h" />

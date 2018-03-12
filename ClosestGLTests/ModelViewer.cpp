@@ -4,7 +4,7 @@
 #include <MatrixTransform.h>
 #include "../SDL2/include/SDL.h"
 
-inline static void BlitToSurface(SDL_Surface* sur, ClosestGLTests::Tools::TestTex& tex)
+void BlitToSurface(SDL_Surface* sur, ClosestGLTests::Tools::TestTex& tex)
 {
 	for (int y = 0; y < sur->h; ++y) {
 		for (int x = 0; x < sur->w; ++x) {

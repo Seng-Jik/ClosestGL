@@ -1,5 +1,8 @@
 #include "stdafx.h"
 #include "SurfaceViewer.h"
+#include "../SDL2/include/SDL.h"
+
+void BlitToSurface(SDL_Surface* sur, ClosestGLTests::Tools::TestTex& tex);
 
 void ClosestGLTests::Tools::ViewSurface(TestTex & sur, uint64_t time)
 {
@@ -19,13 +22,7 @@ void ClosestGLTests::Tools::ViewSurface(TestTex & sur, uint64_t time)
 	auto p = sdl.GetTicks();
 	while (true)
 	{
-		window.GetWindowSurface().Shade(
-			[&sur](int x, int y, auto&, auto&)
-		{
-			auto col = sur.AccessPixelUnsafe({ size_t(x),size_t(y) });
-			return SDL::Color<uint8_t>{ uint8_t(col.x * 255), uint8_t(col.y * 255), uint8_t(col.z * 255), uint8_t(col.w * 255) };
-		}
-		);
+		BlitToSurface(window.GetWindowSurface().GetPtrToSDL_Surface(), sur);
 
 		window.UpdateWindowSurface();
 

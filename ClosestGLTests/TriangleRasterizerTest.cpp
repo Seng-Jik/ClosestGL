@@ -81,13 +81,13 @@ namespace ClosestGLTests::RenderPipelineTest
 
 		TEST_METHOD(TestTexturedQuad)
 		{
-			struct Vertex
+			struct VertexShaderOut
 			{
 				Math::Vector4<float> SVPosition;
 				Math::Vector2<float> UV;
 				float RHW;
 
-				static Vertex Lerp(float x, const Vertex& p1, const Vertex& p2)
+				static VertexShaderOut Lerp(float x, const VertexShaderOut& p1, const VertexShaderOut& p2)
 				{
 					return {
 						Math::Lerp(x,p1.SVPosition,p2.SVPosition),
@@ -95,6 +95,12 @@ namespace ClosestGLTests::RenderPipelineTest
 						Math::Lerp(x,p1.RHW,p2.RHW)
 					};
 				}
+			};
+
+			struct VertexShaderIn
+			{
+				Math::Vector4<float> SVPosition;
+				Math::Vector2<float> UV;
 			};
 
 			Tools::TestTex texture{ { 512,512 } };
@@ -110,7 +116,7 @@ namespace ClosestGLTests::RenderPipelineTest
 				<decltype(texture), decltype(Texture::Sampler::UVNormalizer::UV2DRepeat)>
 				sampler(&texture, Texture::Sampler::UVNormalizer::UV2DRepeat);
 
-			const std::vector<Vertex> mesh =
+			const std::vector<VertexShaderIn> mesh =
 			{
 				{ { -0.5F,-0.5F,0,1 }	,{ 0,0 } },
 				{ { -0.5F,0.5F,0,1 }	,{ 0,1 } },
@@ -128,7 +134,7 @@ namespace ClosestGLTests::RenderPipelineTest
 			RenderPipeline::RenderTarget<1, Tools::TestCol, decltype(Tools::Blenders::NoBlend)>
 				renderTarget{ Tools::Blenders::NoBlend,{ &fb } };
 
-			const auto PixelShader = [&sampler](const Vertex& v)
+			const auto PixelShader = [&sampler](const VertexShaderOut& v)
 			{
 				const auto w = 1 / v.RHW;
 				return std::array<Tools::TestCol, 1>
@@ -156,7 +162,7 @@ namespace ClosestGLTests::RenderPipelineTest
 			);
 
 			const auto vp = projection * view;
-			std::vector<Vertex> transformed{ mesh.size() };
+			std::vector<VertexShaderOut> transformed{ mesh.size() };
 
 			Tools::ViewModel(fb, 
 				[vp,&raster,&preader,&mesh,&fb,&transformed]
@@ -166,12 +172,12 @@ namespace ClosestGLTests::RenderPipelineTest
 
 				const auto transform = vp * world;
 				Primitive::FixedTransform(
-					[&transform](const Vertex& v)
+					[&transform](const VertexShaderIn& v)
 				{
 					const auto pos = transform * v.SVPosition;
 					const float rhw = 1 / pos.w;
 
-					return Vertex{
+					return VertexShaderOut{
 						pos * rhw,
 						v.UV * rhw,
 						rhw

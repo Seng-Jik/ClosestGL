@@ -121,6 +121,7 @@
     <ClInclude Include="DepthTest.h" />
     <ClInclude Include="LineRasterizer.h" />
     <ClInclude Include="OpenMPRunner.h" />
+    <ClInclude Include="PerspectiveCorrector.h" />
     <ClInclude Include="PerspectiveDivisionBuffer.h" />
     <ClInclude Include="PixelShader.h" />
     <ClInclude Include="PrimitiveReader.h" />

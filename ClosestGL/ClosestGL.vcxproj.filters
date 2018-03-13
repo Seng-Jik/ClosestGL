@@ -129,6 +129,9 @@
     <ClInclude Include="UVNormalizer.h">
       <Filter>头文件\Texture\Sampler</Filter>
     </ClInclude>
+    <ClInclude Include="PerspectiveCorrector.h">
+      <Filter>头文件\RenderPipeline</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="RenderPipeline.dgml" />

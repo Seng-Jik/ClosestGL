@@ -7,8 +7,10 @@
 #include <MatrixTransform.h>
 #include <UVNormalizer.h>
 #include <Transformers.h>
+#include <PerspectiveCorrector.h>
 
 using namespace ClosestGL;
+using namespace ClosestGL::RenderPipeline::PerspectiveCorrector;
 
 namespace ClosestGLTests::RenderPipelineTest
 {
@@ -177,9 +179,11 @@ namespace ClosestGLTests::RenderPipelineTest
 					const auto pos = transform * v.SVPosition;
 					const float rhw = 1 / pos.w;
 
+					BeforePerspectiveDivision<float> fixed(pos);
+
 					return VertexShaderOut{
 						pos,
-						v.UV * rhw,
+						fixed(v.UV),
 						rhw
 					};
 				}, mesh.data(), transformed.data(), mesh.size(), ParallelStrategy::SingleThreadRunner{});

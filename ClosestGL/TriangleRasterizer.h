@@ -112,8 +112,6 @@ namespace ClosestGL::RenderPipeline
 
 					const auto splitVertexPerspectived = Math::Lerp(splitLerp, pbuf_.AccessUnsafe(tri[2]), pbuf_.AccessUnsafe(tri[0]));
 
-					DrawDebugLine(vb[tri[1]], splitVertex, pbuf_.AccessUnsafe(tri[1]), splitVertexPerspectived, rtSize);
-
 					const auto splitVertexRPos =
 						Math::ConvertVertexPosToRenderTargetPos(splitVertexPerspectived, rtSize);
 

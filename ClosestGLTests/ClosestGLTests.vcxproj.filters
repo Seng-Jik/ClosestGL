@@ -51,6 +51,9 @@
     <ClInclude Include="ModelViewer.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="BMPLoader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -112,6 +115,12 @@
     </ClCompile>
     <ClCompile Include="TriangleRasterizerTest.cpp">
       <Filter>源文件\RenderPipelineTest</Filter>
+    </ClCompile>
+    <ClCompile Include="BMPLoadTest.cpp">
+      <Filter>源文件\TextureTest</Filter>
+    </ClCompile>
+    <ClCompile Include="BMPLoader.cpp">
+      <Filter>源文件\TestTools</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

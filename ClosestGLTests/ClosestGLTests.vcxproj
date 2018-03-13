@@ -221,11 +221,14 @@ copy $(ProjectDir)Assets\* $(OutDir)Assets
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Blenders.h" />
+    <ClInclude Include="BMPLoader.h" />
     <ClInclude Include="ModelViewer.h" />
     <ClInclude Include="OBJLoader.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="SurfaceViewer.h" />
     <ClInclude Include="targetver.h" />
+    <ClCompile Include="BMPLoader.cpp" />
+    <ClCompile Include="BMPLoadTest.cpp" />
     <ClCompile Include="ModelWireFrameTest.cpp" />
     <ClCompile Include="LineRasterizerTest.cpp" />
     <ClCompile Include="ModelViewer.cpp" />

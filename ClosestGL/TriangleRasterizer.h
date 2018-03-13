@@ -15,24 +15,6 @@ namespace ClosestGL::RenderPipeline
 
 		Primitive::PerspectiveDivisionBuffer<TLerpType> pbuf_;
 
-		template <typename TVertex>
-		void DrawDebugLine(
-			TVertex p1,TVertex p2,
-			Math::Vector2<TLerpType> p1p,
-			Math::Vector2<TLerpType> p2p,
-			Math::Vector2<size_t> rtSize
-		)
-		{
-			/*for (int i = 0; i < 100; ++i)
-			{
-				TLerpType t = TLerpType(i) / TLerpType(100);
-				const auto vert = TVertex::Lerp(t, p1, p2);
-				const auto per = Math::Lerp(t, p1p, p2p);
-				const auto rpos = Math::ConvertVertexPosToRenderTargetPos(per, rtSize);
-				nextStage_->EmitPixel(vert, rpos);
-			}*/
-		};
-
 		template<typename TVertex>
 		void DrawScanLine(
 			const TVertex& x1,size_t x1r,
@@ -118,10 +100,6 @@ namespace ClosestGL::RenderPipeline
 						[this](size_t p1,size_t p2) {
 						return pbuf_.AccessUnsafe(p1).y < pbuf_.AccessUnsafe(p2).y;
 					});
-
-					DrawDebugLine(vb[tri[0]], vb[tri[1]], pbuf_.AccessUnsafe(tri[0]), pbuf_.AccessUnsafe(tri[1]),rtSize);
-					DrawDebugLine(vb[tri[1]], vb[tri[2]], pbuf_.AccessUnsafe(tri[1]), pbuf_.AccessUnsafe(tri[2]),rtSize);
-					DrawDebugLine(vb[tri[0]], vb[tri[2]], pbuf_.AccessUnsafe(tri[0]), pbuf_.AccessUnsafe(tri[2]),rtSize);
 
 					const auto splitLerp =
 						1-((pbuf_.AccessUnsafe(tri[1]).y - pbuf_.AccessUnsafe(tri[0]).y) /

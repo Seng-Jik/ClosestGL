@@ -14,53 +14,6 @@ namespace ClosestGLTests::RenderPipelineTest
 {
 	TEST_CLASS(TriangleRasterizerTest)
 	{
-		TEST_METHOD(TestColoredTriangle)
-		{
-			struct Vertex
-			{
-				Math::Vector4<float> SVPosition;
-				Math::Vector4<float> Color;
-
-				static Vertex Lerp(float x, const Vertex& p1, const Vertex& p2)
-				{
-					return {
-						Math::Lerp(x,p1.SVPosition,p2.SVPosition),
-						Math::Lerp(x,p1.Color,p2.Color)
-					};
-				}
-			};
-
-			const Vertex mesh[] = 
-			{
-				{ { 0,0.5f,0,1 },{1,0,0,1} },
-				{ { -0.9f,0.75f,0,1 },{0,1,0,1} },
-				{ { 0.5,-0.9f,0,1 },{0,0,1,1} }
-			};
-
-			const size_t indicis[] = { 0,1,2 };
-
-			Primitive::PrimitiveListReader<3> preader{ indicis,3 };
-
-			Tools::TestTex fb{ {800,600} };
-			
-			RenderPipeline::RenderTarget<1, Tools::TestCol, decltype(Tools::Blenders::NoBlend)>
-				renderTarget{ Tools::Blenders::NoBlend,{&fb} };
-
-			const auto PixelShader = [](const Vertex& v)
-			{
-				return std::array<Tools::TestCol, 1> { v.Color };
-			};
-
-			RenderPipeline::PixelShader<decltype(renderTarget), decltype(PixelShader)>
-				ps{ &renderTarget,PixelShader };
-
-			RenderPipeline::TriangleRasterizer<decltype(ps), float> raster{ &ps };
-
-			raster.EmitPrimitive(preader, mesh, 3, ParallelStrategy::SingleThreadRunner{});
-
-			Tools::ViewSurface(fb);
-		}
-
 		TEST_METHOD(TestTexturedTriangle)
 		{
 			struct Vertex

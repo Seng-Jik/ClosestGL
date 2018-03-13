@@ -33,7 +33,7 @@ namespace ClosestGL::Texture
 		auto Data() { return color_.data(); }
 
 		/* 计算坐标pos位置对应的像素的偏移量。 */
-		size_t CalcOffset(Math::Vector2<size_t> pos)
+		size_t CalcOffset(Math::Vector2<size_t> pos) const
 		{
 			return pos.y * size_.x + pos.x;
 		}
@@ -44,8 +44,18 @@ namespace ClosestGL::Texture
 			return color_.at(CalcOffset(pos));
 		}
 
+		ColorType ReadPixel(Math::Vector2<size_t> pos) const
+		{
+			return color_.at(CalcOffset(pos));
+		}
+
 		/* 不安全的访问在坐标pos位置的像素 */
 		ColorType& AccessPixelUnsafe(Math::Vector2<size_t> pos)
+		{
+			return color_[CalcOffset(pos)];
+		}
+
+		ColorType ReadPixelUnsafe(Math::Vector2<size_t> pos) const
 		{
 			return color_[CalcOffset(pos)];
 		}

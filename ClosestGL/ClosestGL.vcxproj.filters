@@ -123,6 +123,12 @@
     <ClInclude Include="TriangleRasterizer.h">
       <Filter>头文件\RenderPipeline</Filter>
     </ClInclude>
+    <ClInclude Include="Sampler2D.h">
+      <Filter>头文件\Texture\Sampler</Filter>
+    </ClInclude>
+    <ClInclude Include="UVNormalizer.h">
+      <Filter>头文件\Texture\Sampler</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="RenderPipeline.dgml" />

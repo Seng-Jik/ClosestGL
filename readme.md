@@ -24,6 +24,7 @@
 ![CandyWireFrameRendering](CandyWireFrameRendering.gif)
 ![CVVClip1](CVVClip.gif)
 ![CVVClip2](CVVClip2.gif)
+![TextureMapping](TextureMapping.gif)
 
 ### 使用说明
 直接使用本库是不需要任何依赖的。

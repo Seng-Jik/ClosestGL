@@ -28,7 +28,7 @@ namespace ClosestGL::RenderPipeline
 		{
 			const int xBegin = int(x1r), xEnd = int(x2r);
 			const int xInc = (xEnd - xBegin) > 0 ? 1 : -1;
-			for (int x = xBegin; x != xEnd; x += xInc)
+			for (int x = xBegin;; x += xInc)
 			{
 				if (x < 0) continue;
 				if (x > rtWidth) continue;
@@ -36,6 +36,8 @@ namespace ClosestGL::RenderPipeline
 				const Math::Vector2<size_t> rpos{ size_t(x),y };
 				const auto vertex = TVertex::Lerp(xLerp, x1, x2);
 				nextStage_->EmitPixel(vertex, rpos);
+
+				if (x == xEnd) break;
 			}
 		}
 
@@ -55,7 +57,7 @@ namespace ClosestGL::RenderPipeline
 			const int yBegin = int(hatr.y), yEnd = int(foot1r.y);
 			const int yInc = (yEnd - yBegin) > 0 ? 1 : -1;
 
-			for (int y = yBegin; y != yEnd; y += yInc)
+			for (int y = yBegin;; y += yInc)
 			{
 				if (y < 0 || y >= rtSize.y) continue;
 
@@ -70,6 +72,8 @@ namespace ClosestGL::RenderPipeline
 				const auto x2r = Math::ConvertVertexPosToRenderTargetPos(x2p, rtSize);
 
 				DrawScanLine(x1,x1r.x, x2,x2r.x, size_t(y),rtSize.x);
+
+				if (y == yEnd) break;
 			}
 		}
 

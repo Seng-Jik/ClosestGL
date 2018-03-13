@@ -67,7 +67,7 @@ void ClosestGLTests::Tools::ViewModel(TestTex & sur, const ModelRenderer & rende
 		auto rotZ = Matrix4(Matrix3(ClosestGL::Math::GetZRotateMatrix(rotate.z)));
 
 		auto rot = rotX * (rotY * rotZ);
-		auto model = rot* trans;
+		auto model = trans*rot;
 
 		renderer(model);
 

@@ -135,6 +135,9 @@
     <ClInclude Include="TextureFliters.h">
       <Filter>头文件\Texture\Sampler</Filter>
     </ClInclude>
+    <ClInclude Include="ClosestGL.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="RenderPipeline.dgml" />

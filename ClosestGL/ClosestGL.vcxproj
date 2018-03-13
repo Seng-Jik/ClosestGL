@@ -115,6 +115,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ClosestGL.h" />
     <ClInclude Include="ConcurrentQueue.h" />
     <ClInclude Include="CoordinateSystem.h" />
     <ClInclude Include="CVVClipper.h" />

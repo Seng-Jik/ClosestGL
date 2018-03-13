@@ -131,11 +131,15 @@ namespace ClosestGLTests::RenderPipelineTest
 			struct Vertex
 			{
 				Math::Vector4<float> SVPosition;
+				Math::Vector2<float> UV;
+				int Number;
 
 				static Vertex Lerp(float x, const Vertex& p1, const Vertex& p2)
 				{
 					return {
-						Math::Lerp(x,p1.SVPosition,p2.SVPosition)
+						Math::Lerp(x,p1.SVPosition,p2.SVPosition),
+						Math::Lerp(x,p1.UV,p2.UV),
+						-1
 					};
 				}
 			};
@@ -155,14 +159,15 @@ namespace ClosestGLTests::RenderPipelineTest
 
 			const std::vector<Vertex> mesh =
 			{
-				{ { 0,0.5f,0,1 } },
-				{ { -0.9f,0.75f,0,1 } },
-				{ { 0.5,-0.9f,0,1 } }
+				{ { -0.5F,-0.5F,0,1 }	,{ 0,0 },0 },
+				{ { -0.5F,0.5F,0,1 }	,{ 0,1 },1 },
+				{ { 0.5F,0.5F,0,1 }		,{ 1,1 },2 },
+				{ { 0.5F,-0.5F,0,1 }	,{ 1,0 },3 }
 			};
 
-			const std::vector<size_t> indicis = { 0,1,2 };
+			const std::vector<size_t> indicis = { 0,1,2,0,3,2 };
 
-			Primitive::PrimitiveListReader<3> preader{ indicis.data(),3 };
+			Primitive::PrimitiveListReader<3> preader{ indicis.data(),indicis.size() };
 
 			Tools::TestTex fb{ { 800,600 } };
 
@@ -175,8 +180,8 @@ namespace ClosestGLTests::RenderPipelineTest
 				return std::array<Tools::TestCol, 1>
 				{
 					sampler.Sample(Math::Vector2<float>{
-						v.SVPosition.x,
-						v.SVPosition.y
+						v.UV.x,
+						v.UV.y
 					})
 				};
 			};
@@ -191,7 +196,7 @@ namespace ClosestGLTests::RenderPipelineTest
 				ClosestGL::Math::GetPerspectiveMatrixLH(3.1415926f / 2.0f, aspect, 1.0f, 5000.0f);
 
 			const auto view = Math::GetLookAtMatrix(
-				Math::Vector3<float>{0, 0, 100},
+				Math::Vector3<float>{0, 0, 1},
 				Math::Vector3<float>{0, 0, -1},
 				Math::Vector3<float>{0, 1, 0}
 			);
@@ -220,6 +225,8 @@ namespace ClosestGLTests::RenderPipelineTest
 					transformed.data(),
 					mesh.size(), 
 					ParallelStrategy::SingleThreadRunner{});
+
+				
 			});
 		}
 	};

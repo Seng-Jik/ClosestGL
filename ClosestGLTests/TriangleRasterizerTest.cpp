@@ -8,7 +8,7 @@
 #include <UVNormalizer.h>
 #include <Transformers.h>
 #include <PerspectiveCorrector.h>
-#include <Fliters.h>
+#include <TextureFliters.h>
 
 using namespace ClosestGL;
 using namespace ClosestGL::RenderPipeline::PerspectiveCorrector;
@@ -107,22 +107,22 @@ namespace ClosestGLTests::RenderPipelineTest
 				Math::Vector2<float> UV;
 			};
 
-			Tools::TestTex texture{ { 512,512 } };
+			Tools::TestTex texture{ { 1024,1024 } };
 			texture.Shade([](const auto& rtuv)
 			{
 				bool b = false;
-				if (rtuv.x % 32 >= 16) b = !b;
-				if (rtuv.y % 32 >= 16) b = !b;
+				if (rtuv.x % 64 >= 32) b = !b;
+				if (rtuv.y % 64 >= 32) b = !b;
 				return b ? Tools::TestCol{ 0, 0, 0, 1 } : Tools::TestCol{ 1, 1, 1, 1 };
 			}, ParallelStrategy::SingleThreadRunner{});
 
 			Texture::Sampler::Sampler2D
-				<decltype(texture), decltype(Texture::Sampler::UVNormalizer::UV2DRepeat),
-				decltype(Texture::Sampler::Fliters::Nearest)>
+				<decltype(texture), decltype(Texture::Sampler::UVNormalizer::UV2DClamp),
+				decltype(Texture::Sampler::Fliters::Bilinear)>
 				sampler(
 					&texture,
-					Texture::Sampler::UVNormalizer::UV2DRepeat,
-					Texture::Sampler::Fliters::Nearest);
+					Texture::Sampler::UVNormalizer::UV2DClamp,
+					Texture::Sampler::Fliters::Bilinear);
 
 			const std::vector<VertexShaderIn> mesh =
 			{
@@ -136,7 +136,7 @@ namespace ClosestGLTests::RenderPipelineTest
 
 			Primitive::PrimitiveListReader<3> preader{ indicis.data(),indicis.size() };
 
-			Tools::TestTex fb{ { 800,600 } };
+			Tools::TestTex fb{ { 1024,760 } };
 
 
 			RenderPipeline::RenderTarget<1, Tools::TestCol, decltype(Tools::Blenders::NoBlend)>
@@ -159,10 +159,10 @@ namespace ClosestGLTests::RenderPipelineTest
 
 			const auto aspect = 800 / 600.0f;
 			const auto projection =
-				ClosestGL::Math::GetPerspectiveMatrixLH(3.1415926f / 2.0f, aspect, 1.0f, 5000.0f);
+				ClosestGL::Math::GetPerspectiveMatrixLH(3.1415926f / 2.0f, aspect, 0.01f, 5000.0f);
 
 			const auto view = Math::GetLookAtMatrix(
-				Math::Vector3<float>{0, 0, 1},
+				Math::Vector3<float>{0, 0, 0.7F},
 				Math::Vector3<float>{0, 0, -1},
 				Math::Vector3<float>{0, 1, 0}
 			);

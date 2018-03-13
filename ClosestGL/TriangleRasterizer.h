@@ -28,16 +28,19 @@ namespace ClosestGL::RenderPipeline
 		{
 			const int xBegin = int(x1r), xEnd = int(x2r);
 			const int xInc = (xEnd - xBegin) > 0 ? 1 : -1;
-			for (int x = xBegin;; x += xInc)
+			if (xEnd != xBegin) 
 			{
-				if (x < 0) continue;
-				if (x > rtWidth) continue;
-				const TLerpType xLerp = TLerpType(x - xBegin) / TLerpType(xEnd - xBegin);
-				const Math::Vector2<size_t> rpos{ size_t(x),y };
-				const auto vertex = TVertex::Lerp(xLerp, x1, x2);
-				nextStage_->EmitPixel(vertex, rpos);
-
-				if (x == xEnd) break;
+				for (int x = xBegin;; x += xInc)
+				{
+					if (x >= 0 && x < rtWidth)
+					{
+						const TLerpType xLerp = TLerpType(x - xBegin) / TLerpType(xEnd - xBegin);
+						const Math::Vector2<size_t> rpos{ size_t(x),y };
+						const auto vertex = TVertex::Lerp(xLerp, x1, x2);
+						nextStage_->EmitPixel(vertex, rpos);
+					}
+					if (x == xEnd) break;
+				}
 			}
 		}
 
@@ -57,23 +60,28 @@ namespace ClosestGL::RenderPipeline
 			const int yBegin = int(hatr.y), yEnd = int(foot1r.y);
 			const int yInc = (yEnd - yBegin) > 0 ? 1 : -1;
 
-			for (int y = yBegin;; y += yInc)
+			if (yBegin != yEnd)
 			{
-				if (y < 0 || y >= rtSize.y) continue;
+				for (int y = yBegin;; y += yInc)
+				{
+					if (y >= 0 && y < rtSize.y)
+					{
 
-				const TLerpType yLerp = TLerpType(y - yBegin) / TLerpType(yEnd - yBegin);
+						const TLerpType yLerp = TLerpType(y - yBegin) / TLerpType(yEnd - yBegin);
 
-				const auto x1 = TVertex::Lerp(yLerp, hat, foot1);
-				const auto x2 = TVertex::Lerp(yLerp, hat, foot2);
-				const auto x1p = Math::Lerp(yLerp, hatp, foot1p);
-				const auto x2p = Math::Lerp(yLerp, hatp, foot2p);
+						const auto x1 = TVertex::Lerp(yLerp, hat, foot1);
+						const auto x2 = TVertex::Lerp(yLerp, hat, foot2);
+						const auto x1p = Math::Lerp(yLerp, hatp, foot1p);
+						const auto x2p = Math::Lerp(yLerp, hatp, foot2p);
 
-				const auto x1r = Math::ConvertVertexPosToRenderTargetPos(x1p, rtSize);
-				const auto x2r = Math::ConvertVertexPosToRenderTargetPos(x2p, rtSize);
+						const auto x1r = Math::ConvertVertexPosToRenderTargetPos(x1p, rtSize);
+						const auto x2r = Math::ConvertVertexPosToRenderTargetPos(x2p, rtSize);
 
-				DrawScanLine(x1,x1r.x, x2,x2r.x, size_t(y),rtSize.x);
+						DrawScanLine(x1, x1r.x, x2, x2r.x, size_t(y), rtSize.x);
+					}
 
-				if (y == yEnd) break;
+					if (y == yEnd) break;
+				}
 			}
 		}
 
@@ -126,7 +134,7 @@ namespace ClosestGL::RenderPipeline
 					const auto middleRpos = 
 						Math::ConvertVertexPosToRenderTargetPos(pbuf_.AccessUnsafe(tri[1]), rtSize);
 
-					if (splitVertexRPos.y > 0 && splitVertexRPos.y < rtSize.y)
+					if (splitVertexRPos.y >= 0 && splitVertexRPos.y < rtSize.y)
 					{
 						DrawScanLine(
 							splitVertex, splitVertexRPos.x,

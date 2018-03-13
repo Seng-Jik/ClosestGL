@@ -87,14 +87,14 @@ namespace ClosestGLTests::RenderPipelineTest
 			{
 				Math::Vector4<float> SVPosition;
 				Math::Vector2<float> UV;
-				float RHW;
+				InPixelShader<float> perp;
 
 				static VertexShaderOut Lerp(float x, const VertexShaderOut& p1, const VertexShaderOut& p2)
 				{
 					return {
 						Math::Lerp(x,p1.SVPosition,p2.SVPosition),
 						Math::Lerp(x,p1.UV,p2.UV),
-						Math::Lerp(x,p1.RHW,p2.RHW)
+						Math::Lerp(x,p1.perp,p2.perp)
 					};
 				}
 			};
@@ -138,12 +138,10 @@ namespace ClosestGLTests::RenderPipelineTest
 
 			const auto PixelShader = [&sampler](const VertexShaderOut& v)
 			{
-				const auto w = 1 / v.RHW;
 				return std::array<Tools::TestCol, 1>
 				{
 					sampler.Sample(Math::Vector2<float>{
-						v.UV.x * w,
-						v.UV.y * w
+						v.perp(v.UV)
 					})
 				};
 			};
@@ -177,14 +175,15 @@ namespace ClosestGLTests::RenderPipelineTest
 					[&transform](const VertexShaderIn& v)
 				{
 					const auto pos = transform * v.SVPosition;
-					const float rhw = 1 / pos.w;
 
-					BeforePerspectiveDivision<float> fixed(pos);
+					BeforePerspectiveDivision<float> fixer(pos);
+					InPixelShader<float> fixerInPS;
+					fixerInPS.Active(fixer);
 
 					return VertexShaderOut{
 						pos,
-						fixed(v.UV),
-						rhw
+						fixer(v.UV),
+						fixerInPS
 					};
 				}, mesh.data(), transformed.data(), mesh.size(), ParallelStrategy::SingleThreadRunner{});
 

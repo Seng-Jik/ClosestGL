@@ -3,6 +3,9 @@
 
 namespace ClosestGL::Texture::Sampler
 {
+	/* 采样器
+	 * 用于进行2D的采样，需要传入UVNormalizer来确定超出采样范围后采样器的处理方式。
+	 */
 	template<typename Texture2D,typename UVNormalizer>
 	class Sampler2D
 	{

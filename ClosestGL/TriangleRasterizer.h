@@ -7,6 +7,10 @@
 #include "Vector2.h"
 namespace ClosestGL::RenderPipeline
 {
+	/* 三角形光栅器 
+	 * 用于光栅化三角形。
+	 * 对于透视矫正的问题参阅PerspectiveCorrector,该工具可以帮助你完成透视矫正。
+	 */
 	template<typename TNextStage, typename TLerpType>
 	class TriangleRasterizer
 	{

@@ -178,7 +178,7 @@ namespace ClosestGLTests::RenderPipelineTest
 					const float rhw = 1 / pos.w;
 
 					return VertexShaderOut{
-						pos * rhw,
+						pos,
 						v.UV * rhw,
 						rhw
 					};

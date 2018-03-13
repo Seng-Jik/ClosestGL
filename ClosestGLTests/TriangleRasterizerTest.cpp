@@ -219,7 +219,7 @@ namespace ClosestGLTests::RenderPipelineTest
 					const float rhw = 1 / pos.w;
 
 					return Vertex{
-						pos,
+						pos * rhw,
 						v.UV * rhw,
 						rhw
 					};

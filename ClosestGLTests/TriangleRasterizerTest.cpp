@@ -132,14 +132,14 @@ namespace ClosestGLTests::RenderPipelineTest
 			{
 				Math::Vector4<float> SVPosition;
 				Math::Vector2<float> UV;
-				int Number;
+				float RHW;
 
 				static Vertex Lerp(float x, const Vertex& p1, const Vertex& p2)
 				{
 					return {
 						Math::Lerp(x,p1.SVPosition,p2.SVPosition),
 						Math::Lerp(x,p1.UV,p2.UV),
-						-1
+						Math::Lerp(x,p1.RHW,p2.RHW)
 					};
 				}
 			};
@@ -159,10 +159,10 @@ namespace ClosestGLTests::RenderPipelineTest
 
 			const std::vector<Vertex> mesh =
 			{
-				{ { -0.5F,-0.5F,0,1 }	,{ 0,0 },0 },
-				{ { -0.5F,0.5F,0,1 }	,{ 0,1 },1 },
-				{ { 0.5F,0.5F,0,1 }		,{ 1,1 },2 },
-				{ { 0.5F,-0.5F,0,1 }	,{ 1,0 },3 }
+				{ { -0.5F,-0.5F,0,1 }	,{ 0,0 } },
+				{ { -0.5F,0.5F,0,1 }	,{ 0,1 } },
+				{ { 0.5F,0.5F,0,1 }		,{ 1,1 } },
+				{ { 0.5F,-0.5F,0,1 }	,{ 1,0 } }
 			};
 
 			const std::vector<size_t> indicis = { 0,1,2,0,3,2 };
@@ -177,11 +177,12 @@ namespace ClosestGLTests::RenderPipelineTest
 
 			const auto PixelShader = [&sampler](const Vertex& v)
 			{
+				const auto w = 1 / v.RHW;
 				return std::array<Tools::TestCol, 1>
 				{
 					sampler.Sample(Math::Vector2<float>{
-						v.UV.x,
-						v.UV.y
+						v.UV.x * w,
+						v.UV.y * w
 					})
 				};
 			};
@@ -214,8 +215,13 @@ namespace ClosestGLTests::RenderPipelineTest
 				Primitive::FixedTransform(
 					[&transform](const Vertex& v)
 				{
+					const auto pos = transform * v.SVPosition;
+					const float rhw = 1 / pos.w;
+
 					return Vertex{
-						transform  * v.SVPosition
+						pos,
+						v.UV * rhw,
+						rhw
 					};
 				}, mesh.data(), transformed.data(), mesh.size(), ParallelStrategy::SingleThreadRunner{});
 

@@ -8,6 +8,7 @@
 #include <UVNormalizer.h>
 #include <Transformers.h>
 #include <PerspectiveCorrector.h>
+#include <Fliters.h>
 
 using namespace ClosestGL;
 using namespace ClosestGL::RenderPipeline::PerspectiveCorrector;
@@ -40,8 +41,9 @@ namespace ClosestGLTests::RenderPipelineTest
 			}, ParallelStrategy::SingleThreadRunner{});
 
 			Texture::Sampler::Sampler2D
-				<decltype(texture), decltype(Texture::Sampler::UVNormalizer::UV2DRepeat)>
-				sampler(&texture, Texture::Sampler::UVNormalizer::UV2DRepeat);
+				<decltype(texture), decltype(Texture::Sampler::UVNormalizer::UV2DRepeat),
+				decltype(Texture::Sampler::Fliters::Nearest)>
+				sampler(&texture, Texture::Sampler::UVNormalizer::UV2DRepeat,Texture::Sampler::Fliters::Nearest);
 
 			const Vertex mesh[] =
 			{
@@ -115,8 +117,12 @@ namespace ClosestGLTests::RenderPipelineTest
 			}, ParallelStrategy::SingleThreadRunner{});
 
 			Texture::Sampler::Sampler2D
-				<decltype(texture), decltype(Texture::Sampler::UVNormalizer::UV2DRepeat)>
-				sampler(&texture, Texture::Sampler::UVNormalizer::UV2DRepeat);
+				<decltype(texture), decltype(Texture::Sampler::UVNormalizer::UV2DRepeat),
+				decltype(Texture::Sampler::Fliters::Nearest)>
+				sampler(
+					&texture,
+					Texture::Sampler::UVNormalizer::UV2DRepeat,
+					Texture::Sampler::Fliters::Nearest);
 
 			const std::vector<VertexShaderIn> mesh =
 			{

@@ -132,6 +132,9 @@
     <ClInclude Include="PerspectiveCorrector.h">
       <Filter>头文件\RenderPipeline</Filter>
     </ClInclude>
+    <ClInclude Include="TextureFliters.h">
+      <Filter>头文件\Texture\Sampler</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="RenderPipeline.dgml" />

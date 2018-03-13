@@ -119,6 +119,7 @@
     <ClInclude Include="CoordinateSystem.h" />
     <ClInclude Include="CVVClipper.h" />
     <ClInclude Include="DepthTest.h" />
+    <ClInclude Include="TextureFliters.h" />
     <ClInclude Include="LineRasterizer.h" />
     <ClInclude Include="OpenMPRunner.h" />
     <ClInclude Include="PerspectiveCorrector.h" />

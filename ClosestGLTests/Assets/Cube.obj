@@ -1,0 +1,36 @@
+# Exported from 3D Builder
+mtllib Cube.mtl
+
+o Object.1
+v -12.735826 -12.700000 12.694119
+v 12.664173 -12.700000 12.694119
+v -12.735826 12.700000 12.694119
+v -12.735826 -12.700000 -12.705880
+v -12.735826 12.700000 -12.705880
+v 12.664173 12.700000 -12.705880
+v 12.664173 12.700000 12.694119
+v 12.664173 -12.700000 -12.705880
+
+
+usemtl Red
+f 1 2 3
+usemtl Green
+f 4 1 3
+f 4 3 5
+usemtl Red
+f 6 4 5
+usemtl Turquoise
+f 7 6 5
+usemtl Green
+f 8 6 7
+f 7 2 8
+usemtl Turquoise
+f 4 8 2
+usemtl Red
+f 4 6 8
+usemtl Turquoise
+f 5 3 7
+usemtl Red
+f 7 3 2
+usemtl Turquoise
+f 2 1 4

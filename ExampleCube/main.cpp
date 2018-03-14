@@ -55,14 +55,15 @@ constexpr std::array<VertexIn, 8> Mesh
 	VertexIn{ { 1,  1, -1, 1 },{ 1, 0 },{ 0.2f, 1.0f, 0.3f } },
 };
 
+//四边形索引缓存
 constexpr std::array<size_t,36> Indicis
 {
-	0,1,2,0,3,2,
-	4,5,6,4,7,6,
-	0,4,5,0,1,5,
-	1,5,6,1,2,6,
-	2,6,7,2,3,7,
-	3,7,4,3,0,4
+	0,1,2,3,
+	4,5,6,7,
+	0,4,5,1,
+	1,5,6,2,
+	2,6,7,3,
+	3,7,4,0
 };
 
 
@@ -92,6 +93,42 @@ struct VertexOut
 int main()
 {
 	constexpr Math::Vector2<size_t> screenSize{ 800,600 };
+
+	//转换四边形索引缓存到三角形索引缓存
+	std::vector<size_t> triIndicis;
+	{
+		Primitive::PrimitiveListReader<4> 
+			reader{ Indicis.data(),Indicis.size() };
+
+		while (reader.CanRead())
+		{
+			auto p = reader.Read();
+			triIndicis.push_back(p[0]);
+			triIndicis.push_back(p[1]);
+			triIndicis.push_back(p[2]);
+			triIndicis.push_back(p[0]);
+			triIndicis.push_back(p[3]);
+			triIndicis.push_back(p[2]);
+		}
+	}
+
+	//转换三角形索引缓存到线索引缓存
+	std::vector<size_t> lineIndicis;
+	{
+		Primitive::PrimitiveListReader<3> 
+			reader{ triIndicis.data(),triIndicis.size() };
+
+		while (reader.CanRead())
+		{
+			auto p = reader.Read();
+			lineIndicis.push_back(p[0]);
+			lineIndicis.push_back(p[1]);
+			lineIndicis.push_back(p[0]);
+			lineIndicis.push_back(p[2]);
+			lineIndicis.push_back(p[1]);
+			lineIndicis.push_back(p[2]);
+		}
+	}
 
 	//单线程执行策略
 	ParallelStrategy::SingleThreadRunner runner;
@@ -182,7 +219,8 @@ int main()
 	RenderPipeline::PixelShader<decltype(renderTarget), decltype(pixelShaderFuncWireFrame)>
 		pixelShaderWireFrame{ &renderTarget,pixelShaderFuncWireFrame };
 
-	RenderPipeline::LineRasterizer<decltype(pixelShaderWireFrame)
+	RenderPipeline::LineRasterizer<decltype(pixelShaderWireFrame), float>
+		rasterWireFrame{ &pixelShaderWireFrame };
 	
 	//准备投影矩阵
 	const auto projection =
@@ -224,6 +262,7 @@ int main()
 	//键盘设备
 	SDL::Keyboard keyboard;
 
+	//渲染模式
 	enum class RenderMode : int
 	{
 		Texture = 0,Color = 1,WireFrame = 2
@@ -272,17 +311,41 @@ int main()
 		switch (renderMode)
 		{
 		case RenderMode::Color: {
-			Primitive::PrimitiveListReader<3> reader{ Indicis.data(),Indicis.size() };
+			Primitive::PrimitiveListReader<3> reader{ triIndicis.data(),triIndicis.size() };
 			rasterCol.EmitPrimitive(reader, vOut.data(), vOut.size(), runner);	//绘制色彩方块
 			break;
 		}
 		case RenderMode::Texture: {
-			Primitive::PrimitiveListReader<3> reader{ Indicis.data(),Indicis.size() };
+			Primitive::PrimitiveListReader<3> reader{ triIndicis.data(),triIndicis.size() };
+
+			//玄学魔改UV
+			{
+				Primitive::PrimitiveListReader<4> reader{ Indicis.data(),Indicis.size() };
+				while (reader.CanRead())
+				{
+					auto p = reader.Read();
+					vOut[p[0]].TexCoord.x = 0;
+					vOut[p[0]].TexCoord.y = 0;
+
+					vOut[p[1]].TexCoord.x = 0;
+					vOut[p[1]].TexCoord.y = 1;
+
+					vOut[p[2]].TexCoord.x = 1;
+					vOut[p[2]].TexCoord.y = 1;
+
+					vOut[p[3]].TexCoord.x = 1;
+					vOut[p[3]].TexCoord.y = 0;
+				}
+			}
+
 			rasterTex.EmitPrimitive(reader, vOut.data(), vOut.size(), runner);	//绘制纹理方块
 			break;
 		}
-		case RenderMode::WireFrame:
+		case RenderMode::WireFrame: {
+			Primitive::PrimitiveListReader<2> reader{ lineIndicis.data(),lineIndicis.size() };
+			rasterWireFrame.EmitPrimitive(reader, vOut.data(), vOut.size(), runner);
 			break;
+		}
 		}
 
 		UpdateWindow(window, colorBuffer);

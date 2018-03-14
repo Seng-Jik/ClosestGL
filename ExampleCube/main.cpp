@@ -40,7 +40,7 @@ struct VertexIn
 {
 	Math::Vector4<float> Position;
 	Color Color;
-	Math::Vector2<float> TexCoord;	//UV由DrawPlane函数计算
+	Math::Vector2<float> TexCoord;	//以下由DrawPlane函数计算
 };
 
 std::array<VertexIn, 8> Mesh
@@ -73,6 +73,7 @@ struct VertexOut
 	Math::Vector4<float> SVPosition;
 	Color Color;
 	Math::Vector2<float> TexCoord;
+	Math::Vector4<float> Normal;
 
 	//透视修正器
 	RenderPipeline::PerspectiveCorrector::InPixelShader<float>
@@ -85,6 +86,7 @@ struct VertexOut
 			Math::Lerp(x,p1.SVPosition,p2.SVPosition),
 			Math::Lerp(x,p1.Color,p2.Color),
 			Math::Lerp(x,p1.TexCoord,p2.TexCoord),
+			Math::Lerp(x,p1.Normal,p2.Normal),
 			Math::Lerp(x,p1.PerspectiveCorrector,p2.PerspectiveCorrector)
 		};
 	}
@@ -92,12 +94,17 @@ struct VertexOut
 
 //绘制一个平面
 template<typename TRasterizer,typename TRunner>
-void DrawPlane(TRasterizer& raster,std::array<size_t,4> quad, const Math::Matrix4<float>& transform, TRunner& runner)
+void DrawPlane(
+	TRasterizer& raster,
+	std::array<size_t,4> quad,
+	const Math::Matrix4<float>& vp,
+	const Math::Matrix4<float>& world,
+	TRunner& runner)
 {
 	//绘制平面用的VertexShader
-	const auto vertexShader = [&transform](const VertexIn& v)
+	const auto vertexShader = [&vp,&world](const VertexIn& v)
 	{
-		auto pos = transform * v.Position;
+		auto pos = (vp * world) * v.Position;
 
 		RenderPipeline::PerspectiveCorrector::BeforePerspectiveDivision<float>
 			uvfix(pos);
@@ -106,6 +113,7 @@ void DrawPlane(TRasterizer& raster,std::array<size_t,4> quad, const Math::Matrix
 			pos,
 			uvfix(v.Color),
 			uvfix(v.TexCoord),
+			{0,0,0,0},
 			RenderPipeline::PerspectiveCorrector::InPixelShader<float>
 			{ uvfix }
 		};
@@ -329,7 +337,7 @@ int main()
 				{ 0,0,1 });
 
 		//变换矩阵
-		const auto transform = (projection * view) * world;
+		const auto vp = projection * view;
 
 		switch (renderMode)
 		{
@@ -343,10 +351,10 @@ int main()
 				switch (renderMode)
 				{
 				case RenderMode::Color:
-					DrawPlane(rasterCol, quad, transform, runner);
+					DrawPlane(rasterCol, quad, vp, world, runner);
 					break;
 				case RenderMode::Texture:
-					DrawPlane(rasterTex, quad, transform, runner);
+					DrawPlane(rasterTex, quad, vp, world, runner);
 					break;
 				};
 			}
@@ -371,10 +379,10 @@ int main()
 
 			//应用VertexShader并存入vOut
 			Primitive::FixedTransform(
-				[&transform](const VertexIn& v)
+				[&vp,&world](const VertexIn& v)
 			{
 				return VertexOut{
-					transform * v.Position
+					(vp * world) * v.Position
 				};
 			},Mesh.data(),vOut.data(),Mesh.size(),runner);
 

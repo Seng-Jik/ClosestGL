@@ -96,15 +96,24 @@ struct VertexOut
 template<typename TRasterizer,typename TRunner>
 void DrawPlane(
 	TRasterizer& raster,
-	std::array<size_t,4> quad,
+	std::array<size_t, 4> quad,
 	const Math::Matrix4<float>& vp,
 	const Math::Matrix4<float>& world,
 	TRunner& runner)
 {
+	//求法线
+	auto u = Mesh[quad[1]].Position - Mesh[quad[0]].Position;
+	auto v = Mesh[quad[2]].Position - Mesh[quad[0]].Position;
+	Math::Vector3<float> u3{ u.x,u.y,u.z };
+	Math::Vector3<float> v3{ v.x,v.y,v.z };
+	const auto normal3 = Math::Normalize(Math::Cross(u3, v3));
+	auto normal = world * Math::Vector4<float>{ normal3.x, normal3.y, normal3.z, 1 };
+
 	//绘制平面用的VertexShader
-	const auto vertexShader = [&vp,&world](const VertexIn& v)
+	const auto vertexShader = [&vp,&world, normal](const VertexIn& v)
 	{
 		auto pos = (vp * world) * v.Position;
+		
 
 		RenderPipeline::PerspectiveCorrector::BeforePerspectiveDivision<float>
 			uvfix(pos);
@@ -113,7 +122,7 @@ void DrawPlane(
 			pos,
 			uvfix(v.Color),
 			uvfix(v.TexCoord),
-			{0,0,0,0},
+			uvfix(normal),
 			RenderPipeline::PerspectiveCorrector::InPixelShader<float>
 			{ uvfix }
 		};
@@ -227,6 +236,7 @@ int main()
 		return std::array<Color, 1>
 		{
 			sampler.Sample(v.PerspectiveCorrector(v.TexCoord))
+			//v.PerspectiveCorrector(v.Normal)
 		};
 	};
 

@@ -39,20 +39,20 @@ void UpdateWindow(SDL::Window& window, Texture::Texture2D<Color>& tex)
 struct VertexIn
 {
 	Math::Vector4<float> Position;
-	Math::Vector2<float> TexCoord;
 	Color Color;
+	Math::Vector2<float> TexCoord;	//UV由DrawPlane函数计算
 };
 
-constexpr std::array<VertexIn, 8> Mesh
+std::array<VertexIn, 8> Mesh
 {
-	VertexIn{ { 1, -1,  1, 1 },{ 0, 0 },{ 1.0f, 0.2f, 0.2f } },
-	VertexIn{ { -1, -1,  1, 1 },{ 0, 1 },{ 0.2f, 1.0f, 0.2f } },
-	VertexIn{ { -1,  1,  1, 1 },{ 1, 1 },{ 0.2f, 0.2f, 1.0f } },
-	VertexIn{ { 1,  1,  1, 1 },{ 1, 0 },{ 1.0f, 0.2f, 1.0f } },
-	VertexIn{ { 1, -1, -1, 1 },{ 0, 0 },{ 1.0f, 1.0f, 0.2f } },
-	VertexIn{ { -1, -1, -1, 1 },{ 0, 1 },{ 0.2f, 1.0f, 1.0f } },
-	VertexIn{ { -1,  1, -1, 1 },{ 1, 1 },{ 1.0f, 0.3f, 0.3f } },
-	VertexIn{ { 1,  1, -1, 1 },{ 1, 0 },{ 0.2f, 1.0f, 0.3f } },
+	VertexIn{ { 1, -1,  1, 1 },{ 1.0f, 0.2f, 0.2f } },
+	VertexIn{ { -1, -1,  1, 1 },{ 0.2f, 1.0f, 0.2f } },
+	VertexIn{ { -1,  1,  1, 1 },{ 0.2f, 0.2f, 1.0f } },
+	VertexIn{ { 1,  1,  1, 1 },{ 1.0f, 0.2f, 1.0f } },
+	VertexIn{ { 1, -1, -1, 1 },{ 1.0f, 1.0f, 0.2f } },
+	VertexIn{ { -1, -1, -1, 1 },{ 0.2f, 1.0f, 1.0f } },
+	VertexIn{ { -1,  1, -1, 1 },{ 1.0f, 0.3f, 0.3f } },
+	VertexIn{ { 1,  1, -1, 1 },{ 0.2f, 1.0f, 0.3f } },
 };
 
 //四边形索引缓存
@@ -89,6 +89,50 @@ struct VertexOut
 		};
 	}
 };
+
+//绘制一个平面
+template<typename TRasterizer,typename TRunner>
+void DrawPlane(TRasterizer& raster,std::array<size_t,4> quad, const Math::Matrix4<float>& transform, TRunner& runner)
+{
+	//绘制平面用的VertexShader
+	const auto vertexShader = [&transform](const VertexIn& v)
+	{
+		auto pos = transform * v.Position;
+
+		RenderPipeline::PerspectiveCorrector::BeforePerspectiveDivision<float>
+			uvfix(pos);
+
+		return VertexOut{
+			pos,
+			uvfix(v.Color),
+			uvfix(v.TexCoord),
+			RenderPipeline::PerspectiveCorrector::InPixelShader<float>
+			{ uvfix }
+		};
+	};
+
+	//计算UV
+	Mesh[quad[0]].TexCoord = { 0,0 };
+	Mesh[quad[1]].TexCoord = { 0,1 };
+	Mesh[quad[2]].TexCoord = { 1,1 };
+	Mesh[quad[3]].TexCoord = { 1,0 };
+
+	std::vector<VertexOut> outs;
+
+	//应用VertexShader
+	for (int i = 0; i < 4; ++i)
+	{
+		outs.push_back(vertexShader(Mesh[quad[i]]));
+	}
+
+	size_t ibo[] = { 0,1,2,0,3,2 };
+
+	Primitive::PrimitiveListReader<3> 
+		reader{ ibo,6 };
+	
+	//绘制色彩方块
+	raster.EmitPrimitive(reader, outs.data(), outs.size(), runner);
+}
 
 int main()
 {
@@ -193,7 +237,7 @@ int main()
 	{
 		return std::array<Color, 1>
 		{
-			v.Color
+			v.PerspectiveCorrector(v.Color)
 		};
 	};
 
@@ -229,13 +273,6 @@ int main()
 			screenSize.x / float(screenSize.y),
 			1.0f, 
 			500.0f);
-
-	//准备视图矩阵
-	auto view =
-		Math::GetLookAtMatrix<float>(
-			{ 3,0,0 },
-			{ 1,0,0 },
-			{ 0,0,1 });
 	
 	//准备窗体
 	SDL::SDLInstance sdl;
@@ -249,11 +286,8 @@ int main()
 		},
 		SDL::Window::WindowFlag::Null);
 
-	//已变换的Vertex
-	std::array<VertexOut, Mesh.size()> vOut;
-
 	//旋转角度
-	float rotX = 0.35f, rotY = 0.9f;
+	float rotX = 0.35f, rotY = 0.9f, eyeX = 3;
 
 	//鼠标设备
 	SDL::Mouse mouse;
@@ -287,61 +321,64 @@ int main()
 			Math::Matrix4<float>
 			(Math::GetYRotateMatrix(rotY) * Math::Matrix3<float>(Math::GetZRotateMatrix(rotX)));
 
+		//准备视图矩阵
+		auto view =
+			Math::GetLookAtMatrix<float>(
+				{ eyeX,0,0 },
+				{ 1,0,0 },
+				{ 0,0,1 });
+
 		//变换矩阵
 		const auto transform = (projection * view) * world;
 
-		//像素着色器
-		Primitive::FixedTransform(
-			[&transform](const VertexIn& v)
-		{
-			auto pos = transform * v.Position;
-
-			RenderPipeline::PerspectiveCorrector::BeforePerspectiveDivision<float>
-				uvfix(pos);
-
-			return VertexOut {
-				pos,
-				uvfix(v.Color),
-				uvfix(v.TexCoord),
-				RenderPipeline::PerspectiveCorrector::InPixelShader<float>
-					{ uvfix }
-			};
-		}, Mesh.data(), vOut.data(), Mesh.size(), runner);
-
 		switch (renderMode)
 		{
-		case RenderMode::Color: {
-			Primitive::PrimitiveListReader<3> reader{ triIndicis.data(),triIndicis.size() };
-			rasterCol.EmitPrimitive(reader, vOut.data(), vOut.size(), runner);	//绘制色彩方块
-			break;
-		}
-		case RenderMode::Texture: {
-			Primitive::PrimitiveListReader<3> reader{ triIndicis.data(),triIndicis.size() };
-
-			//玄学魔改UV
+		case RenderMode::Color:
+		case RenderMode::Texture:{
+			Primitive::PrimitiveListReader<4> quads{ Indicis.data(),Indicis.size() };
+			while (quads.CanRead())
 			{
-				Primitive::PrimitiveListReader<4> reader{ Indicis.data(),Indicis.size() };
-				while (reader.CanRead())
+				auto quad = quads.Read();	//取出每一个四边形图元
+				
+				switch (renderMode)
 				{
-					auto p = reader.Read();
-					vOut[p[0]].TexCoord.x = 0;
-					vOut[p[0]].TexCoord.y = 0;
-
-					vOut[p[1]].TexCoord.x = 0;
-					vOut[p[1]].TexCoord.y = 1;
-
-					vOut[p[2]].TexCoord.x = 1;
-					vOut[p[2]].TexCoord.y = 1;
-
-					vOut[p[3]].TexCoord.x = 1;
-					vOut[p[3]].TexCoord.y = 0;
-				}
+				case RenderMode::Color:
+					DrawPlane(rasterCol, quad, transform, runner);
+					break;
+				case RenderMode::Texture:
+					DrawPlane(rasterTex, quad, transform, runner);
+					break;
+				};
 			}
-
-			rasterTex.EmitPrimitive(reader, vOut.data(), vOut.size(), runner);	//绘制纹理方块
 			break;
 		}
 		case RenderMode::WireFrame: {
+
+			//用于线框的VertexOut
+			struct VertexOut
+			{
+				Math::Vector4<float> SVPosition;
+				
+				static VertexOut Lerp(float x, const VertexOut& p1, const VertexOut& p2)
+				{
+					return{
+						Math::Lerp(x,p1.SVPosition,p2.SVPosition)
+					};
+				}
+			};
+
+			std::vector<VertexOut> vOut{ Mesh.size() };
+
+			//应用VertexShader并存入vOut
+			Primitive::FixedTransform(
+				[&transform](const VertexIn& v)
+			{
+				return VertexOut{
+					transform * v.Position
+				};
+			},Mesh.data(),vOut.data(),Mesh.size(),runner);
+
+			//以线段的方式传入光栅器
 			Primitive::PrimitiveListReader<2> reader{ lineIndicis.data(),lineIndicis.size() };
 			rasterWireFrame.EmitPrimitive(reader, vOut.data(), vOut.size(), runner);
 			break;
@@ -352,9 +389,19 @@ int main()
 
 		//键盘操作
 		{
-			//按下Z切换渲染方式
-			if(keyboard.KeyPressed("Z"))
-				renderMode = RenderMode((((int)renderMode) + 1) % 3);
+			//按下ZXC切换渲染方式
+			if (keyboard.KeyPressed("Z"))
+				renderMode = RenderMode::Texture;
+			if (keyboard.KeyPressed("X"))
+				renderMode = RenderMode::Color;
+			if (keyboard.KeyPressed("C"))
+				renderMode = RenderMode::WireFrame;
+
+			//按住W和S来移动
+			if (keyboard.KeyPressed("W"))
+				eyeX -= 0.01f;
+			if (keyboard.KeyPressed("S"))
+				eyeX += 0.01f;
 		}
 
 

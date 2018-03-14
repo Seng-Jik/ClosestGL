@@ -31,13 +31,15 @@ namespace ClosestGLTests::RenderPipelineTest
 			auto& vbo = std::get<0>(obj);
 			auto ibo = ConvertTranglesToLines(std::get<1>(obj));
 
+			Texture::Texture2D<float> depthBuffer{ {1024,768} };
+
 			//ParallelStrategy::SingleThreadRunner runner;
 			ParallelStrategy::MultiThreadRunner runner(std::thread::hardware_concurrency());
 			//ParallelStrategy::OpenMPRunner runner;
 			Tools::TestTex tex{ {1024,768} };
 			RenderTarget rt{ Tools::Blenders::NoBlend,{&tex} };
 			PixelShader ps{ &rt,PS{} };
-			ClosestGL::RenderPipeline::DepthTest<decltype(ps), float> dptest{ &ps };
+			ClosestGL::RenderPipeline::DepthTest<decltype(ps), float> dptest{ &ps,&depthBuffer };
 			ClosestGL::RenderPipeline::LineRasterizer<decltype(dptest), float> raster = { &dptest };
 			Primitive::PrimitiveListReader<2> lineReader{ ibo.data(), ibo.size() };
 

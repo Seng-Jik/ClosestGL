@@ -24,7 +24,7 @@ namespace ClosestGL::RenderPipeline
 	{
 	private:
 		TNextStage * nextStage_;
-		Texture::Texture2D<TDepthType> depthBuffer_;
+		Texture::Texture2D<TDepthType>* depthBuffer_;
 
 	public:
 		auto GetRenderTargetSize() const
@@ -35,7 +35,7 @@ namespace ClosestGL::RenderPipeline
 		template<typename TPixelAttributes>
 		void EmitPixel(const TPixelAttributes& data, const Math::Vector2<size_t>& pos)
 		{
-			auto& dst = depthBuffer_.AccessPixelUnsafe(pos);
+			auto& dst = depthBuffer_->AccessPixelUnsafe(pos);
 			const TDepthType src = 1 / data.SVPosition.w;
 
 			if (src > dst)
@@ -48,7 +48,7 @@ namespace ClosestGL::RenderPipeline
 		template<typename TRunner>
 		void ClearDepthBuffer(TRunner& runner)
 		{
-			depthBuffer_.Clear(0,runner);
+			depthBuffer_->Clear(0,runner);
 		}
 
 		auto& GetDepthBuffer()
@@ -56,9 +56,9 @@ namespace ClosestGL::RenderPipeline
 			return depthBuffer_;
 		}
 
-		DepthTest(TNextStage* nextStage):
+		DepthTest(TNextStage* nextStage, Texture::Texture2D<TDepthType>* depthBuffer):
 			nextStage_{ nextStage },
-			depthBuffer_{ GetRenderTargetSize() }
+			depthBuffer_{ depthBuffer }
 		{}
 
 

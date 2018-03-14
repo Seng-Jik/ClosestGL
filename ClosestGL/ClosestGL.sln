@@ -13,6 +13,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ClosestGLTests", "..\Closes
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDLClasses", "..\SDLClasses\SDLClasses\SDLClasses.vcxproj", "{ED47D28B-3601-4CB8-9136-7F66F2132573}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ExampleCube", "..\ExampleCube\ExampleCube.vcxproj", "{81A29EBD-42B4-41D5-A1BC-8D406C3EF11E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{ED47D28B-3601-4CB8-9136-7F66F2132573} = {ED47D28B-3601-4CB8-9136-7F66F2132573}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -45,6 +50,14 @@ Global
 		{ED47D28B-3601-4CB8-9136-7F66F2132573}.Release|x64.Build.0 = Release|x64
 		{ED47D28B-3601-4CB8-9136-7F66F2132573}.Release|x86.ActiveCfg = Release|Win32
 		{ED47D28B-3601-4CB8-9136-7F66F2132573}.Release|x86.Build.0 = Release|Win32
+		{81A29EBD-42B4-41D5-A1BC-8D406C3EF11E}.Debug|x64.ActiveCfg = Debug|x64
+		{81A29EBD-42B4-41D5-A1BC-8D406C3EF11E}.Debug|x64.Build.0 = Debug|x64
+		{81A29EBD-42B4-41D5-A1BC-8D406C3EF11E}.Debug|x86.ActiveCfg = Debug|Win32
+		{81A29EBD-42B4-41D5-A1BC-8D406C3EF11E}.Debug|x86.Build.0 = Debug|Win32
+		{81A29EBD-42B4-41D5-A1BC-8D406C3EF11E}.Release|x64.ActiveCfg = Release|x64
+		{81A29EBD-42B4-41D5-A1BC-8D406C3EF11E}.Release|x64.Build.0 = Release|x64
+		{81A29EBD-42B4-41D5-A1BC-8D406C3EF11E}.Release|x86.ActiveCfg = Release|Win32
+		{81A29EBD-42B4-41D5-A1BC-8D406C3EF11E}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

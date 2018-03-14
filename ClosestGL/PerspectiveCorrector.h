@@ -61,7 +61,7 @@ namespace ClosestGL::RenderPipeline::PerspectiveCorrector
 
 		InPixelShader(const BeforePerspectiveDivision<LerpType>& bpd)
 		{
-			Active(rhw_);
+			Active(bpd);
 		}
 
 		inline auto GetRHW() const

@@ -25,9 +25,9 @@ void UpdateWindow(SDL::Window& window, Texture::Texture2D<Color>& tex)
 	{
 		auto color = tex.AccessPixelUnsafe({ size_t(x), size_t(y) });
 		return SDL::Color<uint8_t>{
-			uint8_t(color.x * 255),
-			uint8_t(color.y * 255),
-			uint8_t(color.z * 255),
+			uint8_t(std::min(1.0f, color.x) * 255),
+			uint8_t(std::min(1.0f, color.y) * 255),
+			uint8_t(std::min(1.0f, color.z) * 255),
 			255
 		};
 	});
@@ -74,6 +74,7 @@ struct VertexOut
 	Color Color;
 	Math::Vector2<float> TexCoord;
 	Math::Vector4<float> Normal;
+	Math::Vector4<float> WorldPosition;
 
 	//透视修正器
 	RenderPipeline::PerspectiveCorrector::InPixelShader<float>
@@ -87,6 +88,7 @@ struct VertexOut
 			Math::Lerp(x,p1.Color,p2.Color),
 			Math::Lerp(x,p1.TexCoord,p2.TexCoord),
 			Math::Lerp(x,p1.Normal,p2.Normal),
+			Math::Lerp(x,p1.WorldPosition,p2.WorldPosition),
 			Math::Lerp(x,p1.PerspectiveCorrector,p2.PerspectiveCorrector)
 		};
 	}
@@ -123,6 +125,7 @@ void DrawPlane(
 			uvfix(v.Color),
 			uvfix(v.TexCoord),
 			uvfix(normal),
+			uvfix(world * v.Position),
 			RenderPipeline::PerspectiveCorrector::InPixelShader<float>
 			{ uvfix }
 		};
@@ -150,6 +153,41 @@ void DrawPlane(
 	//绘制色彩方块
 	raster.EmitPrimitive(reader, outs.data(), outs.size(), runner);
 }
+
+//光照
+
+float Lambert(
+	Math::Vector4<float> normal,
+	Math::Vector4<float> lightDirection)
+{
+	return
+		std::max(
+			0.0f,
+			Math::Dot(
+				Math::Normalize(normal),
+				Math::Normalize(lightDirection)));
+}
+
+float BlinPhong(
+	Math::Vector4<float> normal,
+	Math::Vector4<float> lightDirection,
+	Math::Vector4<float> viewDirection,
+	float specPower)
+{
+	const auto diff = Lambert(normal, lightDirection);
+	Math::Vector4<float> halfVector = Math::Normalize(lightDirection + viewDirection);
+	const auto spec = std::powf(
+		std::max(
+			0.0f, 
+			Math::Dot(
+				halfVector,
+				Normalize(normal)))
+		, specPower);
+
+	return diff + spec;
+}
+
+
 
 int main()
 {
@@ -229,15 +267,36 @@ int main()
 	RenderPipeline::RenderTarget<1, Color, decltype(blender)>
 		renderTarget{ blender,{&colorBuffer} };
 
+	//眼睛位置
+	Math::Vector4<float> viewPosition;
+
+	//是否开启光照
+	bool lighting = false;
+
 	//渲染纹理方块用的渲染管线
 	const auto pixelShaderFuncTex = 
-		[&sampler](const VertexOut& v)
+		[&sampler,&viewPosition,&lighting](const VertexOut& v)
 	{
-		return std::array<Color, 1>
+		auto col = sampler.Sample(v.PerspectiveCorrector(v.TexCoord));
+		if (lighting)
 		{
-			sampler.Sample(v.PerspectiveCorrector(v.TexCoord))
-			//v.PerspectiveCorrector(v.Normal)
-		};
+			//世界坐标
+			const auto worldPosition = v.PerspectiveCorrector(v.WorldPosition);
+
+			//灯光世界坐标
+			constexpr Math::Vector4<float> lightPosition{ 1.5,1,0 };
+
+			//光照度
+			const auto lx = BlinPhong(
+				v.PerspectiveCorrector(v.Normal),
+				worldPosition - lightPosition,
+				worldPosition - viewPosition,
+				70.0f) * 0.75f + 0.25f;
+
+			col *= lx;
+		}
+
+		return std::array<Color, 1> { col };
 	};
 
 	RenderPipeline::PixelShader<decltype(renderTarget), decltype(pixelShaderFuncTex)>
@@ -251,12 +310,29 @@ int main()
 
 	//渲染颜色方块用的渲染管线
 	const auto pixelShaderFuncColor = 
-		[](const VertexOut& v)
+		[&viewPosition,&lighting](const VertexOut& v)
 	{
-		return std::array<Color, 1>
+		auto col = v.PerspectiveCorrector(v.Color);
+
+		if (lighting)
 		{
-			v.PerspectiveCorrector(v.Color)
-		};
+			//世界坐标
+			const auto worldPosition = v.PerspectiveCorrector(v.WorldPosition);
+
+			//灯光世界坐标
+			constexpr Math::Vector4<float> lightPosition{ 1.5,1,0 };
+
+			//光照度
+			const auto lx = BlinPhong(
+				v.PerspectiveCorrector(v.Normal),
+				worldPosition - lightPosition,
+				worldPosition - viewPosition,
+				70.0f) * 0.75f + 0.25f;
+
+			col *= lx;
+		}
+
+		return std::array<Color, 1> { col };
 	};
 
 	RenderPipeline::PixelShader<decltype(renderTarget), decltype(pixelShaderFuncColor)>
@@ -339,10 +415,15 @@ int main()
 			Math::Matrix4<float>
 			(Math::GetYRotateMatrix(rotY) * Math::Matrix3<float>(Math::GetZRotateMatrix(rotX)));
 
+		viewPosition.x = eyeX;
+		viewPosition.y = 0;
+		viewPosition.z = 0;
+		viewPosition.w = 1;
+
 		//准备视图矩阵
 		auto view =
 			Math::GetLookAtMatrix<float>(
-				{ eyeX,0,0 },
+				{ viewPosition.x,viewPosition.y,viewPosition.z },
 				{ 1,0,0 },
 				{ 0,0,1 });
 
@@ -414,6 +495,10 @@ int main()
 				renderMode = RenderMode::Color;
 			if (keyboard.KeyPressed("C"))
 				renderMode = RenderMode::WireFrame;
+
+			//按下VB来开关光照
+			if (keyboard.KeyPressed("V")) lighting = true;
+			if (keyboard.KeyPressed("B")) lighting = false;
 
 			//按住W和S来移动
 			if (keyboard.KeyPressed("W"))

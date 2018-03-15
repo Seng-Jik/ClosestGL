@@ -59,7 +59,7 @@ std::array<VertexIn, 8> Mesh
 constexpr std::array<size_t,36> Indicis
 {
 	0,1,2,3,
-	4,5,6,7,
+	7,6,5,4,
 	0,4,5,1,
 	1,5,6,2,
 	2,6,7,3,
@@ -108,7 +108,8 @@ void DrawPlane(
 	auto v = Mesh[quad[2]].Position - Mesh[quad[0]].Position;
 	Math::Vector3<float> u3{ u.x,u.y,u.z };
 	Math::Vector3<float> v3{ v.x,v.y,v.z };
-	const auto normal3 = Math::Normalize(Math::Cross(u3, v3));
+	auto normal3 = Math::Cross(u3, v3);
+	normal3 /= normal3.Length();
 	auto normal = world * Math::Vector4<float>{ normal3.x, normal3.y, normal3.z, 1 };
 
 	//绘制平面用的VertexShader

@@ -39,6 +39,7 @@
 
 ### 例子
 该例子演示了如何从ClosestGL渲染一个带BlinPhong光照的立方体到SDLClasses窗口。
+[例子代码](ExampleCube/main.cpp)
 
 ![Lighting](Lighting.gif)
-[例子代码](ExampleCube/main.cpp)
+

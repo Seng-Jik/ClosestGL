@@ -299,10 +299,10 @@ int main()
 		return std::array<Color, 1> { col };
 	};
 
-	RenderPipeline::PixelShader<decltype(renderTarget), decltype(pixelShaderFuncTex)>
+	RenderPipeline::PixelShaderStage<decltype(renderTarget), decltype(pixelShaderFuncTex)>
 		pixelShaderTex(&renderTarget, pixelShaderFuncTex);
 
-	RenderPipeline::DepthTest<decltype(pixelShaderTex), Depth>
+	RenderPipeline::DepthTestStage<decltype(pixelShaderTex), Depth>
 		depthTestTex{ &pixelShaderTex,&depthBuffer };
 
 	RenderPipeline::TriangleRasterizer<decltype(depthTestTex), float>
@@ -335,10 +335,10 @@ int main()
 		return std::array<Color, 1> { col };
 	};
 
-	RenderPipeline::PixelShader<decltype(renderTarget), decltype(pixelShaderFuncColor)>
+	RenderPipeline::PixelShaderStage<decltype(renderTarget), decltype(pixelShaderFuncColor)>
 		pixelShaderColor{ &renderTarget,pixelShaderFuncColor };
 
-	RenderPipeline::DepthTest<decltype(pixelShaderColor), float>
+	RenderPipeline::DepthTestStage<decltype(pixelShaderColor), float>
 		depthTestCol{ &pixelShaderColor,&depthBuffer };
 
 	RenderPipeline::TriangleRasterizer<decltype(depthTestCol), float>
@@ -354,7 +354,7 @@ int main()
 		};
 	};
 
-	RenderPipeline::PixelShader<decltype(renderTarget), decltype(pixelShaderFuncWireFrame)>
+	RenderPipeline::PixelShaderStage<decltype(renderTarget), decltype(pixelShaderFuncWireFrame)>
 		pixelShaderWireFrame{ &renderTarget,pixelShaderFuncWireFrame };
 
 	RenderPipeline::LineRasterizer<decltype(pixelShaderWireFrame), float>

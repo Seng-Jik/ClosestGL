@@ -31,7 +31,7 @@ namespace ClosestGLTests::RenderPipelineTest
 				return result;
 			};
 
-			PixelShader<decltype(rt), decltype(PS1)>
+			PixelShaderStage<decltype(rt), decltype(PS1)>
 				ps{ &rt,PS1 };
 
 			PSInput psi

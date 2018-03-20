@@ -28,10 +28,10 @@
 #include "Transformers.h"
 
 //RenderPipeline
-#include "DepthTest.h"
+#include "DepthTestStage.h"
 #include "LineRasterizer.h"
 #include "PerspectiveCorrector.h"
-#include "PixelShader.h"
+#include "PixelShaderStage.h"
 #include "RenderTarget.h"
 #include "TriangleRasterizer.h"
 

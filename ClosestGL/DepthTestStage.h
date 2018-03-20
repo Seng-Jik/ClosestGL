@@ -20,7 +20,7 @@ namespace ClosestGL::RenderPipeline
 	 *     GetRenderTargetSize  - 获取渲染目标大小
 	 */
 	template<typename TNextStage, typename TDepthType>
-	class DepthTest
+	class DepthTestStage
 	{
 	private:
 		TNextStage * nextStage_;
@@ -56,7 +56,7 @@ namespace ClosestGL::RenderPipeline
 			return depthBuffer_;
 		}
 
-		DepthTest(TNextStage* nextStage, Texture::Texture2D<TDepthType>* depthBuffer):
+		DepthTestStage(TNextStage* nextStage, Texture::Texture2D<TDepthType>* depthBuffer):
 			nextStage_{ nextStage },
 			depthBuffer_{ depthBuffer }
 		{}

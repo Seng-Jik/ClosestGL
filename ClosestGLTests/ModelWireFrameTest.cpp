@@ -39,7 +39,7 @@ namespace ClosestGLTests::RenderPipelineTest
 			Tools::TestTex tex{ {1024,768} };
 			RenderTarget rt{ Tools::Blenders::NoBlend,{&tex} };
 			PixelShader ps{ &rt,PS{} };
-			ClosestGL::RenderPipeline::DepthTest<decltype(ps), float> dptest{ &ps,&depthBuffer };
+			ClosestGL::RenderPipeline::DepthTestStage<decltype(ps), float> dptest{ &ps,&depthBuffer };
 			ClosestGL::RenderPipeline::LineRasterizer<decltype(dptest), float> raster = { &dptest };
 			Primitive::PrimitiveListReader<2> lineReader{ ibo.data(), ibo.size() };
 

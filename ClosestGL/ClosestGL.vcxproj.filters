@@ -93,9 +93,6 @@
     <ClInclude Include="RenderTarget.h">
       <Filter>头文件\RenderPipeline</Filter>
     </ClInclude>
-    <ClInclude Include="PixelShader.h">
-      <Filter>头文件\RenderPipeline</Filter>
-    </ClInclude>
     <ClInclude Include="LineRasterizer.h">
       <Filter>头文件\RenderPipeline</Filter>
     </ClInclude>
@@ -117,9 +114,6 @@
     <ClInclude Include="OpenMPRunner.h">
       <Filter>头文件\ParallelStrategy</Filter>
     </ClInclude>
-    <ClInclude Include="DepthTest.h">
-      <Filter>头文件\RenderPipeline</Filter>
-    </ClInclude>
     <ClInclude Include="TriangleRasterizer.h">
       <Filter>头文件\RenderPipeline</Filter>
     </ClInclude>
@@ -137,6 +131,15 @@
     </ClInclude>
     <ClInclude Include="ClosestGL.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="DepthTestStage.h">
+      <Filter>头文件\RenderPipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="PixelShaderStage.h">
+      <Filter>头文件\RenderPipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="VirtualPixelShaderStage.h">
+      <Filter>头文件\RenderPipeline</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

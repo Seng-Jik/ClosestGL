@@ -45,7 +45,7 @@ namespace ClosestGLTests::RenderPipelineTest
 				<1, Tools::TestCol, decltype(Tools::Blenders::NoBlend)>
 				rt(Tools::Blenders::NoBlend, { &tex });
 
-			RenderPipeline::PixelShader<decltype(rt), decltype(PS)>
+			RenderPipeline::PixelShaderStage<decltype(rt), decltype(PS)>
 				ps(&rt, PS);
 
 			RenderPipeline::LineRasterizer<decltype(ps),float> lr(&ps);

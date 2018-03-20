@@ -39,7 +39,7 @@ namespace ClosestGLTests::Tools
 			ClosestGL::RenderPipeline::RenderTarget
 			<1, TestCol,decltype(Blenders::NoBlend)>;
 
-		using PixelShader = ClosestGL::RenderPipeline::PixelShader
+		using PixelShader = ClosestGL::RenderPipeline::PixelShaderStage
 			<RenderTarget, PS>;
 
 		std::vector<size_t> ConvertTranglesToLines(const std::vector<size_t>&);

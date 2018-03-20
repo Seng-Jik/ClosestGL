@@ -18,13 +18,13 @@ namespace ClosestGL::RenderPipeline
 	 *     pos  - 坐标，坐标系在RenderTarget的纹理空间，以像素为单位。
 	 */
 	template<typename TRenderTarget,typename TPixelShader>
-	class PixelShader
+	class PixelShaderStage
 	{
 	private:
 		TPixelShader ps_;
 		TRenderTarget* const target_;
 	public:
-		PixelShader(TRenderTarget* rt, const TPixelShader& ps):
+		PixelShaderStage(TRenderTarget* rt, const TPixelShader& ps):
 			ps_{ps},
 			target_{rt}
 		{}

@@ -73,7 +73,7 @@ namespace ClosestGLTests::RenderPipelineTest
 				};
 			};
 
-			RenderPipeline::PixelShader<decltype(renderTarget), decltype(PixelShader)>
+			RenderPipeline::PixelShaderStage<decltype(renderTarget), decltype(PixelShader)>
 				ps{ &renderTarget,PixelShader };
 
 			RenderPipeline::TriangleRasterizer<decltype(ps), float> raster{ &ps };
@@ -152,7 +152,7 @@ namespace ClosestGLTests::RenderPipelineTest
 				};
 			};
 
-			RenderPipeline::PixelShader<decltype(renderTarget), decltype(PixelShader)>
+			RenderPipeline::PixelShaderStage<decltype(renderTarget), decltype(PixelShader)>
 				ps{ &renderTarget,PixelShader };
 
 			RenderPipeline::TriangleRasterizer<decltype(ps), float> raster{ &ps };

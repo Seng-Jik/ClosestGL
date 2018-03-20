@@ -273,7 +273,9 @@ int main()
 	//是否开启光照
 	bool lighting = false;
 
-	//渲染纹理方块用的渲染管线
+	//渲染方块用的渲染管线
+
+	//使用纹理
 	const auto pixelShaderFuncTex = 
 		[&sampler,&viewPosition,&lighting](const VertexOut& v)
 	{
@@ -298,19 +300,10 @@ int main()
 
 		return std::array<Color, 1> { col };
 	};
-
-	RenderPipeline::PixelShaderStage<decltype(renderTarget), decltype(pixelShaderFuncTex)>
-		pixelShaderTex(&renderTarget, pixelShaderFuncTex);
-
-	RenderPipeline::DepthTestStage<decltype(pixelShaderTex), Depth>
-		depthTestTex{ &pixelShaderTex,&depthBuffer };
-
-	RenderPipeline::TriangleRasterizer<decltype(depthTestTex), float>
-		rasterTex{ &depthTestTex };
-
-	//渲染颜色方块用的渲染管线
-	const auto pixelShaderFuncColor = 
-		[&viewPosition,&lighting](const VertexOut& v)
+	
+	//使用顶点色
+	const auto pixelShaderFuncColor =
+		[&viewPosition, &lighting](const VertexOut& v)
 	{
 		auto col = v.PerspectiveCorrector(v.Color);
 
@@ -335,14 +328,17 @@ int main()
 		return std::array<Color, 1> { col };
 	};
 
-	RenderPipeline::PixelShaderStage<decltype(renderTarget), decltype(pixelShaderFuncColor)>
-		pixelShaderColor{ &renderTarget,pixelShaderFuncColor };
+	RenderPipeline::VirtualPixelShaderStage<decltype(renderTarget), Color,1,VertexOut>
+		pixelShader(&renderTarget);
 
-	RenderPipeline::DepthTestStage<decltype(pixelShaderColor), float>
-		depthTestCol{ &pixelShaderColor,&depthBuffer };
+	pixelShader.SetPixelShader(pixelShaderFuncTex);
 
-	RenderPipeline::TriangleRasterizer<decltype(depthTestCol), float>
-		rasterCol{ &depthTestCol };
+	RenderPipeline::DepthTestStage<decltype(pixelShader), Depth>
+		depthTest{ &pixelShader,&depthBuffer };
+
+	RenderPipeline::TriangleRasterizer<decltype(depthTest), float>
+		raster{ &depthTest };
+	
 
 	//渲染线框用的渲染管线
 	const auto pixelShaderFuncWireFrame = 
@@ -438,16 +434,7 @@ int main()
 			while (quads.CanRead())
 			{
 				auto quad = quads.Read();	//取出每一个四边形图元
-				
-				switch (renderMode)
-				{
-				case RenderMode::Color:
-					DrawPlane(rasterCol, quad, vp, world, runner);
-					break;
-				case RenderMode::Texture:
-					DrawPlane(rasterTex, quad, vp, world, runner);
-					break;
-				};
+				DrawPlane(raster, quad, vp, world, runner);
 			}
 			break;
 		}
@@ -490,9 +477,15 @@ int main()
 		{
 			//按下ZXC切换渲染方式
 			if (keyboard.KeyPressed("Z"))
+			{
 				renderMode = RenderMode::Texture;
+				pixelShader.SetPixelShader(pixelShaderFuncTex);
+			}
 			if (keyboard.KeyPressed("X"))
+			{
 				renderMode = RenderMode::Color;
+				pixelShader.SetPixelShader(pixelShaderFuncColor);
+			}
 			if (keyboard.KeyPressed("C"))
 				renderMode = RenderMode::WireFrame;
 

@@ -32,6 +32,7 @@
 #include "LineRasterizer.h"
 #include "PerspectiveCorrector.h"
 #include "PixelShaderStage.h"
+#include "VirtualPixelShaderStage.h"
 #include "RenderTarget.h"
 #include "TriangleRasterizer.h"
 

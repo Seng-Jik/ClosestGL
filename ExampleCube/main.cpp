@@ -280,28 +280,24 @@ int main()
 	//准备法线贴图和采样器
 	Texture::Texture2D<Color>
 		normalMap{ {256,256} };
-	{
-		std::default_random_engine rand;
-		normalMap.Shade([&rand](auto pos) {
-			Math::Vector3<float> normal{ 0,0,1 };
-			float a = (rand() - rand.min()) / float(rand.max() - rand.min());
-			float b = (rand() - rand.min()) / float(rand.max() - rand.min());
 
-			normal.x += 0.7f*(a * 2 - 1);
-			normal.y += 0.7f*(b * 2 - 1);
-			normal = Math::Normalize(normal);
+	normalMap.Shade([](auto pos) {
+		Math::Vector3<float> normal{ 0,0,1 };
+		if (pos.x % 16 == 0) normal.x += 1;
+		if (pos.y % 16 == 0) normal.y += 1;
+		normal = Normalize(normal);
+		
+		normal /= 2.0f;
+		normal += Math::Vector3<float>{0.5f, 0.5f, 0.5f};
 
-			normal *= 0.5f;
-			normal += Math::Vector3<float>{0.5f, 0.5f, 0.5f};
-
-			return Color{
-				normal.x,
-				normal.y,
-				normal.z,
-				1
-			};
-		}, runner);
-	}
+		return Color{
+			normal.x,
+			normal.y,
+			normal.z,
+			1
+		};
+	}, runner);
+	
 
 	Texture::Sampler::Sampler2D<
 		decltype(normalMap),

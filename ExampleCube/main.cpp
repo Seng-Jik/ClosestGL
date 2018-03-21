@@ -3,6 +3,7 @@
  * 仿制云风的Mini3D：https://github.com/skywind3000/mini3d
  */
 
+#include <optional>
 #include <ClosestGL.h>
 #include <SDLInstance.h>
 #include <Window.h>
@@ -76,6 +77,7 @@ struct VertexOut
 	Math::Vector2<float> TexCoord;
 	Math::Vector4<float> Normal;
 	Math::Vector4<float> WorldPosition;
+	Math::Vector4<float> ScreenSpeed;
 	Math::Vector3<float> Tangent,BiTangent;
 
 	//透视修正器
@@ -91,6 +93,7 @@ struct VertexOut
 			Math::Lerp(x,p1.TexCoord,p2.TexCoord),
 			Math::Lerp(x,p1.Normal,p2.Normal),
 			Math::Lerp(x,p1.WorldPosition,p2.WorldPosition),
+			Math::Lerp(x,p1.ScreenSpeed,p2.ScreenSpeed),
 			Math::Lerp(x,p1.Tangent,p2.Tangent),
 			Math::Lerp(x,p1.BiTangent,p2.BiTangent),
 			Math::Lerp(x,p1.PerspectiveCorrector,p2.PerspectiveCorrector)
@@ -105,6 +108,7 @@ void DrawPlane(
 	std::array<size_t, 4> quad,
 	const Math::Matrix4<float>& vp,
 	const Math::Matrix4<float>& world,
+	const Math::Matrix4<float>& lastFrameMVP,
 	TRunner& runner)
 {
 	//求法线
@@ -116,10 +120,11 @@ void DrawPlane(
 	auto normal = world * Math::Vector4<float>{ normal3.x, normal3.y, normal3.z, 1 };
 
 	//绘制平面用的VertexShader
-	const auto vertexShader = [&vp,&world, normal,u3,v3](const VertexIn& v)
+	const auto vertexShader = [&vp,&world, normal,u3,v3,&lastFrameMVP](const VertexIn& v)
 	{
 		auto pos = (vp * world) * v.Position;
 		
+		auto lastFramePos = lastFrameMVP * v.Position;
 
 		RenderPipeline::PerspectiveCorrector::BeforePerspectiveDivision<float>
 			uvfix(pos);
@@ -130,6 +135,7 @@ void DrawPlane(
 			uvfix(v.TexCoord),
 			uvfix(normal),
 			uvfix(world * v.Position),
+			uvfix(pos - lastFramePos),
 			uvfix(u3),
 			uvfix(v3),
 			RenderPipeline::PerspectiveCorrector::InPixelShader<float>
@@ -161,7 +167,6 @@ void DrawPlane(
 }
 
 //光照
-
 float Lambert(
 	Math::Vector4<float> normal,
 	Math::Vector4<float> lightDirection)
@@ -193,6 +198,7 @@ float BlinPhong(
 	return diff + spec;
 }
 
+//法线贴图
 Math::Vector3<float> NormalMap(
 	Math::Vector3<float> baseNormal,
 	Math::Vector3<float> tangent,
@@ -212,9 +218,26 @@ Math::Vector3<float> NormalMap(
 	return mat3 * mappedNormal;
 }
 
+//运动模糊
+void MotionBlur(
+	Texture::Texture2D<Color>& colorBuffer, 
+	const Texture::Texture2D<Color>& speedBuffer)
+{
+	ParallelStrategy::SingleThreadRunner runner;
+	colorBuffer.Shade(
+		[&](auto pos)
+	{
+		auto col = colorBuffer.AccessPixelUnsafe(pos);
+		col += speedBuffer.ReadPixelUnsafe(pos) * 4.0f;
+		return col;
+	}, runner);
+
+	runner.Wait();
+}
+
 int main()
 {
-	constexpr Math::Vector2<size_t> screenSize{ 800,600 };
+	constexpr Math::Vector2<size_t> screenSize{ 400,300 };
 
 	//转换四边形索引缓存到三角形索引缓存
 	std::vector<size_t> triIndicis;
@@ -311,14 +334,16 @@ int main()
 	//准备渲染目标
 	Texture::Texture2D<Color> 
 		colorBuffer{ screenSize };
+	Texture::Texture2D<Color>
+		speedBuffer{ screenSize };
 	Texture::Texture2D<Depth>
 		depthBuffer{ screenSize };
 
 	const auto blender = 
 		[](auto src, auto dst) {return src; };
 
-	RenderPipeline::RenderTarget<1, Color, decltype(blender)>
-		renderTarget{ blender,{&colorBuffer} };
+	RenderPipeline::RenderTarget<2, Color, decltype(blender)>
+		renderTarget{ blender,{&colorBuffer,&speedBuffer} };
 
 	//眼睛位置
 	Math::Vector4<float> viewPosition;
@@ -392,7 +417,7 @@ int main()
 			col *= lx;
 		}
 
-		return std::array<Color, 1> { col };
+		return std::array<Color, 2> { col,v.PerspectiveCorrector(v.ScreenSpeed) / 16.0f };
 	};
 
 	RenderPipeline::PixelShaderStage<decltype(renderTarget),decltype(pixelShaderFunc)>
@@ -409,9 +434,10 @@ int main()
 	const auto pixelShaderFuncWireFrame = 
 		[](const auto&)
 	{
-		return std::array<Color, 1>
+		return std::array<Color, 2>
 		{
-			Color{0,0,0,0}
+			Color{ 0,0,0,0 },
+			Color{ 0,0,0,0 }
 		};
 	};
 
@@ -451,6 +477,8 @@ int main()
 	//键盘设备
 	SDL::Keyboard keyboard;
 
+	//每一帧的上一帧矩阵
+	std::optional<Math::Matrix4<float>> lastFrameMVP;
 
 	//主循环
 	while (!sdl.QuitRequested())
@@ -462,7 +490,11 @@ int main()
 		}, runner);
 
 		//清空深度缓存
-		depthBuffer.Clear(0, runner);
+		depthTest.ClearDepthBuffer(runner);
+
+		//清空速度缓存
+		speedBuffer.Clear(Math::Vector4<float>{0.0f, 0.0f, 0.0f, 0.0f}, runner);
+
 
 		//世界矩阵
 		const auto world = 
@@ -484,6 +516,9 @@ int main()
 		//变换矩阵
 		const auto vp = projection * view;
 
+		if (!lastFrameMVP.has_value())
+			lastFrameMVP = vp * world;
+
 		switch (renderMode)
 		{
 		case RenderMode::Color:
@@ -492,7 +527,7 @@ int main()
 			while (quads.CanRead())
 			{
 				auto quad = quads.Read();	//取出每一个四边形图元
-				DrawPlane(raster, quad, vp, world, runner);
+				DrawPlane(raster, quad, vp, world, *lastFrameMVP, runner);
 			}
 			break;
 		}
@@ -528,6 +563,10 @@ int main()
 			break;
 		}
 		}
+
+		lastFrameMVP = vp * world;
+
+		MotionBlur(colorBuffer, speedBuffer);
 
 		UpdateWindow(window, colorBuffer);
 

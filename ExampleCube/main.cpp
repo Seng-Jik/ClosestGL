@@ -246,7 +246,11 @@ void MotionBlur(
 
 		Color col{ 0.0f,0.0f,0.0f,0.0f };
 
-		if (speed.x > 0.0f || speed.y > 0.0f)
+		if (
+			speed.x > 0.01f ||
+			speed.y > 0.01f || 
+			speed.x < -0.01f ||
+			speed.y < -0.01f)
 		{
 			constexpr float weight[4] =
 			{ 0.4f, 0.3f, 0.2f,0.1f};

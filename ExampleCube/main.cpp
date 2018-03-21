@@ -7,6 +7,7 @@
 #include <SDLInstance.h>
 #include <Window.h>
 #include <Mouse.h>
+#include <random>
 #include <Keyboard.h>
 #include "..\SDLClasses\include\Vector4.h"
 
@@ -75,6 +76,7 @@ struct VertexOut
 	Math::Vector2<float> TexCoord;
 	Math::Vector4<float> Normal;
 	Math::Vector4<float> WorldPosition;
+	Math::Vector3<float> Tangent,BiTangent;
 
 	//透视修正器
 	RenderPipeline::PerspectiveCorrector::InPixelShader<float>
@@ -89,6 +91,8 @@ struct VertexOut
 			Math::Lerp(x,p1.TexCoord,p2.TexCoord),
 			Math::Lerp(x,p1.Normal,p2.Normal),
 			Math::Lerp(x,p1.WorldPosition,p2.WorldPosition),
+			Math::Lerp(x,p1.Tangent,p2.Tangent),
+			Math::Lerp(x,p1.BiTangent,p2.BiTangent),
 			Math::Lerp(x,p1.PerspectiveCorrector,p2.PerspectiveCorrector)
 		};
 	}
@@ -112,7 +116,7 @@ void DrawPlane(
 	auto normal = world * Math::Vector4<float>{ normal3.x, normal3.y, normal3.z, 1 };
 
 	//绘制平面用的VertexShader
-	const auto vertexShader = [&vp,&world, normal](const VertexIn& v)
+	const auto vertexShader = [&vp,&world, normal,u3,v3](const VertexIn& v)
 	{
 		auto pos = (vp * world) * v.Position;
 		
@@ -126,6 +130,8 @@ void DrawPlane(
 			uvfix(v.TexCoord),
 			uvfix(normal),
 			uvfix(world * v.Position),
+			uvfix(u3),
+			uvfix(v3),
 			RenderPipeline::PerspectiveCorrector::InPixelShader<float>
 			{ uvfix }
 		};
@@ -187,7 +193,24 @@ float BlinPhong(
 	return diff + spec;
 }
 
+Math::Vector3<float> NormalMap(
+	Math::Vector3<float> baseNormal,
+	Math::Vector3<float> tangent,
+	Math::Vector3<float> bitangent,
+	Math::Vector3<float> mappedNormal)
+{
+	mappedNormal *= 2.0f;
+	mappedNormal -= Math::Vector3<float>{1.0f, 1.0f, 1.0f};
 
+	Math::Matrix3<float> mat3
+	{
+		tangent,
+		bitangent,
+		baseNormal
+	};
+
+	return mat3 * mappedNormal;
+}
 
 int main()
 {
@@ -254,6 +277,40 @@ int main()
 			Texture::Sampler::UVNormalizer::UV2DClamp,
 			Texture::Sampler::Fliters::Bilinear);
 
+	//准备法线贴图和采样器
+	Texture::Texture2D<Color>
+		normalMap{ {256,256} };
+	{
+		std::default_random_engine rand;
+		normalMap.Shade([&rand](auto pos) {
+			Math::Vector3<float> normal{ 0,0,1 };
+			float a = (rand() - rand.min()) / float(rand.max() - rand.min());
+			float b = (rand() - rand.min()) / float(rand.max() - rand.min());
+
+			normal.x += 0.7f*(a * 2 - 1);
+			normal.y += 0.7f*(b * 2 - 1);
+			normal = Math::Normalize(normal);
+
+			normal *= 0.5f;
+			normal += Math::Vector3<float>{0.5f, 0.5f, 0.5f};
+
+			return Color{
+				normal.x,
+				normal.y,
+				normal.z,
+				1
+			};
+		}, runner);
+	}
+
+	Texture::Sampler::Sampler2D<
+		decltype(normalMap),
+		decltype(Texture::Sampler::UVNormalizer::UV2DClamp),
+		decltype(Texture::Sampler::Fliters::Bilinear)>
+		normSampler(
+			&normalMap,
+			Texture::Sampler::UVNormalizer::UV2DClamp,
+			Texture::Sampler::Fliters::Bilinear);
 
 	//准备渲染目标
 	Texture::Texture2D<Color> 
@@ -271,15 +328,42 @@ int main()
 	Math::Vector4<float> viewPosition;
 
 	//是否开启光照
-	bool lighting = false;
+	bool lighting = true;
+
+	//是否开启法线贴图
+	bool normalMapping = true;
 
 	//渲染方块用的渲染管线
 
 	//使用纹理
 	const auto pixelShaderFuncTex = 
-		[&sampler,&viewPosition,&lighting](const VertexOut& v)
+		[&sampler,&viewPosition,&lighting,&normSampler,&normalMapping](const VertexOut& v)
 	{
-		auto col = sampler.Sample(v.PerspectiveCorrector(v.TexCoord));
+		auto uv = v.PerspectiveCorrector(v.TexCoord);
+		auto col = sampler.Sample(uv);
+		Math::Vector3<float> normal;
+		{
+			auto n = v.PerspectiveCorrector(v.Normal);
+			normal.x = n.x;
+			normal.y = n.y;
+			normal.z = n.z;
+		}
+
+		if (normalMapping)
+		{
+			auto norm4 = normSampler.Sample(uv);
+			Math::Vector3<float> norm3{
+				norm4.x,
+				norm4.y,
+				norm4.z
+			};
+			normal = NormalMap(
+				normal,
+				v.PerspectiveCorrector(v.Tangent),
+				v.PerspectiveCorrector(v.BiTangent),
+				norm3);
+		}
+
 		if (lighting)
 		{
 			//世界坐标
@@ -290,7 +374,7 @@ int main()
 
 			//光照度
 			const auto lx = BlinPhong(
-				v.PerspectiveCorrector(v.Normal),
+				Math::Vector4<float>{ normal.x, normal.y, normal.z, 1},
 				worldPosition - lightPosition,
 				worldPosition - viewPosition,
 				70.0f) * 0.75f + 0.25f;
@@ -498,6 +582,12 @@ int main()
 				eyeX -= 0.01f;
 			if (keyboard.KeyPressed("S"))
 				eyeX += 0.01f;
+
+			//按下N和M以打开和关闭法线贴图
+			if (keyboard.KeyPressed("N"))
+				normalMapping = true;
+			if (keyboard.KeyPressed("M"))
+				normalMapping = false;
 		}
 
 

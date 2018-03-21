@@ -28,6 +28,7 @@
 ![Bilinear](Bilinear.png)
 ![Example](Example.gif)
 ![Lighting](Lighting.gif)
+![MotionBlurAndNormalMap](MotionBlurAndNormalMap.gif)
 
 ### 使用说明
 直接使用本库是不需要任何依赖的。
@@ -38,8 +39,9 @@
 对于所有API中使用指针传递的地方，请注意，被传入指针的对象生命周期不得长于指针指向的对象。
 
 ### 例子
-该例子演示了如何从ClosestGL渲染一个带BlinPhong光照的立方体到SDLClasses窗口。
+该例子演示了如何从ClosestGL渲染一个带BlinPhong光照的立方体到SDLClasses窗口，
+以及对该立方体应用运动模糊和法线贴图。
+
 [例子代码](ExampleCube/main.cpp)
 
-![Lighting](Lighting.gif)
-
+![MotionBlurAndNormalMap](MotionBlurAndNormalMap.gif)

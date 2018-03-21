@@ -135,7 +135,7 @@ void DrawPlane(
 			uvfix(v.TexCoord),
 			uvfix(normal),
 			uvfix(world * v.Position),
-			uvfix(pos - lastFramePos),
+			uvfix(lastFramePos - pos),
 			uvfix(u3),
 			uvfix(v3),
 			RenderPipeline::PerspectiveCorrector::InPixelShader<float>
@@ -220,15 +220,46 @@ Math::Vector3<float> NormalMap(
 
 //运动模糊
 void MotionBlur(
-	Texture::Texture2D<Color>& colorBuffer, 
+	Texture::Texture2D<Color>& renderBuffer,
+	const Texture::Texture2D<Color>& colorBuffer, 
 	const Texture::Texture2D<Color>& speedBuffer)
 {
+	Texture::Sampler::Sampler2D<
+		Texture::Texture2D<Color>,
+		decltype(Texture::Sampler::UVNormalizer::UV2DClamp),
+		decltype(Texture::Sampler::Fliters::Bilinear)>
+		colorSampler(
+			&colorBuffer,
+			Texture::Sampler::UVNormalizer::UV2DClamp,
+			Texture::Sampler::Fliters::Bilinear);
+
 	ParallelStrategy::SingleThreadRunner runner;
-	colorBuffer.Shade(
+	renderBuffer.Shade(
 		[&](auto pos)
 	{
-		auto col = colorBuffer.AccessPixelUnsafe(pos);
-		col += speedBuffer.ReadPixelUnsafe(pos) * 4.0f;
+		const auto speed = speedBuffer.ReadPixelUnsafe(pos);
+		Math::Vector2<float> uv
+		{
+			float(pos.x) / float(colorBuffer.GetSize().x),
+			float(pos.y) / float(colorBuffer.GetSize().y)
+		};
+
+		Color col{ 0.0f,0.0f,0.0f,0.0f };
+
+		if (speed.x > 0.0f || speed.y > 0.0f)
+		{
+			constexpr float weight[4] =
+			{ 0.4f, 0.3f, 0.2f,0.1f};
+			constexpr int samples = 8;
+			for (int i = 0; i < samples; ++i)
+			{
+				col += colorSampler.Sample(uv) * 0.5f * weight[i / 2];
+				uv -= Math::Vector2<float>{ speed.x, speed.y } *0.01f;
+			}
+		}
+		else
+			col = colorBuffer.ReadPixelUnsafe(pos);
+
 		return col;
 	}, runner);
 
@@ -237,7 +268,7 @@ void MotionBlur(
 
 int main()
 {
-	constexpr Math::Vector2<size_t> screenSize{ 800,600 };
+	constexpr Math::Vector2<size_t> screenSize{ 640,480 };
 
 	//转换四边形索引缓存到三角形索引缓存
 	std::vector<size_t> triIndicis;
@@ -362,6 +393,9 @@ int main()
 	//是否开启法线贴图
 	bool normalMapping = true;
 
+	//是否开启运动模糊
+	bool motionBlur = true;
+
 	//渲染方块用的渲染管线
 
 	//使用纹理
@@ -417,7 +451,7 @@ int main()
 			col *= lx;
 		}
 
-		return std::array<Color, 2> { col,v.PerspectiveCorrector(v.ScreenSpeed) / 16.0f };
+		return std::array<Color, 2> { col,v.PerspectiveCorrector(v.ScreenSpeed) };
 	};
 
 	RenderPipeline::PixelShaderStage<decltype(renderTarget),decltype(pixelShaderFunc)>
@@ -479,6 +513,9 @@ int main()
 
 	//每一帧的上一帧矩阵
 	std::optional<Math::Matrix4<float>> lastFrameMVP;
+
+	//使用运动模糊的输出纹理
+	Texture::Texture2D<Color> motionBlured{ screenSize };
 
 	//主循环
 	while (!sdl.QuitRequested())
@@ -566,9 +603,14 @@ int main()
 
 		lastFrameMVP = vp * world;
 
-		MotionBlur(colorBuffer, speedBuffer);
+		if (motionBlur)
+		{
+			MotionBlur(motionBlured, colorBuffer, speedBuffer);
 
-		UpdateWindow(window, colorBuffer);
+			UpdateWindow(window, motionBlured);
+		}
+		else
+			UpdateWindow(window, colorBuffer);
 
 		//键盘操作
 		{
@@ -591,6 +633,12 @@ int main()
 				eyeX -= 0.01f;
 			if (keyboard.KeyPressed("S"))
 				eyeX += 0.01f;
+
+			//按下K或L来开关运动模糊
+			if (keyboard.KeyPressed("K"))
+				motionBlur = true;
+			if (keyboard.KeyPressed("L"))
+				motionBlur = false;
 
 			//按下N和M以打开和关闭法线贴图
 			if (keyboard.KeyPressed("N"))

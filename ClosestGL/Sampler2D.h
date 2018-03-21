@@ -15,7 +15,7 @@ namespace ClosestGL::Texture::Sampler
 		Fliter fliter_;
 
 	public:
-		Sampler2D(Texture2D* tex, UVNormalizer uvNorm, Fliter fliter) :
+		Sampler2D(const Texture2D* tex, UVNormalizer uvNorm, Fliter fliter) :
 			tex_{ tex },
 			uvNorm_{ uvNorm },
 			fliter_{ fliter }

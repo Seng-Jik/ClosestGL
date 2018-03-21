@@ -283,7 +283,7 @@ int main()
 
 	normalMap.Shade([](auto pos) {
 		Math::Vector3<float> normal{ 0,0,1 };
-		if (pos.x % 16 == 0) normal.x += 1;
+		if (pos.x % 16 == 0) normal.x -= 1;
 		if (pos.y % 16 == 0) normal.y += 1;
 		normal = Normalize(normal);
 		

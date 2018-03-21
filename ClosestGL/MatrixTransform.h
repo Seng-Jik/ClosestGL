@@ -109,7 +109,7 @@ namespace ClosestGL::Math
 	* radian - 旋转角（使用弧度表示）
 	*/
 	template<typename T>
-	Matrix3<T> GetXRotateMatrix(double radian) = delete;
+	Matrix3<T> GetXRotateMatrix(double radian);
 
 	inline Matrix3<float> GetXRotateMatrix(float radian)
 	{
@@ -139,7 +139,7 @@ namespace ClosestGL::Math
 	 */
 
 	template<typename T>
-	Matrix4<T> GetPerspectiveMatrixLH(T fovy, T aspect, T zn, T zf) = delete;
+	Matrix4<T> GetPerspectiveMatrixLH(T fovy, T aspect, T zn, T zf);
 
 	template<>
 	inline Matrix4<float> GetPerspectiveMatrixLH(float fovy, float aspect, float zn, float zf)

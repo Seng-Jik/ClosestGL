@@ -327,6 +327,14 @@ int main()
 	//眼睛位置
 	Math::Vector4<float> viewPosition;
 
+
+	//渲染模式
+	enum class RenderMode : int
+	{
+		Texture = 0, Color = 1, WireFrame = 2
+	};
+	RenderMode renderMode = RenderMode::Texture;
+
 	//是否开启光照
 	bool lighting = true;
 
@@ -336,11 +344,17 @@ int main()
 	//渲染方块用的渲染管线
 
 	//使用纹理
-	const auto pixelShaderFuncTex = 
-		[&sampler,&viewPosition,&lighting,&normSampler,&normalMapping](const VertexOut& v)
+	const auto pixelShaderFunc = 
+		[&sampler,&viewPosition,&lighting,&normSampler,&normalMapping,&renderMode](const VertexOut& v)
 	{
+
 		auto uv = v.PerspectiveCorrector(v.TexCoord);
-		auto col = sampler.Sample(uv);
+
+		auto col =
+			renderMode == RenderMode::Color ?
+			v.PerspectiveCorrector(v.Color) :
+			sampler.Sample(uv);
+		
 		Math::Vector3<float> normal;
 		{
 			auto n = v.PerspectiveCorrector(v.Normal);
@@ -384,38 +398,9 @@ int main()
 
 		return std::array<Color, 1> { col };
 	};
-	
-	//使用顶点色
-	const auto pixelShaderFuncColor =
-		[&viewPosition, &lighting](const VertexOut& v)
-	{
-		auto col = v.PerspectiveCorrector(v.Color);
 
-		if (lighting)
-		{
-			//世界坐标
-			const auto worldPosition = v.PerspectiveCorrector(v.WorldPosition);
-
-			//灯光世界坐标
-			constexpr Math::Vector4<float> lightPosition{ 1.5,1,0 };
-
-			//光照度
-			const auto lx = BlinPhong(
-				v.PerspectiveCorrector(v.Normal),
-				worldPosition - lightPosition,
-				worldPosition - viewPosition,
-				70.0f) * 0.75f + 0.25f;
-
-			col *= lx;
-		}
-
-		return std::array<Color, 1> { col };
-	};
-
-	RenderPipeline::VirtualPixelShaderStage<decltype(renderTarget), Color,1,VertexOut>
-		pixelShader(&renderTarget);
-
-	pixelShader.SetPixelShader(pixelShaderFuncTex);
+	RenderPipeline::PixelShaderStage<decltype(renderTarget),decltype(pixelShaderFunc)>
+		pixelShader(&renderTarget,pixelShaderFunc);
 
 	RenderPipeline::DepthTestStage<decltype(pixelShader), Depth>
 		depthTest{ &pixelShader,&depthBuffer };
@@ -470,13 +455,6 @@ int main()
 	//键盘设备
 	SDL::Keyboard keyboard;
 
-	//渲染模式
-	enum class RenderMode : int
-	{
-		Texture = 0,Color = 1,WireFrame = 2
-	};
-
-	RenderMode renderMode = RenderMode::Texture;
 
 	//主循环
 	while (!sdl.QuitRequested())
@@ -561,15 +539,11 @@ int main()
 		{
 			//按下ZXC切换渲染方式
 			if (keyboard.KeyPressed("Z"))
-			{
 				renderMode = RenderMode::Texture;
-				pixelShader.SetPixelShader(pixelShaderFuncTex);
-			}
+			
 			if (keyboard.KeyPressed("X"))
-			{
 				renderMode = RenderMode::Color;
-				pixelShader.SetPixelShader(pixelShaderFuncColor);
-			}
+			
 			if (keyboard.KeyPressed("C"))
 				renderMode = RenderMode::WireFrame;
 

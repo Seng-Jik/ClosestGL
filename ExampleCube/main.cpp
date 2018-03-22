@@ -265,7 +265,7 @@ void MotionBlur(
 			col = colorBuffer.ReadPixelUnsafe(pos);
 
 		auto orgCol = renderBuffer.ReadPixelUnsafe(pos);
-		return col * 0.4f + orgCol * 0.6f;
+		return col * 0.65f + orgCol * 0.35f;
 	}, runner);
 
 	runner.Wait();

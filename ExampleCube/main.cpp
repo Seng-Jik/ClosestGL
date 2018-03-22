@@ -19,6 +19,7 @@ using Color = Math::Vector4<float>;
 using Depth = float;
 
 
+
 //更新纹理到SDL窗口
 void UpdateWindow(SDL::Window& window, Texture::Texture2D<Color>& tex)
 {
@@ -164,6 +165,8 @@ void DrawPlane(
 	
 	//绘制色彩方块
 	raster.EmitPrimitive(reader, outs.data(), outs.size(), runner);
+
+	runner.Wait();
 }
 
 //光照
@@ -219,10 +222,12 @@ Math::Vector3<float> NormalMap(
 }
 
 //运动模糊
+template<typename TRunner>
 void MotionBlur(
 	Texture::Texture2D<Color>& renderBuffer,
 	const Texture::Texture2D<Color>& colorBuffer, 
-	const Texture::Texture2D<Color>& speedBuffer)
+	const Texture::Texture2D<Color>& speedBuffer,
+	TRunner& runner)
 {
 	Texture::Sampler::Sampler2D<
 		Texture::Texture2D<Color>,
@@ -233,7 +238,6 @@ void MotionBlur(
 			Texture::Sampler::UVNormalizer::UV2DClamp,
 			Texture::Sampler::Fliters::Bilinear);
 
-	ParallelStrategy::SingleThreadRunner runner;
 	renderBuffer.Shade(
 		[&](auto pos)
 	{
@@ -265,7 +269,7 @@ void MotionBlur(
 			col = colorBuffer.ReadPixelUnsafe(pos);
 
 		auto orgCol = renderBuffer.ReadPixelUnsafe(pos);
-		return col * 0.65f + orgCol * 0.35f;
+		return col * 0.7f + orgCol * 0.3f;
 	}, runner);
 
 	runner.Wait();
@@ -274,6 +278,13 @@ void MotionBlur(
 int main()
 {
 	constexpr Math::Vector2<size_t> screenSize{ 800,600 };
+	const std::string WindowTitle{ "ClosestGL Example - Cube" };
+
+	//执行策略
+	ParallelStrategy::MultiThreadRunner runner(std::thread::hardware_concurrency() - 1);
+	//ParallelStrategy::SingleThreadRunner runner;
+	
+
 
 	//转换四边形索引缓存到三角形索引缓存
 	std::vector<size_t> triIndicis;
@@ -310,9 +321,6 @@ int main()
 			lineIndicis.push_back(p[2]);
 		}
 	}
-
-	//单线程执行策略
-	ParallelStrategy::SingleThreadRunner runner;
 
 	//准备棋盘纹理和采样器
 	Texture::Texture2D<Color>
@@ -401,9 +409,7 @@ int main()
 	//是否开启运动模糊
 	bool motionBlur = true;
 
-	//渲染方块用的渲染管线
-
-	//使用纹理
+	//渲染管线
 	const auto pixelShaderFunc = 
 		[&sampler,&viewPosition,&lighting,&normSampler,&normalMapping,&renderMode](const VertexOut& v)
 	{
@@ -497,7 +503,7 @@ int main()
 	//准备窗体
 	SDL::SDLInstance sdl;
 	SDL::Window window(
-		"ClosestGL Example - Cube",
+		WindowTitle,
 		SDL::Rect<int32_t>{
 			SDL::Window::Center,
 			SDL::Window::Center,
@@ -522,9 +528,26 @@ int main()
 	//使用运动模糊的输出纹理
 	Texture::Texture2D<Color> motionBlured{ screenSize };
 
+	//FPS计数器
+	int frames = 0;
+	auto timePoint = sdl.GetTicks();
+
+
+	runner.Wait();
+
 	//主循环
 	while (!sdl.QuitRequested())
 	{
+		//计算FPS
+		frames++;
+		if (sdl.GetTicks() - timePoint >= 1000)
+		{
+			window.SetWindowTitle(
+				WindowTitle + "    FPS:" + std::to_string(frames));
+			frames = 0;
+			timePoint = sdl.GetTicks();
+		}
+
 		//绘制背景色
 		colorBuffer.Shade([screenSize](auto pos) {
 			float col = 1 - pos.y / float(screenSize.y);
@@ -561,6 +584,7 @@ int main()
 		if (!lastFrameMVP.has_value())
 			lastFrameMVP = vp * world;
 
+		runner.Wait();
 		switch (renderMode)
 		{
 		case RenderMode::Color:
@@ -599,6 +623,8 @@ int main()
 				};
 			},Mesh.data(),vOut.data(),Mesh.size(),runner);
 
+			runner.Wait();
+
 			//以线段的方式传入光栅器
 			Primitive::PrimitiveListReader<2> reader{ lineIndicis.data(),lineIndicis.size() };
 			rasterWireFrame.EmitPrimitive(reader, vOut.data(), vOut.size(), runner);
@@ -608,10 +634,12 @@ int main()
 
 		lastFrameMVP = vp * world;
 
+		runner.Wait();
 		if (motionBlur)
 		{
-			MotionBlur(motionBlured, colorBuffer, speedBuffer);
+			MotionBlur(motionBlured, colorBuffer, speedBuffer,runner);
 
+			runner.Wait();
 			UpdateWindow(window, motionBlured);
 		}
 		else

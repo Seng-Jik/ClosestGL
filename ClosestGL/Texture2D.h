@@ -67,8 +67,8 @@ namespace ClosestGL::Texture
 		 *        pos   - 当前计算的坐标
 		 * runner - 并行执行策略（参加SingleThreadRunner）
 		 */
-		template<typename TextureShader,typename Runner>
-		void Shade(TextureShader& ts,Runner& runner)
+		template<typename TextureShader,typename runner>
+		void Shade(TextureShader& ts,runner& runner)
 		{
 			runner.Commit(0, size_.y,
 				[this,ts](size_t y,size_t) {
@@ -85,8 +85,8 @@ namespace ClosestGL::Texture
 		 * color - 用于填充纹理的颜色
 		 * runner - 并行执行策略（参加SingleThreadRunner）
 		 */
-		template<typename Runner>
-		void Clear(ColorType color, Runner& runner)
+		template<typename runner>
+		void Clear(ColorType color, runner& runner)
 		{
 			Shade(
 				[color](auto)

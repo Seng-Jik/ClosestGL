@@ -19,17 +19,6 @@
 ### 光栅渲染管线
 ![RenderPipeline](RenderPipeline.png)
 
-### 光栅渲染管线效果
-![WireFrameRendering](WireFrameRendering.gif)
-![CandyWireFrameRendering](CandyWireFrameRendering.gif)
-![CVVClip1](CVVClip.gif)
-![CVVClip2](CVVClip2.gif)
-![TextureMapping](TextureMapping.gif)
-![Bilinear](Bilinear.png)
-![Example](Example.gif)
-![Lighting](Lighting.gif)
-![MotionBlurAndNormalMap](MotionBlurAndNormalMap.gif)
-
 ### 使用说明
 直接使用本库是不需要任何依赖的。
 如果需要执行其中的测试例子（ClosestGLTest项目），需要SDL2库。

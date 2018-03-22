@@ -264,7 +264,8 @@ void MotionBlur(
 		else
 			col = colorBuffer.ReadPixelUnsafe(pos);
 
-		return col;
+		auto orgCol = renderBuffer.ReadPixelUnsafe(pos);
+		return col * 0.1f + orgCol * 0.9f;
 	}, runner);
 
 	runner.Wait();
@@ -272,7 +273,7 @@ void MotionBlur(
 
 int main()
 {
-	constexpr Math::Vector2<size_t> screenSize{ 800,600 };
+	constexpr Math::Vector2<size_t> screenSize{ 400,300 };
 
 	//转换四边形索引缓存到三角形索引缓存
 	std::vector<size_t> triIndicis;

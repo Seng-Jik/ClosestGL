@@ -258,10 +258,10 @@ void MotionBlur(
 		{
 			constexpr float weight[4] =
 			{ 0.4f, 0.3f, 0.2f,0.1f};
-			constexpr int samples = 32;
+			constexpr int samples = 16;
 			for (int i = 0; i < samples; ++i)
 			{
-				col += colorSampler.Sample(uv) * 0.125f * weight[i / 8];
+				col += colorSampler.Sample(uv) * 0.25f * weight[i / 4];
 				uv -= Math::Vector2<float>{ speed.x, speed.y } *0.0025f;
 			}
 		}

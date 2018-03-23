@@ -4,7 +4,7 @@
 #include "Blenders.h"
 #include <LineRasterizer.h>
 #include <RenderTarget.h>
-#include <PixelShader.h>
+#include <PixelShaderStage.h>
 #include <array>
 #include <functional>
 #include <Matrix4.h>
@@ -28,7 +28,8 @@ namespace ClosestGLTests::Tools
 
 		struct PS
 		{
-			std::array<TestCol, 1> operator() (const Vertex& v)
+			std::array<TestCol, 1> operator()
+				(const Vertex& v,const ClosestGL::Math::Vector2<size_t>&)
 			{
 				float col = std::clamp((1 / v.SVPosition.z) * 70,0.0f,1.0f);
 				return { { col,col,col,1} };

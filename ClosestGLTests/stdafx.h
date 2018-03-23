@@ -22,7 +22,7 @@
 #include <Vector4.h>
 #include <LineRasterizer.h>
 #include <RenderTarget.h>
-#include <PixelShader.h>
+#include <PixelShaderStage.h>
 #include <array>
 #include <functional>
 #include <Matrix4.h>

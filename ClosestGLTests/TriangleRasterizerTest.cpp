@@ -62,7 +62,7 @@ namespace ClosestGLTests::RenderPipelineTest
 			RenderPipeline::RenderTarget<1, Tools::TestCol, decltype(Tools::Blenders::NoBlend)>
 				renderTarget{ Tools::Blenders::NoBlend,{ &fb } };
 
-			const auto PixelShader = [&sampler](const Vertex& v)
+			const auto PixelShader = [&sampler](const Vertex& v,const auto&)
 			{
 				return std::array<Tools::TestCol, 1> 
 				{
@@ -142,7 +142,7 @@ namespace ClosestGLTests::RenderPipelineTest
 			RenderPipeline::RenderTarget<1, Tools::TestCol, decltype(Tools::Blenders::NoBlend)>
 				renderTarget{ Tools::Blenders::NoBlend,{ &fb } };
 
-			const auto PixelShader = [&sampler](const VertexShaderOut& v)
+			const auto PixelShader = [&sampler](const VertexShaderOut& v,const auto&)
 			{
 				return std::array<Tools::TestCol, 1>
 				{

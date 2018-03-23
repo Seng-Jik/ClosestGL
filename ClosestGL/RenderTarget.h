@@ -61,6 +61,11 @@ namespace ClosestGL::RenderPipeline
 			return *cbs_[n];
 		}
 
+		void SetTexture(int n, Texture* tex)
+		{
+			cbs_[n] = tex;
+		}
+
 		void EmitPixel(const std::array<ColorType, ColorBufferCount>& colors, const Math::Vector2<size_t>& pos)
 		{
 			for (int i = 0; i < ColorBufferCount; ++i)

@@ -258,18 +258,17 @@ void MotionBlur(
 		{
 			constexpr float weight[4] =
 			{ 0.4f, 0.3f, 0.2f,0.1f};
-			constexpr int samples = 8;
+			constexpr int samples = 32;
 			for (int i = 0; i < samples; ++i)
 			{
-				col += colorSampler.Sample(uv) * 0.5f * weight[i / 2];
-				uv -= Math::Vector2<float>{ speed.x, speed.y } *0.01f;
+				col += colorSampler.Sample(uv) * 0.125f * weight[i / 8];
+				uv -= Math::Vector2<float>{ speed.x, speed.y } *0.0025f;
 			}
 		}
 		else
 			col = colorBuffer.ReadPixelUnsafe(pos);
 
-		auto orgCol = renderBuffer.ReadPixelUnsafe(pos);
-		return col * 0.7f + orgCol * 0.3f;
+		return col;
 	}, runner);
 
 	runner.Wait();
@@ -411,7 +410,8 @@ int main()
 
 	//渲染管线
 	const auto pixelShaderFunc = 
-		[&sampler,&viewPosition,&lighting,&normSampler,&normalMapping,&renderMode](const VertexOut& v)
+		[&sampler,&viewPosition,&lighting,&normSampler,&normalMapping,&renderMode]
+		(const VertexOut& v,const auto&)
 	{
 
 		auto uv = v.PerspectiveCorrector(v.TexCoord);
@@ -477,7 +477,7 @@ int main()
 
 	//渲染线框用的渲染管线
 	const auto pixelShaderFuncWireFrame = 
-		[](const auto&)
+		[](const auto&,const auto&)
 	{
 		return std::array<Color, 2>
 		{

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include <MathCommon.h>
 #include <RenderTarget.h>
-#include <PixelShader.h>
+#include <PixelShaderStage.h>
 #include <LineRasterizer.h>
 #include <PrimitiveListReader.h>
 #include <MultiThreadRunner.h>
@@ -33,7 +33,7 @@ namespace ClosestGLTests::RenderPipelineTest
 	public:
 		TEST_METHOD(TestDrawLine)
 		{
-			const auto PS = [](const Vertex& psi)
+			const auto PS = [](const Vertex& psi,const ClosestGL::Math::Vector2<size_t>&)
 			{
 				std::this_thread::sleep_for(1ms);
 				std::array<Math::Vector4<float>, 1> ret{ psi.Color };

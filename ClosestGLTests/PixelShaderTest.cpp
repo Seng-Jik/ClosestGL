@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include <PixelShader.h>
+#include <PixelShaderStage.h>
 #include <RenderTarget.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
@@ -25,7 +25,7 @@ namespace ClosestGLTests::RenderPipelineTest
 				Math::Vector4<float> color;
 			};
 
-			auto PS1 = [](const PSInput& psi)
+			auto PS1 = [](const PSInput& psi,const auto&)
 			{
 				std::array<Tools::TestCol, 1> result{ psi.color };
 				return result;

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include <MathCommon.h>
 #include <RenderTarget.h>
-#include <PixelShader.h>
+#include <PixelShaderStage.h>
 #include <SingleThreadRunner.h>
 #include <LineRasterizer.h>
 #include <PrimitiveListReader.h>
@@ -14,7 +14,7 @@
 #include <CVVClipper.h>
 #include <PrimitiveReader.h>
 #include <PerspectiveDivisionBuffer.h>
-#include <DepthTest.h>
+#include <DepthTestStage.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 using namespace ClosestGL;

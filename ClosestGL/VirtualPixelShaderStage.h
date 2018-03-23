@@ -32,7 +32,7 @@ namespace ClosestGL::RenderPipeline
 
 		void EmitPixel(const TPixelAttributes& data, const Math::Vector2<size_t>& pos)
 		{
-			target_->EmitPixel(ps_(data), pos);
+			target_->EmitPixel(ps_(data,pos), pos);
 		}
 
 		auto GetRenderTargetSize() const

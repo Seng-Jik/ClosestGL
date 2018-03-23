@@ -23,7 +23,7 @@
     <ProjectGuid>{EEFE6815-56B1-42CC-B549-67691D6628BA}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>ClosestGLTests</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
     <ProjectSubType>NativeUnitTestProject</ProjectSubType>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />

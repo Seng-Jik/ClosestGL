@@ -23,18 +23,23 @@ using Depth = float;
 //更新纹理到SDL窗口
 void UpdateWindow(SDL::Window& window, Texture::Texture2D<Color>& tex)
 {
-	window.GetWindowSurface().Shade(
-		[&tex](int x, int y, auto&, auto)
-	{
-		auto color = tex.AccessPixelUnsafe({ size_t(x), size_t(y) });
-		return SDL::Color<uint8_t>{
-			uint8_t(std::min(1.0f, color.x) * 255),
-			uint8_t(std::min(1.0f, color.y) * 255),
-			uint8_t(std::min(1.0f, color.z) * 255),
-			255
-		};
-	});
+	const int pitch = window.GetWindowSurface().GetPitch();
+	uint8_t* pixels = (uint8_t*)window.GetWindowSurface().GetPixelPointer();
+	const auto size = window.GetWindowSurface().GetSize();
 
+	for (int y = 0; y < size.y; ++y)
+	{
+		for (int x = 0; x < size.x; ++x)
+		{
+			auto color = tex.AccessPixelUnsafe({ size_t(x), size_t(y) });
+			uint8_t* px = (pixels + y * pitch) + x * 4;
+			px[2] = uint8_t(std::min(1.0f, color.x) * 255);
+			px[1] = uint8_t(std::min(1.0f, color.y) * 255);
+			px[0] = uint8_t(std::min(1.0f, color.z) * 255);
+			px[3] = 255;
+		}
+	}
+	
 	window.UpdateWindowSurface();
 }
 
@@ -274,7 +279,7 @@ void MotionBlur(
 	runner.Wait();
 }
 
-int main()
+int __cdecl main()
 {
 	constexpr Math::Vector2<size_t> screenSize{ 800,600 };
 	const std::string WindowTitle{ "ClosestGL Example - Cube" };

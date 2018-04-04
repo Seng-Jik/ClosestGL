@@ -11,6 +11,7 @@
 #include <random>
 #include <Keyboard.h>
 #include "..\SDLClasses\include\Vector4.h"
+#include <ExampleCommon.h>
 
 using namespace ClosestGL;
 
@@ -19,29 +20,8 @@ using Color = Math::Vector4<float>;
 using Depth = float;
 
 
+using namespace ExampleCommon;
 
-//更新纹理到SDL窗口
-void UpdateWindow(SDL::Window& window, Texture::Texture2D<Color>& tex)
-{
-	const int pitch = window.GetWindowSurface().GetPitch();
-	uint8_t* pixels = (uint8_t*)window.GetWindowSurface().GetPixelPointer();
-	const auto size = window.GetWindowSurface().GetSize();
-
-	for (int y = 0; y < size.y; ++y)
-	{
-		for (int x = 0; x < size.x; ++x)
-		{
-			auto color = tex.AccessPixelUnsafe({ size_t(x), size_t(y) });
-			uint8_t* px = (pixels + y * pitch) + x * 4;
-			px[2] = uint8_t(std::min(1.0f, color.x) * 255);
-			px[1] = uint8_t(std::min(1.0f, color.y) * 255);
-			px[0] = uint8_t(std::min(1.0f, color.z) * 255);
-			px[3] = 255;
-		}
-	}
-	
-	window.UpdateWindowSurface();
-}
 
 //顶点输入数据
 struct VertexIn

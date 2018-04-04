@@ -1,0 +1,15 @@
+C	faceID=0	x=0	y=0	w=45	h=64
+G	faceID=0	x=45	y=0	w=48	h=64
+L	faceID=0	x=93	y=0	w=38	h=64
+e	faceID=0	x=131	y=0	w=40	h=64
+l	faceID=0	x=171	y=0	w=26	h=64
+o	faceID=0	x=197	y=0	w=43	h=64
+s	faceID=0	x=0	y=64	w=35	h=64
+t	faceID=0	x=35	y=64	w=31	h=64
+体	faceID=0	x=66	y=64	w=60	h=64
+向	faceID=0	x=126	y=64	w=60	h=64
+场	faceID=0	x=186	y=64	w=60	h=64
+字	faceID=0	x=0	y=128	w=60	h=64
+染	faceID=0	x=60	y=128	w=60	h=64
+渲	faceID=0	x=120	y=128	w=60	h=64
+量	faceID=0	x=180	y=128	w=60	h=64

@@ -187,6 +187,11 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\SDLClasses\SDLClasses\SDLClasses.vcxproj">
+      <Project>{ed47d28b-3601-4cb8-9136-7f66f2132573}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

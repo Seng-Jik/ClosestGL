@@ -55,4 +55,18 @@ namespace ExampleCommon
 		
 		return tex;
 	}
+
+	template <typename Color>
+	constexpr Color BlendColorNormal(Color src, Color dst)
+	{
+		//dstRGB = (srcRGB * srcA) + (dstRGB * (1 - srcA))
+		//dstA = srcA + (dstA * (1 - srcA))
+
+		return {
+			src.x * src.w + dst.x * (1 - src.w),
+			src.y * src.w + dst.y * (1 - src.w),
+			src.z * src.w + dst.z * (1 - src.w),
+			src.w + dst.w * (1 - src.w)
+		};
+	}
 }

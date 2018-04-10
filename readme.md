@@ -28,9 +28,17 @@
 对于所有API中使用指针传递的地方，请注意，被传入指针的对象生命周期不得长于指针指向的对象。
 
 ### 例子
+#### ExampleCube
 该例子演示了如何从ClosestGL渲染一个带BlinPhong光照的立方体到SDLClasses窗口，
 以及对该立方体应用运动模糊和法线贴图。
 
 [例子代码](ExampleCube/main.cpp)
 
 ![MotionBlurAndNormalMap](MotionBlurAndNormalMap.gif)
+
+#### ExampleFontRendering
+该例子演示了如何渲染SDF字体，并且添加软阴影和外发光。
+[例子代码](ExampleFontRendering/main.cpp)
+
+![FontRendering1](FontRendering1.png)
+![FontRendering2](FontRendering2.png)

@@ -68,7 +68,7 @@ namespace ClosestGL::Texture
 		 * runner - 并行执行策略（参加SingleThreadRunner）
 		 */
 		template<typename TextureShader,typename runner>
-		void Shade(TextureShader& ts,runner& runner)
+		void Shade(TextureShader&& ts,runner& runner)
 		{
 			runner.Commit(0, size_.y,
 				[this,ts](size_t y,size_t) {

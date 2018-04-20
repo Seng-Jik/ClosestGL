@@ -26,20 +26,25 @@ namespace ClosestGL::RenderPipeline
 			size_t y,size_t rtWidth
 		)
 		{
-			const int xBegin = int(x1r), xEnd = int(x2r);
-			const int xInc = (xEnd - xBegin) > 0 ? 1 : -1;
+			int xBegin = int(x1r), xEnd = int(x2r);
+			bool flipped = false;
+			if (flipped = (xEnd - xBegin < 0))
+				std::swap(xBegin, xEnd);
 			if (xEnd != xBegin) 
 			{
-				for (int x = xBegin;; x += xInc)
+				for (int x = xBegin;; x ++)
 				{
 					if (x >= 0 && x < rtWidth)
 					{
-						const TLerpType xLerp = TLerpType(x - xBegin) / TLerpType(xEnd - xBegin);
+						const TLerpType xLerp = 
+							flipped ? 
+							1-TLerpType(x - xBegin) / TLerpType(xEnd - xBegin) :
+							TLerpType(x - xBegin) / TLerpType(xEnd - xBegin);
 						const Math::Vector2<size_t> rpos{ size_t(x),y };
 						const auto vertex = TVertex::Lerp(xLerp, x1, x2);
 						nextStage_->EmitPixel(vertex, rpos);
 					}
-					if (x == xEnd) break;
+					if (x == xEnd - 1) break;
 				}
 			}
 		}
@@ -57,22 +62,29 @@ namespace ClosestGL::RenderPipeline
 			const auto foot1r = Math::ConvertVertexPosToRenderTargetPos(foot1p, rtSize);
 			const auto foot2r = Math::ConvertVertexPosToRenderTargetPos(foot2p, rtSize);
 
-			const int yBegin = int(hatr.y), yEnd = int(foot1r.y);
-			const int yInc = (yEnd - yBegin) > 0 ? 1 : -1;
+			int yBegin = int(hatr.y), yEnd = int(foot1r.y);
+			bool topTriangle = false;
+
+			if (topTriangle = (yBegin > yEnd))
+				std::swap(yBegin, yEnd);
 
 			if (yBegin != yEnd)
 			{
-				for (int y = yBegin;; y += yInc)
+				for (int y = yBegin;; y ++)
 				{
 					if (y >= 0 && y < rtSize.y)
 					{
 
-						const TLerpType yLerp = TLerpType(y - yBegin) / TLerpType(yEnd - yBegin);
+						const TLerpType yLerp = 
+							TLerpType(y - yBegin) / TLerpType(yEnd - yBegin);
 
-						const auto x1 = TVertex::Lerp(yLerp, hat, foot1);
-						const auto x2 = TVertex::Lerp(yLerp, hat, foot2);
-						const auto x1p = Math::Lerp(yLerp, hatp, foot1p);
-						const auto x2p = Math::Lerp(yLerp, hatp, foot2p);
+						const TLerpType yPosLerp =
+							topTriangle ? 1 - yLerp : yLerp;
+
+						const auto x1 = TVertex::Lerp(yPosLerp, hat, foot1);
+						const auto x2 = TVertex::Lerp(yPosLerp, hat, foot2);
+						const auto x1p = Math::Lerp(yPosLerp, hatp, foot1p);
+						const auto x2p = Math::Lerp(yPosLerp, hatp, foot2p);
 
 						const auto x1r = Math::ConvertVertexPosToRenderTargetPos(x1p, rtSize);
 						const auto x2r = Math::ConvertVertexPosToRenderTargetPos(x2p, rtSize);
@@ -80,7 +92,7 @@ namespace ClosestGL::RenderPipeline
 						DrawScanLine(x1, x1r.x, x2, x2r.x, size_t(y), rtSize.x);
 					}
 
-					if (y == yEnd) break;
+					if (y == yEnd - 1) break;
 				}
 			}
 		}
